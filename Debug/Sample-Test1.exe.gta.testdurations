@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GtaTestDurations xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Executable>C:\Users\blitz\source\repos\tutorial2-397\Debug\Sample-Test1.exe</Executable>
+  <TestDurations>
+    <TestDuration Test="TestCaseName.TestName" Duration="1" />
+    <TestDuration Test="StructTest.BankAccountStartsEmpty" Duration="1" />
+    <TestDuration Test="BasicTest.Assert11test" Duration="1" />
+    <TestDuration Test="imageCreate.imagecreation" Duration="1" />
+    <TestDuration Test="Camera.CameraCreation" Duration="2" />
+  </TestDurations>
+</GtaTestDurations>
