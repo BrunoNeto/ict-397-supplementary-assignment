@@ -13,8 +13,7 @@
 *.ipch
 
 # Compiled Dynamic libraries
-*.so
-*.dylib
+
 
 
 # Fortran module files
@@ -28,6 +27,5 @@
 
 
 # Executables
-
 *.out
 *.app
