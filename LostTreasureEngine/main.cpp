@@ -8,6 +8,8 @@
 #include <iostream>
 #include<string>
 #include <lua.hpp>
+#include "music.h"
+#include "SoundEffect.h"
 using namespace std;
 
 
@@ -36,6 +38,7 @@ GLfloat	z = 0.0f;
 double delta = 0;
 double current;
 double old=0;
+SoundEffect soundEffectTest;
 void render()
 {
 	
@@ -130,6 +133,11 @@ void kb(unsigned char kbq, int x, int y)
 		cam.velocity += vec3(2.5, 0, 0);	
 		
 		break;
+	case 'm':
+	case 'M':
+		soundEffectTest.play();
+
+		break;
 	case 27:
 		exit(0);
 		break;
@@ -140,6 +148,8 @@ void kb(unsigned char kbq, int x, int y)
 
 void  myinit(void)
 {
+	soundEffectTest.load("./audio/sample.wav");//load in a random sound effect for testing
+	
 	glClearColor(.75, .75, 1, 1);
 	glDisable(GL_TEXTURE_2D);								//disable two dimensional texture mapping
 	glDisable(GL_LIGHTING);								//disable lighting
@@ -157,7 +167,7 @@ void  myinit(void)
 	gameWorld.loadWorldTexture();
 }
 
-int main() {
+int main(int argc, char** argv) {
 	/* working example of lua to show its plugged in and working
 	//create lua state
 	lua_State* L = lua_open();
@@ -168,6 +178,9 @@ int main() {
 	cout << "Task 2" << endl;
 	luaL_dofile(L, "examplescript.lua");
 	*/
+	Music bgmTest;
+	bgmTest.load("./audio/supervanz__duskwalkin-loop.wav");
+	
 	char *myargv[1];
 	int myargc = 1;
 	myargv[0] = _strdup("lab 2");
@@ -181,6 +194,7 @@ int main() {
 
 	// Create the window 
 	glutCreateWindow(_strdup("Terrain lab, GL"));
+	bgmTest.play();//music will continually play in a loop for the duration of main(or engine once we get to that point) new tracks can be loaded into the bgm and just call play to chang to the new track
 	myinit();
 	
 	//gluLookAt(100, 300, 700, 0, 50, 0, 0, 1, 0); overall view of terrain
