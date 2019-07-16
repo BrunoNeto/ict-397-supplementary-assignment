@@ -52,7 +52,10 @@ void render()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	
-	cam.Animate(0.01666666666666666666666666666667f);//send in arbitrary value for delta time this value calc based on 60 refresh per second
+		
+	
+	cam.Animate(0.005f, gameWorld);//send in arbitrary value for delta time this value calc based on 60 refresh per second and the world so that camera can get the appropriate height
+	
 	gameWorld.Render();
 	
 	glFlush();
@@ -160,7 +163,7 @@ void  myinit(void)
 	glDepthFunc(GL_LEQUAL);								//set the type of depth test
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	//the nicest perspective look
 	
-	cam.MoveToNow(gameWorld.getWorldSize() / 2, gameWorld.getWorldXZHeight(gameWorld.getWorldSize() / 2, gameWorld.getWorldSize() - 20) + 1, gameWorld.getWorldSize() - 20);
+	cam.MoveToNow((gameWorld.getWorldSizeX() / 2), float((gameWorld.getHeight((gameWorld.getWorldSizeX() / 2), (gameWorld.getWorldSizeZ() - 20)))+60.0f), (gameWorld.getWorldSizeZ() - 20));
 	cam.yaw = 0;
 	cam.pitch = -75;
 	//glutSetCursor(GLUT_CURSOR_NONE);

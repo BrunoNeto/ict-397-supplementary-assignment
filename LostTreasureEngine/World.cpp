@@ -21,7 +21,7 @@ void World::unLoadWorld()
 }
 bool World::loadWorld()
 {
-	t.setScalingFactor(5.0, 0.25, 5.0);
+	t.setScalingFactor(5.0, 1.0, 5.0);
 	string filename = "height128.raw";
 	int filesize = 128;
 	
@@ -42,9 +42,9 @@ float World::inWorld(float& x, float& z)
 		x = 0;
 		return false;
 	}
-	else if (x > t.getSize())
+	else if (x > getWorldSizeX())
 	{
-		x = (float)t.getSize();
+		x = getWorldSizeX();
 		return false;
 	}
 	if (z < 0)
@@ -52,16 +52,16 @@ float World::inWorld(float& x, float& z)
 		z = 0;
 		return false;
 	}
-	else if (z > t.getSize())
+	else if (z > getWorldSizeZ())
 	{
-		z = (float)t.getSize();
+		z = getWorldSizeZ();
 		return false;
 	}
 	return true;
 }
-float World::getScaledHeight(float x, float z) 
+float World::getHeight(float x, float z) 
 {
-	float y = (float)t.getHeight(x, z);
+	float y = t.getHeight(x, z);
 	return y;
 }
 bool World::loadWorldTexture() 
@@ -70,6 +70,19 @@ bool World::loadWorldTexture()
 	return true;
 }
 
+float World::getScaleY() {
+	float scaleY =t.getScaleY();
+	return scaleY;
+}
+float World::getWorldSizeX()
+{
+	return float(t.getSize()*t.getScaleX());
+}
+
+float World::getWorldSizeZ()
+{
+	return float(t.getSize()*t.getScaleZ());
+}
 float World::getWorldXZHeight(float xpos, float zpos)
 {
 	float y = (float)t.getUnscaledHeight(xpos, zpos);

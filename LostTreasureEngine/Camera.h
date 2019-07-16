@@ -1,7 +1,7 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <glm/glm.hpp>
-
+#include "World.h"
 using namespace std;
 using namespace glm;
 //	@brief CCamera class for our camera
@@ -171,7 +171,7 @@ public:
 	*	@pre
 	*	@post
 	*/
-	void Animate(float deltaTime);
+	void Animate(float deltaTime,World& gameWorld);//should prob pass this in by reference or work directly with heightmap
 	
 	
 };

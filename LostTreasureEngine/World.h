@@ -1,3 +1,4 @@
+#pragma once
 #include "Terrain.h"
 //	@brief World class for our world object
 //	@todo once i have figured out everything world need it must be seperated int 2 classes one with data and the other as a controller
@@ -56,7 +57,15 @@ public:
 	*	@post
 	*/
 	float getWorldXZHeight(float x, float z);
-
+	/**
+		*	@brief method for getting the the world scale in y
+		*   @see
+		*	@param
+		*	@return returns a float value of the scale in y
+		*	@pre
+		*	@post
+		*/
+	float getScaleY();
 	/**
 	*	@brief method for checking if the x,z point is withing the terrain loaded in the world
 	*   @see
@@ -77,7 +86,7 @@ public:
 	*	@pre
 	*	@post
 	*/
-	float getScaledHeight(float x, float z);
+	float getHeight(float x, float z);
 
 	/**
 	*	@brief method for loading the objects and variables that make up a world
@@ -88,7 +97,25 @@ public:
 	*	@post
 	*/
 	bool loadWorld();
-
+	/**
+	*	@brief method for getting the size in x of the world is size*scalingfactory big
+	*   @see
+	*	@param
+	*	@return the size of the world in integer
+	*	@pre
+	*	@post
+	*/
+	float getWorldSizeX();
+	/**
+	*	@brief method for getting the size in Z of the world is size*scalingfactory big
+	*   @see
+	*	@param
+	*	@return the size of the world in float
+	*	@pre
+	*	@post
+	*/
+	float getWorldSizeZ();
+	
 	/**
 	*	@brief method for un loading the objects and variables that make up a world
 	*   @see
