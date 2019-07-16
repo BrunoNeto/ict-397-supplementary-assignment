@@ -148,7 +148,7 @@ void kb(unsigned char kbq, int x, int y)
 
 void  myinit(void)
 {
-	soundEffectTest.load("./audio/sample.wav");//load in a random sound effect for testing
+	soundEffectTest.load("sample.wav");//load in a random sound effect for testing
 	
 	glClearColor(.75, .75, 1, 1);
 	glDisable(GL_TEXTURE_2D);								//disable two dimensional texture mapping
@@ -179,7 +179,7 @@ int main(int argc, char** argv) {
 	luaL_dofile(L, "examplescript.lua");
 	*/
 	Music bgmTest;
-	bgmTest.load("./audio/supervanz__duskwalkin-loop.wav");
+	bgmTest.load("supervanz__duskwalkin-loop.wav");
 	
 	char *myargv[1];
 	int myargc = 1;
