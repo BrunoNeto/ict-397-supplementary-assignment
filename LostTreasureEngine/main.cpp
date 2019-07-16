@@ -8,6 +8,8 @@
 #include <iostream>
 #include<string>
 #include <lua.hpp>
+#include "music.h"
+#include "SoundEffect.h"
 using namespace std;
 
 
@@ -37,6 +39,10 @@ double delta = 0;
 double current;
 double old=0;
 
+SoundEffect soundEffectTest;
+
+
+
 void render()
 {
 	
@@ -50,7 +56,10 @@ void render()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	
-	cam.Animate(0.01666666666666666666666666666667f);//send in arbitrary value for delta time this value calc based on 60 refresh per second
+		
+	
+	cam.Animate(0.005f, gameWorld);//send in arbitrary value for delta time this value calc based on 60 refresh per second and the world so that camera can get the appropriate height
+	
 	gameWorld.Render();
 	
 	glFlush();
@@ -131,6 +140,11 @@ void kb(unsigned char kbq, int x, int y)
 		cam.velocity += vec3(2.5, 0, 0);	
 		
 		break;
+	case 'm':
+	case 'M':
+		soundEffectTest.play();
+
+		break;
 	case 27:
 		exit(0);
 		break;
@@ -140,6 +154,8 @@ void kb(unsigned char kbq, int x, int y)
 
 void  myinit(void)
 {
+	soundEffectTest.load("sample.wav");//load in a random sound effect for testing
+	
 	glClearColor(.75, .75, 1, 1);
 	glDisable(GL_TEXTURE_2D);								//disable two dimensional texture mapping
 	glDisable(GL_LIGHTING);								//disable lighting
@@ -150,14 +166,14 @@ void  myinit(void)
 	glDepthFunc(GL_LEQUAL);								//set the type of depth test
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	//the nicest perspective look
 	
-	cam.MoveToNow(gameWorld.getWorldSize() / 2, gameWorld.getWorldXZHeight(gameWorld.getWorldSize() / 2, gameWorld.getWorldSize() - 20) + 1, gameWorld.getWorldSize() - 20);
+	cam.MoveToNow((gameWorld.getWorldSizeX() / 2), float((gameWorld.getHeight((gameWorld.getWorldSizeX() / 2), (gameWorld.getWorldSizeZ() - 20)))+60.0f), (gameWorld.getWorldSizeZ() - 20));
 	cam.yaw = 0;
 	cam.pitch = -75;
 	//glutSetCursor(GLUT_CURSOR_NONE);
 	gameWorld.loadWorldTexture();
 }
 
-int main() {
+int main(int argc, char** argv) {
 	/* working example of lua to show its plugged in and working
 	//create lua state
 	lua_State* L = lua_open();
@@ -168,6 +184,9 @@ int main() {
 	cout << "Task 2" << endl;
 	luaL_dofile(L, "examplescript.lua");
 	*/
+	Music bgmTest;
+	bgmTest.load("supervanz__duskwalkin-loop.wav");
+	
 	char *myargv[1];
 	int myargc = 1;
 	myargv[0] = _strdup("lab 2");
@@ -181,6 +200,7 @@ int main() {
 
 	// Create the window 
 	glutCreateWindow(_strdup("Terrain lab, GL"));
+	bgmTest.play();//music will continually play in a loop for the duration of main(or engine once we get to that point) new tracks can be loaded into the bgm and just call play to chang to the new track
 	myinit();
 	
 	//gluLookAt(100, 300, 700, 0, 50, 0, 0, 1, 0); overall view of terrain

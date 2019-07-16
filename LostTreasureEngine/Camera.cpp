@@ -183,7 +183,7 @@ float degToRad(float value)
 	float rad = value * 0.0175;
 	return rad;
 }
-void CCamera::Animate(float deltaTime)
+void CCamera::Animate(float deltaTime,World& gameWorld)
 {
 	if ((yaw >= 360.0f) || (yaw <= -360.0f))
 		yaw = 0.0f;
@@ -224,7 +224,10 @@ void CCamera::Animate(float deltaTime)
 	position.z += float(sin(degToRad(yaw + 90.0)))*strafeSpeed;
 	position.x += float(cosYaw)*speed;
 	position.z += float(sinYaw)*speed;
-	//position.y = gameWorld.getWorldXZHeight(position.x, position.z) + 1.5;
+	gameWorld.inWorld(position.x, position.z);//keeps camera within the border of terrain
+	
+	position.y = float(gameWorld.getHeight(position.x, position.z)) +60.0f;//this part is supposed to set y relative to the scaled height of terrain have gotten partially working but buggy
+	
 	// calculate lookAt based on new position
 	lookAt.x = float(position.x + cosYaw);
 	lookAt.y = float(position.y + sinPitch);

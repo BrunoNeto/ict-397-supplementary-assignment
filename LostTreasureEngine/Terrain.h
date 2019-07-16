@@ -147,15 +147,16 @@ class Terrain
 		*	@post
 		*/
 		int getSize();
+
 		/**
-		*	@brief method for getting the color for terrain at particular x,z location
+		*	@brief method for getting the size in x of the world is size*scalingfactorx big
 		*   @see
-		*	@param x the x value we need get height color for
-		*	@param z the z value we need get height color for
-		*	@return returns the height colour as a unsigned char
+		*	@param
+		*	@return the size of the world in integer
 		*	@pre
 		*	@post
 		*/
+		
 		unsigned char getHeightColor(int xpos, int zpos);
 		/**
 		*	@brief method for setting the height of worlds terrain at particular x,z location
@@ -205,10 +206,37 @@ class Terrain
 		*	@post
 		*/
 		unsigned char getUnscaledHeight(int x, int z);
+		/**
+		*	@brief method for getting the the world scale in x 
+		*   @see
+		*	@param
+		*	@return returns a float value of the scale in x
+		*	@pre
+		*	@post
+		*/
+		float getScaleX();
+		/**
+		*	@brief method for getting the the world scale in z
+		*   @see
+		*	@param
+		*	@return returns a float value of the scale in z
+		*	@pre
+		*	@post
+		*/
+		float getScaleZ();
+		/**
+		*	@brief method for getting the the world scale in y
+		*   @see
+		*	@param
+		*	@return returns a float value of the scale in y
+		*	@pre
+		*	@post
+		*/
+		float getScaleY();
 	protected:
 		GLuint texId;
 		vec3 lightColor;
-		unsigned char *terrainData; //data of the heightfield
+		unsigned char* terrainData; //data of the heightfield
 		float scaleX; //how much we want to scale by
 		float scaleY;
 		float scaleZ;

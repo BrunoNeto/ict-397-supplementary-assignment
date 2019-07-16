@@ -190,6 +190,18 @@ void Terrain::setScalingFactor(float xScale, float yScale, float zScale) {
 	scaleZ = zScale;
 }
 
+float Terrain::getScaleX() {
+	return scaleX;
+}
+
+float Terrain::getScaleY() {
+	return scaleY;
+}
+
+float Terrain::getScaleZ() {
+	return scaleZ;
+}
+
 unsigned char Terrain::getHeightColor(int xpos, int zpos) {
 	if ((xpos >= 0) && (xpos <= size) && (zpos >= 0) && (zpos <= size))
 	{
@@ -200,11 +212,16 @@ unsigned char Terrain::getHeightColor(int xpos, int zpos) {
 
 float Terrain::getHeight(int xpos, int zpos)
 {
-	if ((xpos >= 0) && (xpos <= size) && (zpos >= 0) && (zpos <= size))
+	
+	if (xpos >= 0 && xpos <= size && zpos >= 0 && zpos <= size)
 	{
-		return ((float)(terrainData[(zpos*size) + xpos])*scaleY);
+		return ((float)(terrainData[zpos*size + xpos ])*scaleY);
 	}
-	else return 1;
+	else {
+		xpos = xpos / scaleX;
+		zpos = zpos / scaleZ;
+		return float(terrainData[zpos*size + xpos]*scaleY);
+	}
 }
 void Terrain::setLightColor(vec3 color) 
 {
@@ -226,6 +243,8 @@ int Terrain::getSize()
 {
 	return size;
 }
+
+
 
 void Terrain::bruteForceRender() {
 	vec3 temp;
