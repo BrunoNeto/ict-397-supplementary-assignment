@@ -38,7 +38,11 @@ GLfloat	z = 0.0f;
 double delta = 0;
 double current;
 double old=0;
+
 SoundEffect soundEffectTest;
+
+
+
 void render()
 {
 	
@@ -147,7 +151,6 @@ void kb(unsigned char kbq, int x, int y)
 	}
 	
 }
-
 
 void  myinit(void)
 {
