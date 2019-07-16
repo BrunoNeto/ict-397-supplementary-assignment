@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -132,15 +132,29 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="GameFont.cpp" />
+    <ClCompile Include="GameState.cpp" />
     <ClCompile Include="ImageLoader.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MenuState.cpp" />
+    <ClCompile Include="PlayState.cpp" />
+    <ClCompile Include="StateManager.cpp" />
     <ClCompile Include="Terrain.cpp" />
+    <ClCompile Include="TextControl.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Exception.h" />
+    <ClInclude Include="GameFont.h" />
+    <ClInclude Include="GameState.h" />
     <ClInclude Include="ImageLoader.h" />
+    <ClInclude Include="MenuState.h" />
+    <ClInclude Include="PlayState.h" />
+    <ClInclude Include="Rectangle.h" />
+    <ClInclude Include="StateManager.h" />
     <ClInclude Include="Terrain.h" />
+    <ClInclude Include="TextControl.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>
@@ -150,6 +164,7 @@
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\googletest.redist.1.8.3\build\native\googletest.redist.targets" Condition="Exists('..\packages\googletest.redist.1.8.3\build\native\googletest.redist.targets')" />
     <Import Project="..\packages\googletest.1.8.3\build\native\googletest.targets" Condition="Exists('..\packages\googletest.1.8.3\build\native\googletest.targets')" />
+    <Import Project="..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets" Condition="Exists('..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -157,5 +172,6 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\googletest.redist.1.8.3\build\native\googletest.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\googletest.redist.1.8.3\build\native\googletest.redist.targets'))" />
     <Error Condition="!Exists('..\packages\googletest.1.8.3\build\native\googletest.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\googletest.1.8.3\build\native\googletest.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets'))" />
   </Target>
 </Project>
