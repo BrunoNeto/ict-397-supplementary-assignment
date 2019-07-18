@@ -55,6 +55,12 @@ public:
 		*/
 	void Draw();
 
+	//void Render();
+	void MyInit(void);
+	//void Mouse(int x, int y);
+	//void MyReshape(GLsizei width, GLsizei  height);
+	//double GetTime(double startT);
+
 	void Reset();
 	bool IsGameOver() { return m_bGameOver; }
 
