@@ -51,6 +51,19 @@ float last;
 float elapsed;
 npc	mynpc;
 
+
+
+#define MAX_TEXTURES 100								// The maximum amount of textures to load
+// This holds the texture info by an ID
+UINT g_Texture[MAX_TEXTURES] = { 0 };
+#define DETAIL_ID		6
+#define BACK_ID		11		// The texture ID for the back side of the cube
+#define FRONT_ID	12		// The texture ID for the front side of the cube
+#define BOTTOM_ID	13		// The texture ID for the bottom side of the cube
+#define TOP_ID		14		// The texture ID for the top side of the cube
+#define LEFT_ID		15		// The texture ID for the left side of the cube
+#define RIGHT_ID	16		// The texture ID for the right side of the cube
+
 void Idle() 
 {
 	CTimer::GetInstance()->Update();
@@ -66,6 +79,154 @@ void Idle()
 	glutPostRedisplay();
 	mynpc.Update(gameWorld.getHeight(mynpc.GetPosition().x, mynpc.GetPosition().z));
 }
+
+///////////////////////////////// CREATE SKY BOX \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
+/////
+/////	This creates a sky box centered around X Y Z with a width, height and length
+/////
+///////////////////////////////// CREATE SKY BOX \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
+
+void CreateSkyBox(float x, float y, float z, float width, float height, float length)
+{
+	// Turn on texture mapping if it's not already
+	glEnable(GL_TEXTURE_2D);
+
+	// Bind the BACK texture of the sky map to the BACK side of the cube
+	glBindTexture(GL_TEXTURE_2D, g_Texture[BACK_ID]);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	// This centers the sky box around (x, y, z)
+	x = x - width / 2;
+	y = y - height / 2;
+	z = z - length / 2;
+
+	// Start drawing the side as a QUAD
+	glBegin(GL_QUADS);
+
+	// Assign the texture coordinates and vertices for the BACK Side
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x + width, y, z);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(x + width, y + height, z);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(x, y + height, z);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x, y, z);
+
+	glEnd();
+
+	// Bind the FRONT texture of the sky map to the FRONT side of the box
+	glBindTexture(GL_TEXTURE_2D, g_Texture[FRONT_ID]);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+
+	// Start drawing the side as a QUAD
+	glBegin(GL_QUADS);
+
+	// Assign the texture coordinates and vertices for the FRONT Side
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x, y, z + length);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(x, y + height, z + length);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y + height, z + length);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x + width, y, z + length);
+	glEnd();
+
+	// Bind the BOTTOM texture of the sky map to the BOTTOM side of the box
+	glBindTexture(GL_TEXTURE_2D, g_Texture[BOTTOM_ID]);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	// Start drawing the side as a QUAD
+	glBegin(GL_QUADS);
+
+	// Assign the texture coordinates and vertices for the BOTTOM Side
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x, y, z);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(x, y, z + length);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y, z + length);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x + width, y, z);
+	glEnd();
+
+	// Bind the TOP texture of the sky map to the TOP side of the box
+	glBindTexture(GL_TEXTURE_2D, g_Texture[TOP_ID]);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	// Start drawing the side as a QUAD
+	glBegin(GL_QUADS);
+
+	// Assign the texture coordinates and vertices for the TOP Side
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y + height, z);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x + width, y + height, z + length);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x, y + height, z + length);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(x, y + height, z);
+
+	glEnd();
+
+	// Bind the LEFT texture of the sky map to the LEFT side of the box
+	glBindTexture(GL_TEXTURE_2D, g_Texture[LEFT_ID]);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	// Start drawing the side as a QUAD
+	glBegin(GL_QUADS);
+
+	// Assign the texture coordinates and vertices for the LEFT Side
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(x, y + height, z);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(x, y + height, z + length);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x, y, z + length);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x, y, z);
+
+	glEnd();
+
+	// Bind the RIGHT texture of the sky map to the RIGHT side of the box
+	glBindTexture(GL_TEXTURE_2D, g_Texture[RIGHT_ID]);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	// Start drawing the side as a QUAD
+	glBegin(GL_QUADS);
+
+	// Assign the texture coordinates and vertices for the RIGHT Side
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(x + width, y, z);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(x + width, y, z + length);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(x + width, y + height, z + length);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y + height, z);
+	glEnd();
+}
+
+///////////////////////////////// CREATE TEXTURE \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
+/////
+/////	This creates a texture in OpenGL that we can texture map
+/////
+///////////////////////////////// CREATE TEXTURE \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
+
+bool CreateTexture(GLuint &textureID, const char * szFileName)                          // Creates Texture From A Bitmap File
+{
+	HBITMAP hBMP;                                                                 // Handle Of The Bitmap
+	BITMAP  bitmap;																  // Bitmap Structure
+
+	glGenTextures(1, &textureID);                                                 // Create The Texture
+	hBMP = (HBITMAP)LoadImage(GetModuleHandle(NULL), szFileName, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION | LR_LOADFROMFILE);
+
+	if (!hBMP)                                                                    // Does The Bitmap Exist?
+		return FALSE;                                                           // If Not Return False
+
+	GetObject(hBMP, sizeof(bitmap), &bitmap);                                     // Get The Object
+																				  // hBMP:        Handle To Graphics Object
+																				  // sizeof(bitmap): Size Of Buffer For Object Information
+																				  // &bitmap:        Buffer For Object Information
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 4);                                        // Pixel Storage Mode (Word Alignment / 4 Bytes)
+
+	// Typical Texture Generation Using Data From The Bitmap
+	glBindTexture(GL_TEXTURE_2D, textureID);                                      // Bind To The Texture ID
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);			  // Linear Min Filter
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);			  // Linear Mag Filter
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, bitmap.bmWidth, bitmap.bmHeight, 0, GL_BGR_EXT, GL_UNSIGNED_BYTE, bitmap.bmBits);
+	// MUST NOT BE INDEX BMP, BUT RGB
+	DeleteObject(hBMP);                                                           // Delete The Object
+
+	return TRUE;                                                                  // Loading Was Successful
+}
+
+
 void render()
 {
 	
@@ -86,8 +247,8 @@ void render()
 	
 	cam.Animate(bAnimated ? elapsed : 0.0, gameWorld);//send in arbitrary value for delta time this value calc based on 60 refresh per second and the world so that camera can get the appropriate height
 	
-	
 	mynpc.Draw(bAnimated ? timesec : 0.0);
+	CreateSkyBox(500, 500, 250, 1200, 1000, 1200);
 	gameWorld.Render();
 	
 	glFlush();
@@ -182,6 +343,17 @@ void  myinit(void)
 	glClearDepth(1.0);									//depth buffer setup
 	glDepthFunc(GL_LEQUAL);								//set the type of depth test
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	//the nicest perspective look
+
+
+	//	Skybox
+	CreateTexture(g_Texture[BACK_ID], "Textures\\Back.bmp");		// Load the Sky box Back texture
+	CreateTexture(g_Texture[FRONT_ID], "Textures\\Front.bmp");	// Load the Sky box Front texture
+	CreateTexture(g_Texture[BOTTOM_ID], "Textures\\Bottom.bmp");	// Load the Sky box Bottom texture
+	CreateTexture(g_Texture[TOP_ID], "Textures\\Top.bmp");		// Load the Sky box Top texture
+	CreateTexture(g_Texture[LEFT_ID], "Textures\\Left.bmp");		// Load the Sky box Left texture
+	CreateTexture(g_Texture[RIGHT_ID], "Textures\\Right.bmp");	// Load the Sky box Right texture
+
+
 	
 	cam.MoveToNow((gameWorld.getWorldSizeX() / 2), float((gameWorld.getHeight((gameWorld.getWorldSizeX() / 2), (gameWorld.getWorldSizeZ() - 20)))+60.0f), (gameWorld.getWorldSizeZ() - 20));
 	cam.yaw = 0;
