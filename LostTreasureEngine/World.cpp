@@ -88,7 +88,7 @@ float World::getWorldXZHeight(float xpos, float zpos)
 	float y = (float)t.getUnscaledHeight(xpos, zpos);
 	return y;
 }
-void World::Render() 
+void World::Draw() 
 {
 	
 	t.bruteForceRender();

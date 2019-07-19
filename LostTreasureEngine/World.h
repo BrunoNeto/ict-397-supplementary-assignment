@@ -35,7 +35,7 @@ public:
 	*	@pre
 	*	@post
 	*/
-	void Render();
+	void Draw();
 
 	/**
 	*	@brief method for getting the size of the heightmap for ref terrain is [size*size] big

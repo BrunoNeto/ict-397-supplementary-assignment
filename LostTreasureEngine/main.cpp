@@ -73,20 +73,18 @@ void Idle()
 	elapsed = curt - last;
 
 	last = curt;
-	current = glutGet(GLUT_ELAPSED_TIME);
-	delta = current - old;
-	old = current;
+	
 	glutPostRedisplay();
 	mynpc.Update(gameWorld.getHeight(mynpc.GetPosition().x, mynpc.GetPosition().z));
 }
 
-///////////////////////////////// CREATE SKY BOX \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
+///////////////////////////////// DRAW SKY BOX \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 /////
-/////	This creates a sky box centered around X Y Z with a width, height and length
+/////	This draws a sky box centered around X Y Z with a width, height and length
 /////
-///////////////////////////////// CREATE SKY BOX \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
+///////////////////////////////// DRAW SKY BOX \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 
-void CreateSkyBox(float x, float y, float z, float width, float height, float length)
+void DrawSkyBox(float x, float y, float z, float width, float height, float length)
 {
 	// Turn on texture mapping if it's not already
 	glEnable(GL_TEXTURE_2D);
@@ -248,8 +246,8 @@ void render()
 	cam.Animate(bAnimated ? elapsed : 0.0, gameWorld);//send in arbitrary value for delta time this value calc based on 60 refresh per second and the world so that camera can get the appropriate height
 	
 	mynpc.Draw(bAnimated ? timesec : 0.0);
-	CreateSkyBox(500, 500, 250, 1200, 1000, 1200);
-	gameWorld.Render();
+	DrawSkyBox(500, 500, 250, 1200, 1000, 1200);
+	gameWorld.Draw();
 	
 	glFlush();
 	
