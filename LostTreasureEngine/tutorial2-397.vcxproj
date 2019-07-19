@@ -82,12 +82,12 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)LostTreasureEngine\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>SDL2_mixer.lib;SDL2.lib;SDL2main.lib;luabindd_Debug.lib;lua5.1.lib;glew32.lib;freeglut.lib;glaux.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>.\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <SubSystem>Console</SubSystem>
+      <AdditionalLibraryDirectories>$(SolutionDir)LostTreasureEngine\lib</AdditionalLibraryDirectories>
+      <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -131,40 +131,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BMPLoader.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="GameFont.cpp" />
-    <ClCompile Include="GameState.cpp" />
     <ClCompile Include="ImageLoader.cpp" />
     <ClCompile Include="main.cpp" />
-
+    <ClCompile Include="md2.cpp" />
     <ClCompile Include="music.cpp" />
+    <ClCompile Include="npc.cpp" />
     <ClCompile Include="SoundEffect.cpp" />
-
-    <ClCompile Include="MenuState.cpp" />
-    <ClCompile Include="PlayState.cpp" />
-    <ClCompile Include="StateManager.cpp" />
-
     <ClCompile Include="Terrain.cpp" />
-    <ClCompile Include="TextControl.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BMPLoader.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="Exception.h" />
-    <ClInclude Include="GameFont.h" />
-    <ClInclude Include="GameState.h" />
+    <ClInclude Include="Ctime.h" />
     <ClInclude Include="ImageLoader.h" />
-
+    <ClInclude Include="md2.h" />
     <ClInclude Include="music.h" />
+    <ClInclude Include="npc.h" />
     <ClInclude Include="SoundEffect.h" />
-
-    <ClInclude Include="MenuState.h" />
-    <ClInclude Include="PlayState.h" />
-    <ClInclude Include="Rectangle.h" />
-    <ClInclude Include="StateManager.h" />
-
     <ClInclude Include="Terrain.h" />
-    <ClInclude Include="TextControl.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>
