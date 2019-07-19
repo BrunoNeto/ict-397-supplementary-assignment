@@ -10,6 +10,9 @@
 #include <lua.hpp>
 #include "music.h"
 #include "SoundEffect.h"
+#include "Ctime.h"
+#include "npc.h"
+#include "md2.h"
 using namespace std;
 
 
@@ -36,20 +39,43 @@ GLfloat walkbiasangle = 0;
 GLfloat lookupdown = 0.0f;
 GLfloat	z = 0.0f;
 double delta = 0;
-double current;
+float current;
 double old=0;
-
+// initialize timer singleton
+CTimer *CTimer::m_singleton = 0;
 SoundEffect soundEffectTest;
+bool bAnimated = true;
+float start = 0.0;
+float curt;
+float last;
+float elapsed;
+npc	mynpc;
 
+void Idle() 
+{
+	CTimer::GetInstance()->Update();
+	float timesec = CTimer::GetInstance()->GetTimeMSec() / 1000.0;
 
+	curt = timesec;
+	elapsed = curt - last;
 
+	last = curt;
+	current = glutGet(GLUT_ELAPSED_TIME);
+	delta = current - old;
+	old = current;
+	glutPostRedisplay();
+	mynpc.Update(gameWorld.getHeight(mynpc.GetPosition().x, mynpc.GetPosition().z));
+}
 void render()
 {
 	
-	
-	current = glutGet(GLUT_ELAPSED_TIME);
-	delta = current-old;
-	old = current;
+	//CTimer::GetInstance()->Update();
+	//float timesec = CTimer::GetInstance()->GetTimeMSec() / 1000.0;
+
+	//curt = timesec;
+	//elapsed = curt - last;
+	float timesec = CTimer::GetInstance()->GetTimeMSec() / 1000.0;
+	//last = curt;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();									// Reset The View
 	glMatrixMode(GL_PROJECTION);		//select the projection matrix
@@ -58,20 +84,18 @@ void render()
 	
 		
 	
-	cam.Animate(0.005f, gameWorld);//send in arbitrary value for delta time this value calc based on 60 refresh per second and the world so that camera can get the appropriate height
+	cam.Animate(bAnimated ? elapsed : 0.0, gameWorld);//send in arbitrary value for delta time this value calc based on 60 refresh per second and the world so that camera can get the appropriate height
 	
+	
+	mynpc.Draw(bAnimated ? timesec : 0.0);
 	gameWorld.Render();
 	
 	glFlush();
 	
+	
+	
 }
-double getTime(double startT)
-{
-	double time1, delta;
-	time1 = glutGet(GLUT_ELAPSED_TIME);
-	delta = time1 - startT;
-	return delta;
-}
+
 void  myReshape(GLsizei width, GLsizei  height)
 {
 	if (height == 0)										// Prevent A Divide By Zero By
@@ -120,30 +144,19 @@ void kb(unsigned char kbq, int x, int y)
 		cam.velocity = vec3(0, 0, 15);
 	case 'w':
 		cam.velocity += vec3(0, 0, 2.5);
-		
-		
 		 break;
 	case 's':
 		cam.velocity += vec3(0, 0, -2.5);
-
-		
-		
 		break;
-	
 	case 'a':
 		cam.velocity += vec3(-2.5, 0, 0);
-		
-		
 		break;
-		
 	case 'd':
 		cam.velocity += vec3(2.5, 0, 0);	
-		
 		break;
 	case 'm':
 	case 'M':
 		soundEffectTest.play();
-
 		break;
 	case 27:
 		exit(0);
@@ -154,8 +167,12 @@ void kb(unsigned char kbq, int x, int y)
 
 void  myinit(void)
 {
+	mynpc.SetModel("models/hueteotl/tris.md2", "models/hueteotl/hueteotl.bmp");
+	mynpc.SetAnimation(STAND);
+	//mynpc.ScaleNPC(0.25);
+	mynpc.SetPosition({ (gameWorld.getWorldSizeX() / 2),300,(gameWorld.getWorldSizeZ() -100) });
 	soundEffectTest.load("sample.wav");//load in a random sound effect for testing
-	
+	CTimer::GetInstance()->Initialize();
 	glClearColor(.75, .75, 1, 1);
 	glDisable(GL_TEXTURE_2D);								//disable two dimensional texture mapping
 	glDisable(GL_LIGHTING);								//disable lighting
@@ -211,7 +228,7 @@ int main(int argc, char** argv) {
 	glutPassiveMotionFunc(Mouse);
 	
 	glutDisplayFunc(render);
-	glutIdleFunc(render);
+	glutIdleFunc(Idle);
 	glutMainLoop();
 
 
