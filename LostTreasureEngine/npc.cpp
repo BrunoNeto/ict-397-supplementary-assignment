@@ -4,9 +4,10 @@
 
 npc::npc()
 {
-	position = {0,0,0};
-	facing = {0,0,0};
-	speed = 5;
+	lookAt = vec3(0.0, 0.0, -1.0);
+	position = vec3(0,0,0);
+	velocity = vec3(0.0, 0.0, 0.0);
+	acceleration = vec3(0.0, 0.0, 0.0);
 	currentAnimation = 0;
 	interactionMsg = "Hey there stranger";
 }
@@ -28,11 +29,15 @@ vec3 npc::GetPosition()
 }
 vec3 npc::GetFacing() 
 {
-	return facing;
+	return lookAt;
 }
-int npc::GetSpeed() 
+vec3 npc::GetVelocity()
 {
-	return speed;
+	return velocity;
+}
+vec3 npc::GetAcceleration()
+{
+	return acceleration;
 }
 int npc::GetCurrentAnimation() 
 {
@@ -73,11 +78,15 @@ void npc::SetPosition(vec3 pos)
 }
 void npc::SetFacing(vec3 faci) 
 {
-	facing = faci;
+	lookAt = faci;
 }
-void npc::SetSpeed(int s) 
+void npc::SetVelocity(vec3 v) 
 {
-	speed = s;
+	velocity = v;
+}
+void npc::SetAcceleration(vec3 a)
+{
+	acceleration = a;
 }
 void npc::SetAnimation(int animation)
 {
@@ -92,15 +101,93 @@ void npc::ScaleNPC(float scale)
 	npcmodel.ScaleModel(scale);
 }
 //void SetState(){}
-void npc::Update(float y) 
+void npc::SetAnimIdle() 
 {
-	SetHeight(y+25);
-	// this function will be used to update world positions and do state stuuf
+	npcmodel.SetAnim(STAND);
 }
-void npc::Draw(float time) 
+void npc::SetAnimWalk() 
 {
-	//glMatrixMode(GL_MODELVIEW);
-	//glLoadIdentity();
+	npcmodel.SetAnim(RUN);
+}
+
+void npc::SetAnimWave()
+{
+	npcmodel.SetAnim(WAVE);
+}
+void npc::Interact() 
+{
+	cout << interactionMsg << endl;
+}
+void npc::LookAtPlayer(vec3 camPos) //use vector math to determine the new player facing
+{
+	vec3 newLookVec = camPos - position;
+	rotationAngle = acos(dot(normalize(lookAt), normalize(newLookVec)));//theta=acos((v1 DOT v2)/(|v1|*|v2|))
+
+}
+float degToRad2(float value)
+{
+	float rad = value * 0.0175;
+	return rad;
+}
+void npc::Move(float deltaTime, World& gameWorld)
+{
+	velocity.z = -0.01;
+	//velocity z-component
+	float speed = velocity.z * deltaTime;
+
+	// strafe speed is velocity x-component
+	float strafeSpeed = velocity.x * deltaTime;
+
+	// speed limit
+	if (speed > 15.0)
+		speed = 15.0;
+	if (strafeSpeed > 15.0)
+		strafeSpeed = 15.0;
+	if (speed < -15.0)
+		speed = -15.0;
+	if (strafeSpeed < -15.0)
+		strafeSpeed = -15.0;
+	//if (speed > 0 || strafeSpeed > 0)
+	//{
+		//if (this->GetCurrentAnimation() != RUN)
+		//{
+		//	this->SetAnimWalk();
+		//}
+	//}
+	//else
+	//if (this->GetCurrentAnimation() != STAND)
+		//{
+		//	this->SetAnimIdle();
+		//}
+	// friction
+	if (velocity.length() > 0.0)
+		acceleration = -velocity * 1.0f;
+
+	velocity += acceleration * deltaTime;
+	// calculate new position of npc
+	position.x += strafeSpeed;
+	position.z += speed;
+	gameWorld.inWorld(position.x, position.z);//keeps npc within the border of terrain
+
+	position.y = float(gameWorld.getHeight(position.x, position.z)) + 25;//to set y relative to the scaled height of terrain 
+
+	// calculate lookAt based on new position
+	lookAt.x = float(position.x);
+	lookAt.y = float(position.y);
+	lookAt.z = float(position.z);
+
+	
+}
+void npc::Update(float deltaTime, World& gameWorld)
+{
+	// this function will be used to update world positions and do state stuuf
+		//SetHeight(y+25);
+	Move(deltaTime, gameWorld);
+	
+}
+void npc::Draw(float time)
+{
+	
 	glPushMatrix();
 	glTranslatef(position.x, position.y, position.z);
 	glRotatef(rotationAngle, rotation.x, rotation.y, rotation.z);

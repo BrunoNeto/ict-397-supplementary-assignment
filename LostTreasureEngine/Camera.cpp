@@ -216,7 +216,7 @@ void CCamera::Animate(float deltaTime,World& gameWorld)
 
 	// friction
 	if (velocity.length() > 0.0)
-		acceleration = -velocity * 1.5f;
+		acceleration = -velocity * 1.0f;
 
 	velocity += acceleration * deltaTime;
 	// calculate new position of camera
@@ -226,7 +226,7 @@ void CCamera::Animate(float deltaTime,World& gameWorld)
 	position.z += float(sinYaw)*speed;
 	gameWorld.inWorld(position.x, position.z);//keeps camera within the border of terrain
 	
-	position.y = float(gameWorld.getHeight(position.x, position.z)) +60.0f;//this part is supposed to set y relative to the scaled height of terrain have gotten partially working but buggy
+	position.y = float(gameWorld.getHeight(position.x, position.z)) +60.0f;//this set y relative to the scaled height of terrain 
 	
 	// calculate lookAt based on new position
 	lookAt.x = float(position.x + cosYaw);

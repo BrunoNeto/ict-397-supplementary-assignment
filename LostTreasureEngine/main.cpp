@@ -73,9 +73,9 @@ void Idle()
 	elapsed = curt - last;
 
 	last = curt;
-	
+	mynpc.Update( bAnimated ? timesec : 0.0, gameWorld);
 	glutPostRedisplay();
-	mynpc.Update(gameWorld.getHeight(mynpc.GetPosition().x, mynpc.GetPosition().z));
+	
 }
 
 ///////////////////////////////// DRAW SKY BOX \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
@@ -290,7 +290,7 @@ void Mouse( int x, int y)
 	
 	
 }
-
+vec3 newNpcVel;
 void kb(unsigned char kbq, int x, int y)
 {
 	switch (kbq)
@@ -303,15 +303,19 @@ void kb(unsigned char kbq, int x, int y)
 		cam.velocity = vec3(0, 0, 15);
 	case 'w':
 		cam.velocity += vec3(0, 0, 2.5);
+		
 		 break;
 	case 's':
-		cam.velocity += vec3(0, 0, -2.5);
+		cam.velocity += vec3(0, 0, -2.5);	
+
 		break;
 	case 'a':
 		cam.velocity += vec3(-2.5, 0, 0);
+		
 		break;
 	case 'd':
-		cam.velocity += vec3(2.5, 0, 0);	
+		cam.velocity += vec3(2.5, 0, 0);
+		
 		break;
 	case 'm':
 	case 'M':
@@ -327,7 +331,7 @@ void kb(unsigned char kbq, int x, int y)
 void  myinit(void)
 {
 	mynpc.SetModel("models/hueteotl/tris.md2", "models/hueteotl/hueteotl.bmp");
-	mynpc.SetAnimation(STAND);
+	mynpc.SetAnimation(RUN);
 	//mynpc.ScaleNPC(0.25);
 	mynpc.SetPosition({ (gameWorld.getWorldSizeX() / 2),300,(gameWorld.getWorldSizeZ() -100) });
 	soundEffectTest.load("sample.wav");//load in a random sound effect for testing

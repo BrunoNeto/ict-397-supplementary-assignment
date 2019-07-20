@@ -3,6 +3,7 @@
 #include "md2.h"
 #include <glm/glm.hpp>
 #include <string>
+#include "World.h"
 using namespace std;
 using namespace glm;
 //
@@ -17,18 +18,28 @@ private:
 	vec3 position;//position of the npc in the world
 	vec3 rotation;//vector for storing which axis to rotate in
 	float rotationAngle;// the angle to rotate by
-	vec3 facing;//the vecor for direction the npc is facing
-	int speed;//the speed of the npc character for moving around the world
+	vec3 lookAt;//the vecor for direction the npc is facing
+	
+	vec3 acceleration;		// acceleration of npc
 	int currentAnimation;//the animation currently set on the md2 model
 	string interactionMsg;//the current set interaction message of the npc
 	//state will be a variable
 public:
 	npc();//takes a filename for a model and a skin and loads the model and sets other varables to defaults
 	~npc();
+	void SetAnimIdle();
+	void SetAnimWalk();
+	void SetAnimWave();
+	void Interact();
+	void LookAtPlayer(vec3 campos);
+	void Move(float deltaTime, World& gameworld);
+	vec3 velocity;
+
 	MD2Model GetModel();
 	vec3 GetPosition();
 	vec3 GetFacing();
-	int GetSpeed();
+	vec3 GetAcceleration();
+	vec3 GetVelocity();
 	int GetCurrentAnimation();
 	string GetInteractionMsg();
 	vec3 GetRotation();
@@ -40,11 +51,12 @@ public:
 	void SetModel(const char* modelFileName, const char* modelSkinFilename);
 	void SetPosition(vec3 position);
 	void SetFacing(vec3 facing);
-	void SetSpeed(int speed);
+	void SetAcceleration(vec3 a);
+	void SetVelocity(vec3 v);
 	void SetAnimation(int);
 	void ScaleNPC(float scale);
 	//void SetState();
-	void Update(float y);
+	void Update(float deltaTime, World& gameWorld);
 	void Draw(float time);
 };
 
