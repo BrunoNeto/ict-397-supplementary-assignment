@@ -2,19 +2,19 @@
 //then key press of r will make the terrain switch to data loaded from raw file and apply texture 
 //or t will switch to a newly generated terrain that is textured
 //w will activate wireframe mode and s will activate standard view
-#include "Terrain.h"
-#include "camera.h"
+//#include "Terrain.h"
+//#include "camera.h"
 #include "World.h"
 #include <iostream>
 #include<string>
-#include <lua.hpp>
+//#include <lua.hpp>
 #include "music.h"
 #include "SoundEffect.h"
-#include "Ctime.h"
-#include "npc.h"
-#include "md2.h"
-#include "Item.h"
-#include "Structure.h"
+//#include "Ctime.h"
+//#include "npc.h"
+//#include "md2.h"
+//#include "Item.h"
+//#include "Structure.h"
 using namespace std;
 
 
@@ -22,35 +22,32 @@ int w = 800;
 int h = 600;
 int oldx = w / 2;
 int oldy = h / 2;
-CCamera cam;
+//CCamera cam;
 World gameWorld;
-float MovementSpeed = 2.0f;
+//float MovementSpeed = 2.0f;
 float playerHeight = 5;
 const float piover180 = 0.0174532925f;
-float heading;
+//float heading;
 int xpos = gameWorld.getWorldSize() / 2;
 int zpos = gameWorld.getWorldSize();
 float ypos = (float)gameWorld.getWorldXZHeight(xpos, zpos) + playerHeight;
-float globalx = 0.0;
-float globaly = 0.0;
-float globalz = 0.0;
+//float globalx = 0.0;
+//float globaly = 0.0;
+//float globalz = 0.0;
 float mouseSensitivity = 1.0f;
 GLfloat	yrot;				// Y Rotation
 GLfloat walkbias = 0;
-GLfloat walkbiasangle = 0;
-GLfloat lookupdown = 0.0f;
-GLfloat	z = 0.0f;
-double delta = 0;
-float current;
-double old=0;
+//GLfloat walkbiasangle = 0;
+//GLfloat lookupdown = 0.0f;
+//GLfloat	z = 0.0f;
+//double delta = 0;
+//float current;
+//double old=0;
+
+SoundEffect soundEffectTest;
 // initialize timer singleton
 CTimer *CTimer::m_singleton = 0;
-SoundEffect soundEffectTest;
-bool bAnimated = true;
-float start = 0.0;
-float curt;
-float last;
-float elapsed;
+
 //npc	mynpc;
 //Item treasure;
 //Structure building;
@@ -68,15 +65,9 @@ UINT g_Texture[MAX_TEXTURES] = { 0 };
 
 void Idle() 
 {
-	CTimer::GetInstance()->Update();
-	float timesec = CTimer::GetInstance()->GetTimeMSec() / 1000.0;
-
-	curt = timesec;
-	elapsed = curt - last;
-
-	last = curt;
-	//mynpc.Update( bAnimated ? timesec : 0.0, gameWorld);
-	gameWorld.Update(bAnimated ? timesec : 0.0);
+	//CTimer::GetInstance()->Update();
+	//float timesec = CTimer::GetInstance()->GetTimeMSec() / 1000.0;	
+	gameWorld.Update();
 	glutPostRedisplay();
 	
 }
@@ -89,6 +80,7 @@ void Idle()
 
 void DrawSkyBox(float x, float y, float z, float width, float height, float length)
 {
+	
 	// Turn on texture mapping if it's not already
 	glEnable(GL_TEXTURE_2D);
 
@@ -101,7 +93,7 @@ void DrawSkyBox(float x, float y, float z, float width, float height, float leng
 	x = x - width / 2;
 	y = y - height / 2;
 	z = z - length / 2;
-
+	
 	// Start drawing the side as a QUAD
 	glBegin(GL_QUADS);
 
@@ -190,6 +182,7 @@ void DrawSkyBox(float x, float y, float z, float width, float height, float leng
 	glTexCoord2f(1.0f, 1.0f); glVertex3f(x + width, y + height, z + length);
 	glTexCoord2f(0.0f, 1.0f); glVertex3f(x + width, y + height, z);
 	glEnd();
+	
 }
 
 ///////////////////////////////// CREATE TEXTURE \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
@@ -232,7 +225,7 @@ void render()
 {
 	
 	
-	float timesec = CTimer::GetInstance()->GetTimeMSec() / 1000.0;
+	//float timesec = CTimer::GetInstance()->GetTimeMSec() / 1000.0;
 	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();									// Reset The View
@@ -240,12 +233,10 @@ void render()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	
-		
 	
-	cam.Animate(bAnimated ? elapsed : 0.0, gameWorld);//send in arbitrary value for delta time this value calc based on 60 refresh per second and the world so that camera can get the appropriate height
+	DrawSkyBox(gameWorld.getWorldSize()/2, gameWorld.getWorldSize()/2, gameWorld.getWorldSize()/2, 3000, 3000, 3000);
 	
-	DrawSkyBox(500, 500, 250, 1200, 1000, 1200);
-	gameWorld.Draw(bAnimated ? timesec : 0.0);
+	gameWorld.Draw();
 	
 	glFlush();
 	
@@ -280,8 +271,9 @@ void Mouse( int x, int y)
 	int deltaY;
 	deltaY = oldy - y;
 	deltaX = oldx - x;
-	cam.yaw -= deltaX * mouseSensitivity;
-	cam.pitch += deltaY * mouseSensitivity;
+	gameWorld.GetCam()->yaw -= deltaX * mouseSensitivity;
+	gameWorld.GetCam()->pitch += deltaY * mouseSensitivity;
+	
 	oldx = x;
 	oldy = y;
 	glutPostRedisplay();
@@ -298,26 +290,30 @@ void kb(unsigned char kbq, int x, int y)
 	case 'k':
 	case 'K': glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); break;
 	case GLUT_ACTIVE_SHIFT:
-		cam.velocity = vec3(0, 0, 15);
+		gameWorld.GetCam()->velocity = vec3(0, 0, 15);
 	case 'w':
-		cam.velocity += vec3(0, 0, 2.5);
+		gameWorld.GetCam()->velocity += vec3(0, 0, 2.5);
 		
 		 break;
 	case 's':
-		cam.velocity += vec3(0, 0, -2.5);	
+		gameWorld.GetCam()->velocity += vec3(0, 0, -2.5);
 
 		break;
 	case 'a':
-		cam.velocity += vec3(-2.5, 0, 0);
+		gameWorld.GetCam()->velocity += vec3(-2.5, 0, 0);
 		
 		break;
 	case 'd':
-		cam.velocity += vec3(2.5, 0, 0);
+		gameWorld.GetCam()->velocity += vec3(2.5, 0, 0);
 		
 		break;
 	case 'm':
 	case 'M':
 		soundEffectTest.play();
+		break;
+	case'p':
+	case'P':
+		gameWorld.PauseWorld();
 		break;
 	case 27:
 		exit(0);
@@ -331,7 +327,7 @@ void  myinit(void)
 	gameWorld.loadWorldTexture();
 	gameWorld.Init();
 	soundEffectTest.load("sample.wav");//load in a random sound effect for testing
-	CTimer::GetInstance()->Initialize();
+	
 	glClearColor(.75, .75, 1, 1);
 	glDisable(GL_TEXTURE_2D);								//disable two dimensional texture mapping
 	glDisable(GL_LIGHTING);								//disable lighting
@@ -353,9 +349,9 @@ void  myinit(void)
 
 
 	
-	cam.MoveToNow((gameWorld.getWorldSizeX() / 2), float((gameWorld.getHeight((gameWorld.getWorldSizeX() / 2), (gameWorld.getWorldSizeZ() - 20)))+60.0f), (gameWorld.getWorldSizeZ() - 20));
-	cam.yaw = 0;
-	cam.pitch = -75;
+	gameWorld.GetCam()->MoveToNow((gameWorld.getWorldSizeX() / 2), float((gameWorld.getHeight((gameWorld.getWorldSizeX() / 2), (gameWorld.getWorldSizeZ() - 20)))+60.0f), (gameWorld.getWorldSizeZ() - 20));
+	gameWorld.GetCam()->yaw = 0;
+	gameWorld.GetCam()->pitch = -75;
 	//glutSetCursor(GLUT_CURSOR_NONE);
 	
 }
@@ -376,7 +372,7 @@ int main(int argc, char** argv) {
 	
 	char *myargv[1];
 	int myargc = 1;
-	myargv[0] = _strdup("lab 2");
+	myargv[0] = _strdup("The Lost Treasure Engine");
 	// Initialize GLUT
 	glutInit(&myargc, myargv);
 	glutInitWindowPosition(0, 0);
@@ -390,7 +386,7 @@ int main(int argc, char** argv) {
 	bgmTest.play();//music will continually play in a loop for the duration of main(or engine once we get to that point) new tracks can be loaded into the bgm and just call play to chang to the new track
 	myinit();
 	
-	//gluLookAt(100, 300, 700, 0, 50, 0, 0, 1, 0); overall view of terrain
+	
 	// Bind the  functions (above) to respond when necessary
 	glutReshapeFunc(myReshape);
 	glutKeyboardFunc(kb);

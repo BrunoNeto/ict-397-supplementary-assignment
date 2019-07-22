@@ -6,9 +6,11 @@ World::World()
 {
 	loadWorld();
 	
+	
 }
 void World::Init() 
 {
+	CTimer::GetInstance()->Initialize();
 	mynpc.SetModel("models/hueteotl/tris.md2", "models/hueteotl/hueteotl.bmp");
 	mynpc.SetAnimation(RUN);
 	mynpc.SetPosition({ (t.getWorldSizeX() / 2),300,(t.getWorldSizeZ() - 100) });
@@ -102,16 +104,40 @@ float World::getWorldXZHeight(float xpos, float zpos)
 	float y = (float)t.getUnscaledHeight(xpos, zpos);
 	return y;
 }
-void World::Update(float time) 
+void World::Update() 
 {
-	mynpc.Update(time, t);
-}
-void World::Draw(float time) 
-{
+	CTimer::GetInstance()->Update();
+	time = CTimer::GetInstance()->GetTimeMSec() / 1000.0;
+	mynpc.Update(bAnimated ? time:0.0, t);
+	curt = time;
+	elapsed = curt - last;
+
+	last = curt;
 	
+}
+void World::Draw() 
+{
+	time = CTimer::GetInstance()->GetTimeMSec() / 1000.0;
+	cam.Animate(bAnimated ? elapsed : 0.0, t);
 	t.bruteForceRender();
 	building.Draw(time);
 	treasure.Draw(time);
-	mynpc.Draw(time);
+	mynpc.Draw(bAnimated ? time:0.0);
 	glutSwapBuffers();
+}
+void World::PauseWorld()
+{
+	if (bAnimated)
+	{
+		bAnimated = false;
+	}
+	else
+	{
+		bAnimated = true;
+	}
+}
+
+CCamera* World::GetCam() 
+{
+	return &cam;
 }
