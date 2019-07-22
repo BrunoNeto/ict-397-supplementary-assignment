@@ -11,7 +11,6 @@
 #include	<fstream>
 #include	<iostream>
 #include <glm/glm.hpp>
-#include "Camera.h"
 #include "BMPLoader.h"
 
 
@@ -307,7 +306,7 @@ public:
 	*
 	* @return Camera*
 	*/
-	CCamera* GetCamera() { return m_camera; }
+	//CCamera GetCamera() { return m_camera; }
 
 	/**
 	* @brief Sets the camera object
@@ -315,10 +314,9 @@ public:
 	* Sets the camera object to the world camera object to retrieve the view and projection
 	* matrices.
 	*
-	* @param Camera* camera
 	* @return const void
 	*/
-	const void SetCamera(CCamera* camera) { m_camera = camera; }
+	//const void SetCamera(CCamera camera) { m_camera = camera; }
 
 	/**
 	* @brief Gets the mesh batch
@@ -379,7 +377,7 @@ protected:
 		glm::vec3 m_rotation;
 		glm::vec3 m_scaleVector;
 
-		CCamera* m_camera;
+		//CCamera m_camera;
 
 private:
 	int				num_frames;			// number of frames

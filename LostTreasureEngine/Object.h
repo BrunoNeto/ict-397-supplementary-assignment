@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IGameAsset.h"
-#include "md2.h"
+//#include "md2.h"
 
 /*
 * @class Object
@@ -80,23 +80,23 @@ public:
 	*/
 	virtual void SetFilePath(const std::string& filePath) { m_filePath = filePath; }
 
-	virtual void SetCamera(CCamera* camera) { m_model->SetCamera(camera); }
+	//virtual void SetCamera(CCamera* camera) { m_model->SetCamera(camera); }
 
-	virtual void SetPosition(glm::vec3 position) { m_model->SetPosition(position); }
+	//virtual void SetPosition(glm::vec3 position) { m_model->SetPosition(position); }
 
-	virtual void SetScale(glm::vec3 scale) { m_model->SetScale(scale); }
+	//virtual void SetScale(glm::vec3 scale) { m_model->SetScale(scale); }
 
-	virtual void SetRotation(glm::vec3 rotation) { m_model->SetRotation(rotation); }
+	//virtual void SetRotation(glm::vec3 rotation) { m_model->SetRotation(rotation); }
 
-	virtual vec3 GetPosition() { return m_model->GetPosition(); }
+	//virtual vec3 GetPosition() { return m_model->GetPosition(); }
 
-	virtual vec3 GetRotation() { return m_model->GetRotation(); }
+	//virtual vec3 GetRotation() { return m_model->GetRotation(); }
 
-	virtual MD2Model* GetModel() { return m_model; }
+	//virtual MD2Model* GetModel() { return m_model; }
 
-	virtual void AddTexutre(GLuint textureId, std::string textureFilePath);
+	//virtual void AddTexutre(GLuint textureId, std::string textureFilePath);
 
-	void SetModel(MD2Model* model) { m_model = model; }
+	//void SetModel(MD2Model* model) { m_model = model; }
 
 	//void SetAI(ComputerAI* compAI) { m_model->SetAI(compAI); }
 
@@ -106,5 +106,5 @@ protected:
 	/// Stores the file path containing the data
 	std::string m_filePath;
 	/// Model object
-	MD2Model* m_model;
+	//MD2Model* m_model;
 };

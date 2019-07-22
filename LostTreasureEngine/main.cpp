@@ -22,7 +22,7 @@ int w = 800;
 int h = 600;
 int oldx = w / 2;
 int oldy = h / 2;
-CCamera* cam;
+CCamera cam;
 World gameWorld;
 float MovementSpeed = 2.0f;
 float playerHeight = 5;
@@ -242,7 +242,7 @@ void render()
 	
 		
 	
-	cam->Animate(bAnimated ? elapsed : 0.0, gameWorld);//send in arbitrary value for delta time this value calc based on 60 refresh per second and the world so that camera can get the appropriate height
+	cam.Animate(bAnimated ? elapsed : 0.0, gameWorld);//send in arbitrary value for delta time this value calc based on 60 refresh per second and the world so that camera can get the appropriate height
 	
 	DrawSkyBox(500, 500, 250, 1200, 1000, 1200);
 	gameWorld.Draw(bAnimated ? timesec : 0.0);
@@ -280,8 +280,8 @@ void Mouse( int x, int y)
 	int deltaY;
 	deltaY = oldy - y;
 	deltaX = oldx - x;
-	cam->yaw -= deltaX * mouseSensitivity;
-	cam->pitch += deltaY * mouseSensitivity;
+	cam.yaw -= deltaX * mouseSensitivity;
+	cam.pitch += deltaY * mouseSensitivity;
 	oldx = x;
 	oldy = y;
 	glutPostRedisplay();
@@ -298,21 +298,21 @@ void kb(unsigned char kbq, int x, int y)
 	case 'k':
 	case 'K': glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); break;
 	case GLUT_ACTIVE_SHIFT:
-		cam->velocity = vec3(0, 0, 15);
+		cam.velocity = vec3(0, 0, 15);
 	case 'w':
-		cam->velocity += vec3(0, 0, 2.5);
+		cam.velocity += vec3(0, 0, 2.5);
 		
 		 break;
 	case 's':
-		cam->velocity += vec3(0, 0, -2.5);	
+		cam.velocity += vec3(0, 0, -2.5);	
 
 		break;
 	case 'a':
-		cam->velocity += vec3(-2.5, 0, 0);
+		cam.velocity += vec3(-2.5, 0, 0);
 		
 		break;
 	case 'd':
-		cam->velocity += vec3(2.5, 0, 0);
+		cam.velocity += vec3(2.5, 0, 0);
 		
 		break;
 	case 'm':
@@ -353,9 +353,9 @@ void  myinit(void)
 
 
 	
-	cam->MoveToNow((gameWorld.getWorldSizeX() / 2), float((gameWorld.getHeight((gameWorld.getWorldSizeX() / 2), (gameWorld.getWorldSizeZ() - 20)))+60.0f), (gameWorld.getWorldSizeZ() - 20));
-	cam->yaw = 0;
-	cam->pitch = -75;
+	cam.MoveToNow((gameWorld.getWorldSizeX() / 2), float((gameWorld.getHeight((gameWorld.getWorldSizeX() / 2), (gameWorld.getWorldSizeZ() - 20)))+60.0f), (gameWorld.getWorldSizeZ() - 20));
+	cam.yaw = 0;
+	cam.pitch = -75;
 	//glutSetCursor(GLUT_CURSOR_NONE);
 	
 }

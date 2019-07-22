@@ -13,6 +13,8 @@
     <ClCompile Include="npc.cpp" />
     <ClCompile Include="Structure.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="GameAssetFactory.cpp" />
+    <ClCompile Include="Object.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
@@ -27,6 +29,9 @@
     <ClInclude Include="npc.h" />
     <ClInclude Include="Structure.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="GameAssetFactory.h" />
+    <ClInclude Include="IGameAsset.h" />
+    <ClInclude Include="Object.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

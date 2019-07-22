@@ -2,6 +2,7 @@
 #include <glm/glm.hpp>
 #include "md2.h"
 #include "Terrain.h"
+#include "IGameAsset.h"
 using namespace std;
 using namespace glm;
 class World;
@@ -10,7 +11,7 @@ class World;
 //	@author Bruno Neto
 //	@brief an  class for holding our item object holds a model and the structures needed for loading rendering 
 //	version 1.0
-class Structure
+class Structure : public IGameAsset
 {
 private:
 	MD2Model structureModel;
@@ -98,8 +99,46 @@ public:
 	*	@pre
 	*	@post
 	*/
+
+	/**
+	* @brief Loads an object from file
+	*
+	* Takes the parameter string file path and loads the NPC data into the
+	* corresponding model member variable.
+	*
+	* @param std::string filePath
+	* @return void
+	*/
+	virtual void LoadFromFilePath(const char *filename);
+
+	virtual const void Destroy();
+
+	/**
+	* @brief Gets the file path
+	*
+	* Returns the file path containing the object information.
+	*
+	* @return std::string
+	*/
+	virtual const std::string& GetFilePath() const { return m_filePath; }
+
+	/**
+	* @brief Sets the file path
+	*
+	* Sets the file path containing the object information.
+	*
+	* @param std::string& filePath
+	* @return void
+	*/
+	virtual void SetFilePath(const std::string& filePath) { m_filePath = filePath; }
+
 	void ScaleStructure(float scale);
 	void LoadStructureModel(const char* modelFilename, const char* modelSkinFilename);
 	void Draw(float deltatime);
+
+
+	protected:
+		/// Stores the file path containing the data
+		std::string m_filePath;
 };
 

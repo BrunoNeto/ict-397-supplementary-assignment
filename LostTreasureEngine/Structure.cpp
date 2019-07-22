@@ -59,3 +59,13 @@ void Structure::Draw(float time)
 	structureModel.DrawModel(time);
 	glPopMatrix();
 }
+
+const void Structure::Destroy()
+{
+	// Todo: destroy all items of Object class
+}
+
+void Structure::LoadFromFilePath(const char *filename)
+{
+	//m_model->LoadModel(filename);
+}

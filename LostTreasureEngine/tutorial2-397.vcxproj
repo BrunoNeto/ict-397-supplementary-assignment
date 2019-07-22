@@ -133,12 +133,14 @@
   <ItemGroup>
     <ClCompile Include="BMPLoader.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="GameAssetFactory.cpp" />
     <ClCompile Include="ImageLoader.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="md2.cpp" />
     <ClCompile Include="music.cpp" />
     <ClCompile Include="npc.cpp" />
+    <ClCompile Include="Object.cpp" />
     <ClCompile Include="SoundEffect.cpp" />
     <ClCompile Include="Structure.cpp" />
     <ClCompile Include="Terrain.cpp" />
@@ -148,11 +150,14 @@
     <ClInclude Include="BMPLoader.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Ctime.h" />
+    <ClInclude Include="GameAssetFactory.h" />
+    <ClInclude Include="IGameAsset.h" />
     <ClInclude Include="ImageLoader.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="md2.h" />
     <ClInclude Include="music.h" />
     <ClInclude Include="npc.h" />
+    <ClInclude Include="Object.h" />
     <ClInclude Include="SoundEffect.h" />
     <ClInclude Include="Structure.h" />
     <ClInclude Include="Terrain.h" />

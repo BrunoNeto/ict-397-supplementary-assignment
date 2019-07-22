@@ -1,6 +1,7 @@
 #include "GameAssetFactory.h"
 #include "Object.h"
-#include "npc.h"
+#include "Structure.h"
+//#include "npc.h"
 
 IGameAsset* GameAssetFactory::CreateAsset(ASS_TYPE type, std::string assetName)
 {
@@ -10,8 +11,11 @@ IGameAsset* GameAssetFactory::CreateAsset(ASS_TYPE type, std::string assetName)
 		return new Object(assetName);
 		break;
 	case ASS_NPC:
-		return new npc();
+		//return new npc();
 		//return new npc(assetName);
+		break;
+	case ASS_STRUCTURE:
+		return new Structure();
 		break;
 	default:
 		return nullptr;

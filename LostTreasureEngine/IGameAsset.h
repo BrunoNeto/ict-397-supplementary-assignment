@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-#include "Camera.h"
-#include "md2.h"
+//#include "Camera.h"
+//#include "md2.h"
 
 /**
 * @brief Enumerator for asset types
@@ -20,7 +20,8 @@ typedef enum
 	ASS_NULL = 0,
 	ASS_OBJECT = 1,
 	ASS_NPC = 2,
-	ASS_PLAYER = 3
+	ASS_PLAYER = 3,
+	ASS_STRUCTURE = 4
 }ASS_TYPE;
 
 /**
@@ -121,7 +122,7 @@ public:
 	* @param Camera* camera
 	* @return void
 	*/
-	virtual void SetCamera(CCamera* camera) = 0;
+	//virtual void SetCamera(CCamera* camera) = 0;
 
 	/**
 	* @brief Sets the asset position
@@ -131,7 +132,7 @@ public:
 	* @param glm::vec3 position
 	* @return void
 	*/
-	virtual void SetPosition(glm::vec3 position) = 0;
+	//virtual void SetPosition(glm::vec3 position) = 0;
 
 	/**
 	* @brief Sets the asset scale
@@ -141,7 +142,7 @@ public:
 	* @param glm::vec3 scale
 	* @return void
 	*/
-	virtual void SetScale(glm::vec3 scale) = 0;
+	//virtual void SetScale(glm::vec3 scale) = 0;
 
 	/**
 	* @brief Sets the asset rotation
@@ -151,7 +152,7 @@ public:
 	* @param glm::vec3 rotation
 	* @return void
 	*/
-	virtual void SetRotation(glm::vec3 rotation) = 0;
+	//virtual void SetRotation(glm::vec3 rotation) = 0;
 
 	/**
 	* @brief Gets the asset position
@@ -160,7 +161,7 @@ public:
 	*
 	* @return const glm::vec3
 	*/
-	virtual vec3 GetPosition() = 0;
+	//virtual vec3 GetPosition() = 0;
 
 	/**
 	* @brief Gets the asset rotation
@@ -169,7 +170,7 @@ public:
 	*
 	* @return const glm::vec3
 	*/
-	virtual vec3 GetRotation() = 0;
+	//virtual vec3 GetRotation() = 0;
 
 	/**
 	* @brief Gets the assets model object
@@ -178,7 +179,7 @@ public:
 	*
 	* @return Model*
 	*/
-	virtual MD2Model* GetModel() = 0;
+	//virtual MD2Model* GetModel() = 0;
 
 	/**
 	* @brief Adds a texture to the model
@@ -190,26 +191,8 @@ public:
 	* @param std::string textureFilePath
 	* @return void
 	*/
-	virtual void AddTexutre(GLuint textureId, std::string textureFilePath) = 0;
+	//virtual void AddTexutre(GLuint textureId, std::string textureFilePath) = 0;
 
-	/**
-	* @brief Sets the assets AI
-	*
-	* Virtual function to set the AI of the asset.
-	*
-	* @param ComputerAI* compAI
-	* @return void
-	*/
-	//virtual void SetAI(ComputerAI* compAI) = 0;
-
-	/**
-	* @brief Gets the assets AI
-	*
-	* Virtual function to get the AI of the asset.
-	*
-	* @return ComputerAI*
-	*/
-	//virtual ComputerAI* GetAI() = 0;
 
 protected:
 	/// Defines the nature of the asset
