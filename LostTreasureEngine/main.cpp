@@ -13,6 +13,8 @@
 #include "Ctime.h"
 #include "npc.h"
 #include "md2.h"
+#include "Item.h"
+#include "Structure.h"
 using namespace std;
 
 
@@ -50,8 +52,8 @@ float curt;
 float last;
 float elapsed;
 npc	mynpc;
-
-
+Item treasure;
+Structure building;
 
 #define MAX_TEXTURES 100								// The maximum amount of textures to load
 // This holds the texture info by an ID
@@ -228,13 +230,9 @@ bool CreateTexture(GLuint &textureID, const char * szFileName)                  
 void render()
 {
 	
-	//CTimer::GetInstance()->Update();
-	//float timesec = CTimer::GetInstance()->GetTimeMSec() / 1000.0;
-
-	//curt = timesec;
-	//elapsed = curt - last;
+	
 	float timesec = CTimer::GetInstance()->GetTimeMSec() / 1000.0;
-	//last = curt;
+	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();									// Reset The View
 	glMatrixMode(GL_PROJECTION);		//select the projection matrix
@@ -244,7 +242,8 @@ void render()
 		
 	
 	cam.Animate(bAnimated ? elapsed : 0.0, gameWorld);//send in arbitrary value for delta time this value calc based on 60 refresh per second and the world so that camera can get the appropriate height
-	
+	building.Draw(bAnimated ? timesec : 0.0);
+	treasure.Draw(bAnimated ? timesec : 0.0);
 	mynpc.Draw(bAnimated ? timesec : 0.0);
 	DrawSkyBox(500, 500, 250, 1200, 1000, 1200);
 	gameWorld.Draw();
@@ -330,9 +329,20 @@ void kb(unsigned char kbq, int x, int y)
 
 void  myinit(void)
 {
+	gameWorld.loadWorldTexture();
+
 	mynpc.SetModel("models/hueteotl/tris.md2", "models/hueteotl/hueteotl.bmp");
 	mynpc.SetAnimation(RUN);
-	//mynpc.ScaleNPC(0.25);
+
+	treasure.LoadItemModel("models/treasure_chest.md2", "models/treasure_chest.bmp");
+	treasure.SetPosition(100, (gameWorld.getWorldSizeZ() - 80),gameWorld);
+
+	building.LoadStructureModel("models/farmhouse.md2", "models/farmhouse.bmp");
+	building.SetPosition(gameWorld.getWorldSizeX()-150 , gameWorld.getWorldSizeZ()-80 , gameWorld);
+	building.ScaleStructure(4);
+
+
+	
 	mynpc.SetPosition({ (gameWorld.getWorldSizeX() / 2),300,(gameWorld.getWorldSizeZ() -100) });
 	soundEffectTest.load("sample.wav");//load in a random sound effect for testing
 	CTimer::GetInstance()->Initialize();
@@ -361,7 +371,7 @@ void  myinit(void)
 	cam.yaw = 0;
 	cam.pitch = -75;
 	//glutSetCursor(GLUT_CURSOR_NONE);
-	gameWorld.loadWorldTexture();
+	
 }
 
 int main(int argc, char** argv) {

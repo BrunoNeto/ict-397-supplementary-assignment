@@ -21,7 +21,7 @@ void World::unLoadWorld()
 }
 bool World::loadWorld()
 {
-	t.setScalingFactor(5.0, 1.0, 5.0);
+	t.setScalingFactor(5.0, 0.3, 5.0);
 	string filename = "height128.raw";
 	int filesize = 128;
 	
