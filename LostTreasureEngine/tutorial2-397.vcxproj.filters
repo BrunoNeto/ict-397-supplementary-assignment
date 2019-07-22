@@ -11,6 +11,8 @@
     <ClCompile Include="BMPLoader.cpp" />
     <ClCompile Include="md2.cpp" />
     <ClCompile Include="npc.cpp" />
+    <ClCompile Include="Structure.cpp" />
+    <ClCompile Include="Item.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
@@ -23,6 +25,8 @@
     <ClInclude Include="BMPLoader.h" />
     <ClInclude Include="md2.h" />
     <ClInclude Include="npc.h" />
+    <ClInclude Include="Structure.h" />
+    <ClInclude Include="Item.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
