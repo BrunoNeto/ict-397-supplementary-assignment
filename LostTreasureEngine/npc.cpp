@@ -1,7 +1,5 @@
 #include "npc.h"
 
-
-
 npc::npc()
 {
 	lookAt = vec3(0.0, 0.0, -1.0);
@@ -18,10 +16,10 @@ npc::~npc()
 	
 }
 
-MD2Model npc::GetModel() 
-{
-	return npcmodel;
-}
+//MD2Model* npc::GetModel() 
+//{
+//	return &npcmodel;
+//}
 
 vec3 npc::GetPosition() 
 {
@@ -69,8 +67,8 @@ void npc::SetRotationAngle(float rot)
 //State GetState(){}
 void npc::SetModel(const char * modelFileName, const char * modelSkinFileName)
 {
-	npcmodel.LoadModel(modelFileName);
-	npcmodel.LoadSkin(modelSkinFileName);
+	npcmodel->LoadModel(modelFileName);
+	npcmodel->LoadSkin(modelSkinFileName);
 }
 void npc::SetPosition(vec3 pos) 
 {
@@ -90,7 +88,7 @@ void npc::SetAcceleration(vec3 a)
 }
 void npc::SetAnimation(int animation)
 {
-	npcmodel.SetAnim(animation);
+	npcmodel->SetAnim(animation);
 }
 void npc::SetHeight(float y)
 {
@@ -98,21 +96,21 @@ void npc::SetHeight(float y)
 }
 void npc::ScaleNPC(float scale) 
 {
-	npcmodel.ScaleModel(scale);
+	npcmodel->ScaleModel(scale);
 }
 //void SetState(){}
 void npc::SetAnimIdle() 
 {
-	npcmodel.SetAnim(STAND);
+	npcmodel->SetAnim(STAND);
 }
 void npc::SetAnimWalk() 
 {
-	npcmodel.SetAnim(RUN);
+	npcmodel->SetAnim(RUN);
 }
 
 void npc::SetAnimWave()
 {
-	npcmodel.SetAnim(WAVE);
+	npcmodel->SetAnim(WAVE);
 }
 void npc::Interact() 
 {
@@ -191,7 +189,7 @@ void npc::Draw(float time)
 	glPushMatrix();
 	glTranslatef(position.x, position.y, position.z);
 	glRotatef(rotationAngle, rotation.x, rotation.y, rotation.z);
-	npcmodel.DrawModel(time);
+	npcmodel->DrawModel(time);
 	glPopMatrix();
 	
 	
