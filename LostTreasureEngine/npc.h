@@ -3,7 +3,8 @@
 #include "md2.h"
 #include <glm/glm.hpp>
 #include <string>
-#include "World.h"
+#include "Terrain.h"
+
 using namespace std;
 using namespace glm;
 //
@@ -97,7 +98,7 @@ public:
 	*	@pre
 	*	@post
 	*/
-	void Move(float deltaTime, World& gameworld);
+	void Move(float deltaTime, Terrain& gameworld);
 	vec3 velocity;
 	/**
 	*	@brief gets the npc model
@@ -285,7 +286,7 @@ public:
 	*	@pre
 	*	@post
 	*/
-	void Update(float deltaTime, World& gameWorld);
+	void Update(float deltaTime, Terrain& gameWorld);
 	/**
 	*	@brief draws the npc
 	*   @see

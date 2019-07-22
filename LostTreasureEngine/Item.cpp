@@ -29,11 +29,11 @@ float Item::GetAngle()
 	return angle;
 }
 
-void Item::SetPosition(float x, float z, World& gameWorld)
+void Item::SetPosition(float x, float z, Terrain& t)
 {
 	position.x = x;
 	position.z = z;
-	position.y = gameWorld.getHeight(x, z);
+	position.y = t.getHeight(x, z);
 }
 
 void Item::SetRotation(vec3 rot) 

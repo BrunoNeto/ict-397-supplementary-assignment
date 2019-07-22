@@ -7,7 +7,19 @@ World::World()
 	loadWorld();
 	
 }
+void World::Init() 
+{
+	mynpc.SetModel("models/hueteotl/tris.md2", "models/hueteotl/hueteotl.bmp");
+	mynpc.SetAnimation(RUN);
+	mynpc.SetPosition({ (t.getWorldSizeX() / 2),300,(t.getWorldSizeZ() - 100) });
 
+	treasure.LoadItemModel("models/treasure_chest.md2", "models/treasure_chest.bmp");
+	treasure.SetPosition(100, (t.getWorldSizeZ() - 80), t);
+
+	building.LoadStructureModel("models/farmhouse.md2", "models/farmhouse.bmp");
+	building.SetPosition((t.getWorldSizeX() - 150), (t.getWorldSizeZ() - 80), t);
+	building.ScaleStructure(4);
+}
 
 World::~World()
 {
@@ -28,6 +40,8 @@ bool World::loadWorld()
 	//t.genFaultFormation(64, 128, 0, 255, 0.2f, false);
 	t.LoadHeightField(filename, filesize);
 	//load all players and objects
+	
+	
 	return true;
 }
 int World::getWorldSize()
@@ -88,9 +102,16 @@ float World::getWorldXZHeight(float xpos, float zpos)
 	float y = (float)t.getUnscaledHeight(xpos, zpos);
 	return y;
 }
-void World::Draw() 
+void World::Update(float time) 
+{
+	mynpc.Update(time, t);
+}
+void World::Draw(float time) 
 {
 	
 	t.bruteForceRender();
+	building.Draw(time);
+	treasure.Draw(time);
+	mynpc.Draw(time);
 	glutSwapBuffers();
 }

@@ -129,7 +129,7 @@ float degToRad2(float value)
 	float rad = value * 0.0175;
 	return rad;
 }
-void npc::Move(float deltaTime, World& gameWorld)
+void npc::Move(float deltaTime, Terrain& t)
 {
 	velocity.z = -0.01;
 	//velocity z-component
@@ -167,9 +167,9 @@ void npc::Move(float deltaTime, World& gameWorld)
 	// calculate new position of npc
 	position.x += strafeSpeed;
 	position.z += speed;
-	gameWorld.inWorld(position.x, position.z);//keeps npc within the border of terrain
+	t.inWorld(position.x, position.z);//keeps npc within the border of terrain
 
-	position.y = float(gameWorld.getHeight(position.x, position.z)) + 25;//to set y relative to the scaled height of terrain 
+	position.y = float(t.getHeight(position.x, position.z)) + 25;//to set y relative to the scaled height of terrain 
 
 	// calculate lookAt based on new position
 	lookAt.x = float(position.x);
@@ -178,11 +178,11 @@ void npc::Move(float deltaTime, World& gameWorld)
 
 	
 }
-void npc::Update(float deltaTime, World& gameWorld)
+void npc::Update(float deltaTime, Terrain& t)
 {
 	// this function will be used to update world positions and do state stuuf
 		//SetHeight(y+25);
-	Move(deltaTime, gameWorld);
+	Move(deltaTime, t);
 	
 }
 void npc::Draw(float time)

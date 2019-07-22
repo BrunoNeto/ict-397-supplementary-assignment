@@ -243,8 +243,39 @@ int Terrain::getSize()
 {
 	return size;
 }
+float Terrain::getWorldSizeX()
+{
+	return float(size*scaleX);
+}
 
-
+float Terrain::getWorldSizeZ()
+{
+	return float(size*scaleZ);
+}
+float Terrain::inWorld(float& x, float& z)
+{
+	if (x < 0)
+	{
+		x = 0;
+		return false;
+	}
+	else if (x > getWorldSizeX())
+	{
+		x = getWorldSizeX();
+		return false;
+	}
+	if (z < 0)
+	{
+		z = 0;
+		return false;
+	}
+	else if (z > getWorldSizeZ())
+	{
+		z = getWorldSizeZ();
+		return false;
+	}
+	return true;
+}
 
 void Terrain::bruteForceRender() {
 	vec3 temp;

@@ -51,9 +51,9 @@ float start = 0.0;
 float curt;
 float last;
 float elapsed;
-npc	mynpc;
-Item treasure;
-Structure building;
+//npc	mynpc;
+//Item treasure;
+//Structure building;
 
 #define MAX_TEXTURES 100								// The maximum amount of textures to load
 // This holds the texture info by an ID
@@ -75,7 +75,8 @@ void Idle()
 	elapsed = curt - last;
 
 	last = curt;
-	mynpc.Update( bAnimated ? timesec : 0.0, gameWorld);
+	//mynpc.Update( bAnimated ? timesec : 0.0, gameWorld);
+	gameWorld.Update(bAnimated ? timesec : 0.0);
 	glutPostRedisplay();
 	
 }
@@ -242,11 +243,9 @@ void render()
 		
 	
 	cam.Animate(bAnimated ? elapsed : 0.0, gameWorld);//send in arbitrary value for delta time this value calc based on 60 refresh per second and the world so that camera can get the appropriate height
-	building.Draw(bAnimated ? timesec : 0.0);
-	treasure.Draw(bAnimated ? timesec : 0.0);
-	mynpc.Draw(bAnimated ? timesec : 0.0);
+	
 	DrawSkyBox(500, 500, 250, 1200, 1000, 1200);
-	gameWorld.Draw();
+	gameWorld.Draw(bAnimated ? timesec : 0.0);
 	
 	glFlush();
 	
@@ -330,20 +329,7 @@ void kb(unsigned char kbq, int x, int y)
 void  myinit(void)
 {
 	gameWorld.loadWorldTexture();
-
-	mynpc.SetModel("models/hueteotl/tris.md2", "models/hueteotl/hueteotl.bmp");
-	mynpc.SetAnimation(RUN);
-
-	treasure.LoadItemModel("models/treasure_chest.md2", "models/treasure_chest.bmp");
-	treasure.SetPosition(100, (gameWorld.getWorldSizeZ() - 80),gameWorld);
-
-	building.LoadStructureModel("models/farmhouse.md2", "models/farmhouse.bmp");
-	building.SetPosition(gameWorld.getWorldSizeX()-150 , gameWorld.getWorldSizeZ()-80 , gameWorld);
-	building.ScaleStructure(4);
-
-
-	
-	mynpc.SetPosition({ (gameWorld.getWorldSizeX() / 2),300,(gameWorld.getWorldSizeZ() -100) });
+	gameWorld.Init();
 	soundEffectTest.load("sample.wav");//load in a random sound effect for testing
 	CTimer::GetInstance()->Initialize();
 	glClearColor(.75, .75, 1, 1);

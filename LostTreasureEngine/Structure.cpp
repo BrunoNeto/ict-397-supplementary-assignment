@@ -4,8 +4,7 @@ Structure::Structure()
 {
 	position = vec3(0, 0, 0);
 	rotation = vec3(1, 0, 0);
-	angle = 0;
-	
+	angle = 0;	
 }
 
 
@@ -27,11 +26,11 @@ float Structure::GetAngle()
 	return angle;
 }
 
-void Structure::SetPosition(float x, float z, World& gameWorld)
+void Structure::SetPosition(float x, float z, Terrain& t)
 {
 	position.x = x;
 	position.z = z;
-	position.y = gameWorld.getHeight(x, z);
+	position.y = t.getHeight(x, z);
 }
 
 void Structure::SetRotation(vec3 rot)

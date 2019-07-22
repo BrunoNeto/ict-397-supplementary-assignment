@@ -1,9 +1,10 @@
 #pragma once
 #include <glm/glm.hpp>
 #include "md2.h"
-#include "World.h"
+#include "Terrain.h"
 using namespace std;
 using namespace glm;
+class World;
 //
 //	Structure.h - header file
 //	@author Bruno Neto
@@ -70,7 +71,7 @@ public:
 	*	@pre
 	*	@post
 	*/
-	void SetPosition(float x, float z, World& gameWorld);
+	void SetPosition(float x, float z, Terrain& t);
 	/**
 	*	@brief sets the rotation vector for Structure
 	*   @see
