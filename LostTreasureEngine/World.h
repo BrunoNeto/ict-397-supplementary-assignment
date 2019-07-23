@@ -1,5 +1,10 @@
 #pragma once
 #include "Terrain.h"
+#include "Structure.h"
+#include "Item.h"
+#include "npc.h"
+#include "Camera.h"
+#include "Ctime.h"
 //	@brief World class for our world object
 //	@todo once i have figured out everything world need it must be seperated int 2 classes one with data and the other as a controller
 //	@author Bruno Neto
@@ -35,7 +40,7 @@ public:
 	*	@pre
 	*	@post
 	*/
-	void Render();
+	void Draw();
 
 	/**
 	*	@brief method for getting the size of the heightmap for ref terrain is [size*size] big
@@ -135,9 +140,32 @@ public:
 	*	@post
 	*/
 	bool loadWorldTexture();
-
-private:
+	/**
+	*	@brief method for updating worlds components that need real time calcs
+	*   @see
+	*	@param time the amount of time to update
+	*	@return void
+	*	@pre
+	*	@post
+	*/
+	void Update();
+	void PauseWorld();
+	
+	CCamera* GetCam();
+	void Init();
+	CCamera cam;
 	Terrain t;
+	npc mynpc;
+	Item treasure;
+	Structure building;
+	float start = 0.0;
+	float curt;
+	float last;
+	float elapsed;
+	//CTimer timer;
+	
+	float time;
+	bool bAnimated = true;
 	
 };
 

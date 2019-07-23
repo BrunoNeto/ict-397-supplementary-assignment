@@ -233,6 +233,18 @@ class Terrain
 		*	@post
 		*/
 		float getScaleY();
+		/**
+	*	@brief method for checking if the x,z point is withing the terrain loaded 
+	*   @see
+	*	@param x the x value we need to check if is in terrain
+	*	@param z the z value we need to check if is in terrain
+	*	@return
+	*	@pre
+	*	@post
+	*/
+		float inWorld(float& x, float& z);
+		float getWorldSizeX();
+		float getWorldSizeZ();
 	protected:
 		GLuint texId;
 		vec3 lightColor;
