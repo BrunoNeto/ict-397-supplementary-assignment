@@ -139,6 +139,7 @@
     <ClCompile Include="md2.cpp" />
     <ClCompile Include="music.cpp" />
     <ClCompile Include="npc.cpp" />
+    <ClCompile Include="OcTree.cpp" />
     <ClCompile Include="SoundEffect.cpp" />
     <ClCompile Include="Structure.cpp" />
     <ClCompile Include="Terrain.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="md2.h" />
     <ClInclude Include="music.h" />
     <ClInclude Include="npc.h" />
+    <ClInclude Include="OcTree.h" />
     <ClInclude Include="SoundEffect.h" />
     <ClInclude Include="Structure.h" />
     <ClInclude Include="Terrain.h" />

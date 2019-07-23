@@ -28,6 +28,7 @@ private:
 	
 	
 public:
+	float r = 30;//radius
 	/**
 	*	@brief npc default constructor
 	*   @see
