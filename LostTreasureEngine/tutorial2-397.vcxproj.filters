@@ -13,7 +13,6 @@
     <ClCompile Include="npc.cpp" />
     <ClCompile Include="Structure.cpp" />
     <ClCompile Include="Item.cpp" />
-    <ClCompile Include="OcTree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
@@ -28,7 +27,6 @@
     <ClInclude Include="npc.h" />
     <ClInclude Include="Structure.h" />
     <ClInclude Include="Item.h" />
-    <ClInclude Include="OcTree.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
