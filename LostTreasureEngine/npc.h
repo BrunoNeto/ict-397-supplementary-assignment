@@ -25,6 +25,8 @@ private:
 	int currentAnimation;//the animation currently set on the md2 model
 	string interactionMsg;//the current set interaction message of the npc
 	//state will be a variable
+	
+	
 public:
 	/**
 	*	@brief npc default constructor

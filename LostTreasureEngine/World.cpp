@@ -14,7 +14,7 @@ void World::Init()
 	mynpc.SetModel("models/hueteotl/tris.md2", "models/hueteotl/hueteotl.bmp");
 	mynpc.SetAnimation(RUN);
 	mynpc.SetPosition({ (t.getWorldSizeX() / 2),300,(t.getWorldSizeZ() - 100) });
-
+	mynpc.SetRotation({ 0,1,0 });
 	treasure.LoadItemModel("models/treasure_chest.md2", "models/treasure_chest.bmp");
 	treasure.SetPosition(100, (t.getWorldSizeZ() - 80), t);
 

@@ -4,6 +4,7 @@
 
 npc::npc()
 {
+	
 	lookAt = vec3(0.0, 0.0, -1.0);
 	position = vec3(0,0,0);
 	velocity = vec3(0.0, 0.0, 0.0);
@@ -66,7 +67,7 @@ void npc::SetRotationAngle(float rot)
 {
 	rotationAngle = rot;
 }
-//State GetState(){}
+
 void npc::SetModel(const char * modelFileName, const char * modelSkinFileName)
 {
 	npcmodel.LoadModel(modelFileName);
@@ -182,6 +183,8 @@ void npc::Update(float deltaTime, Terrain& t)
 {
 	// this function will be used to update world positions and do state stuuf
 		//SetHeight(y+25);
+	
+	
 	Move(deltaTime, t);
 	
 }
