@@ -1,6 +1,4 @@
 #pragma once
-#ifndef __STATEMACHINE_H
-#define __STATEMACHINE_H
 
 #include<iostream>
 using namespace std;
@@ -11,9 +9,9 @@ class stateMachine
 {
 private:
 	entity_type* owner; //Owner of the StateMachine - usually an NPC
-	state<NPC> *previousState; //Previous state of the StateMachine, not particularly needed
-	state<NPC> *currentState; //Current state of the StateMachine, the State it currently processes
-	state<NPC> *globalState; //Global state of the StateMachine, not particularly needed
+	state<npc> *previousState; //Previous state of the StateMachine, not particularly needed
+	state<npc> *currentState; //Current state of the StateMachine, the State it currently processes
+	state<npc> *globalState; //Global state of the StateMachine, not particularly needed
 
 	int RandDir = NULL;
 
@@ -23,7 +21,7 @@ public:
 	{
 		owner = FSMowner; //Set the a point to this NPC's owner
 		//Set all states to NULL
-		previousState = NULL; 
+		previousState = NULL;
 		currentState = NULL;
 		globalState = NULL;
 	}
@@ -58,4 +56,4 @@ public:
 	//Virtual Deconstructor
 	virtual ~stateMachine() {}
 };
-#endif
+

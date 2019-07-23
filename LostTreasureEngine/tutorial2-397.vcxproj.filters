@@ -15,6 +15,10 @@
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="GameAssetFactory.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="state.cpp" />
+    <ClCompile Include="stateMachine.cpp" />
+    <ClCompile Include="NPCStates.cpp" />
+    <ClCompile Include="singleton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
@@ -32,6 +36,10 @@
     <ClInclude Include="GameAssetFactory.h" />
     <ClInclude Include="IGameAsset.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="state.h" />
+    <ClInclude Include="stateMachine.h" />
+    <ClInclude Include="NPCStates.h" />
+    <ClInclude Include="singleton.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

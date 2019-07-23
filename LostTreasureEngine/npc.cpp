@@ -2,18 +2,24 @@
 
 npc::npc()
 {
+	
 	lookAt = vec3(0.0, 0.0, -1.0);
 	position = vec3(0,0,0);
 	velocity = vec3(0.0, 0.0, 0.0);
 	acceleration = vec3(0.0, 0.0, 0.0);
 	currentAnimation = 0;
 	interactionMsg = "Hey there stranger";
+
+	//Sets up the NPC stateMachine
+	NPCSM = new stateMachine<npc>(this);
+	NPCSM->setCurrentState(&wander_state::Instance());
+	NPCSM->setGlobalState(&wander_state::Instance());
 }
 
 
 npc::~npc()
 {
-	
+	delete NPCSM; //removes the state machine completely
 }
 
 MD2Model npc::GetModel() 
@@ -64,7 +70,7 @@ void npc::SetRotationAngle(float rot)
 {
 	rotationAngle = rot;
 }
-//State GetState(){}
+
 void npc::SetModel(const char * modelFileName, const char * modelSkinFileName)
 {
 	npcmodel.LoadModel(modelFileName);
@@ -180,6 +186,9 @@ void npc::Update(float deltaTime, Terrain& t)
 {
 	// this function will be used to update world positions and do state stuuf
 		//SetHeight(y+25);
+	NPCSM->update();
+	
+
 	Move(deltaTime, t);
 	
 }

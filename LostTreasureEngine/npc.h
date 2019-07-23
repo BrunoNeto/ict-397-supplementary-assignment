@@ -5,7 +5,9 @@
 #include <string>
 #include "IGameAsset.h"
 #include "Terrain.h"
-
+#include "state.h"
+#include "stateMachine.h"
+#include "NPCStates.h"
 
 using namespace std;
 using namespace glm;
@@ -27,6 +29,10 @@ private:
 	int currentAnimation;//the animation currently set on the md2 model
 	string interactionMsg;//the current set interaction message of the npc
 	//state will be a variable
+
+	stateMachine<npc>* NPCSM; //ADDED FOR STATE
+	
+	
 public:
 	/**
 	*	@brief npc default constructor

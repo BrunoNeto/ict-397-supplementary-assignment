@@ -1,22 +1,22 @@
 #include "NPCStates.h"
-#include "NPC.h"
+#include "npc.h"
 //#include<ctime>
 
-void Wander::Enter(NPC* dude)
+void Wander::Enter(npc* dude)
 {
 	//do nothing
 }
 
-void Wander::Execute(NPC* dude)
+void Wander::Execute(npc* dude)
 {
 	/*Having the line below results in an strange glitch, that could prove to be useful.*/
 	//srand(static_cast<unsigned>(time(0))); //randomizes the seed
 
 	float val = rand() % 359;
-	dude->SetDir(val);
+	dude->SetRotationAngle(val);
 }
 
-void Wander::Exit(NPC* dude)
+void Wander::Exit(npc* dude)
 {
 	//do nothing
 }
