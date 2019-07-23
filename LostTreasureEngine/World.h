@@ -5,6 +5,7 @@
 #include "npc.h"
 #include "Camera.h"
 #include "Ctime.h"
+#include "GameAssetFactory.h"
 //	@brief World class for our world object
 //	@todo once i have figured out everything world need it must be seperated int 2 classes one with data and the other as a controller
 //	@author Bruno Neto
@@ -155,7 +156,7 @@ public:
 	void Init();
 	CCamera cam;
 	Terrain t;
-	npc mynpc;
+	//npc mynpc;
 	Item treasure;
 	Structure building;
 	float start = 0.0;
@@ -164,6 +165,9 @@ public:
 	float elapsed;
 	//CTimer timer;
 	
+	GameAssetFactory* m_assetFactory;
+	IGameAsset* modelAsset;
+
 	float time;
 	bool bAnimated = true;
 	

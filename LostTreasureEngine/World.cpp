@@ -11,10 +11,16 @@ World::World()
 void World::Init() 
 {
 	CTimer::GetInstance()->Initialize();
-	mynpc.SetModel("models/hueteotl/tris.md2", "models/hueteotl/hueteotl.bmp");
-	mynpc.SetAnimation(RUN);
-	mynpc.SetPosition({ (t.getWorldSizeX() / 2),300,(t.getWorldSizeZ() - 100) });
-	mynpc.SetRotation({ 0,1,0 });
+	m_assetFactory = new GameAssetFactory();
+	modelAsset = m_assetFactory->CreateAsset(ASS_NPC, "NPC");
+	modelAsset->LoadFromFilePath("models/hueteotl/tris.md2", "models/hueteotl/hueteotl.bmp");
+	modelAsset->SetPosition({ (t.getWorldSizeX() / 2),300,(t.getWorldSizeZ() - 100) });
+	modelAsset->SetRotation({ 0,1,0 });
+
+	//mynpc.SetModel("models/hueteotl/tris.md2", "models/hueteotl/hueteotl.bmp");
+	//mynpc.SetAnimation(RUN);
+	//mynpc.SetPosition({ (t.getWorldSizeX() / 2),300,(t.getWorldSizeZ() - 100) });
+	//mynpc.SetRotation({ 0,1,0 });
 	treasure.LoadItemModel("models/treasure_chest.md2", "models/treasure_chest.bmp");
 	treasure.SetPosition(100, (t.getWorldSizeZ() - 80), t);
 
@@ -108,7 +114,8 @@ void World::Update()
 {
 	CTimer::GetInstance()->Update();
 	time = CTimer::GetInstance()->GetTimeMSec() / 1000.0;
-	mynpc.Update(bAnimated ? time:0.0, t);
+	//mynpc.Update(bAnimated ? time:0.0, t);
+	modelAsset->Update(bAnimated ? time : 0.0, t);
 	curt = time;
 	elapsed = curt - last;
 
@@ -122,7 +129,8 @@ void World::Draw()
 	t.bruteForceRender();
 	building.Draw(time);
 	treasure.Draw(time);
-	mynpc.Draw(bAnimated ? time:0.0);
+	//mynpc.Draw(bAnimated ? time:0.0);
+	modelAsset->Draw(bAnimated ? time : 0.0);
 	glutSwapBuffers();
 }
 

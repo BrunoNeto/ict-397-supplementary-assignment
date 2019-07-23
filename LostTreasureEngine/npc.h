@@ -16,10 +16,11 @@ using namespace glm;
 //	@author Bruno Neto
 //	@brief an  class for holding our npc object holds a model and the structures needed for loading rendering and animating
 //	version 1.0
-class npc
+class npc : public IGameAsset
 {
 private:
 	MD2Model npcmodel;//the actual model data of the npc
+	MD2Model* m_npcmodel;
 	vec3 position;//position of the npc in the world
 	vec3 rotation;//vector for storing which axis to rotate in
 	float rotationAngle;// the angle to rotate by
@@ -31,6 +32,9 @@ private:
 	//state will be a variable
 
 	stateMachine<npc>* NPCSM; //ADDED FOR STATE
+
+	/// Stores the file path containing the data
+	std::string m_filePath;
 	
 	
 public:
@@ -307,9 +311,9 @@ public:
 		* @param std::string filePath
 		* @return void
 		*/
-	//virtual void LoadFromFilePath(const char *filename);
+	virtual void LoadFromFilePath(const char * modelFileName, const char * modelSkinFileName);
 
-	//virtual const void Destroy();
+	virtual const void Destroy();
 
 	/**
 	* @brief Gets the file path
@@ -318,7 +322,7 @@ public:
 	*
 	* @return std::string
 	*/
-	//virtual const std::string & GetFilePath() const;
+	virtual const std::string & GetFilePath() const;
 
 	/**
 	* @brief Sets the file path
@@ -328,11 +332,13 @@ public:
 	* @param std::string& filePath
 	* @return void
 	*/
-	//virtual void SetFilePath(const std::string& filePath);
+	virtual void SetFilePath(const std::string& filePath);
 
 	//virtual void SetCamera(CCamera camera) { npcmodel.SetCamera(camera); }
 
 	//virtual void SetScale(glm::vec3 scale) { npcmodel.SetScale(scale); }
+
+	void SetScale(float scale);
 
 	//virtual void AddTexutre(GLuint textureId, std::string textureFilePath) { }
 

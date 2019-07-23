@@ -4,18 +4,58 @@ Object::Object(std::string assetName)
 {
 	m_assetType = ASS_OBJECT;
 	m_assetName = assetName;
-	//m_model = new MD2Model();
+	m_model = new MD2Model();
+	position = vec3(0, 0, 0);
 }
 
-void Object::LoadFromFilePath(const char *filename)
+void Object::LoadFromFilePath(const char * modelFileName, const char * modelSkinFileName)
 {
-	//m_model->LoadModel(filename);
+	m_model->LoadModel(modelFileName);
+	m_model->LoadSkin(modelSkinFileName);
 }
+
 
 const void Object::Destroy()
 {
 	// Todo: destroy all items of Object class
 }
+
+void Object::SetScale(float scale)
+{
+	m_model->ScaleModel(scale);
+}
+
+void Object::SetPosition(vec3 pos)
+{
+	position = pos;
+}
+
+void Object::SetRotation(vec3 rot)
+{
+	rotation = rot;
+}
+
+void Object::Update(float deltaTime, Terrain& t)
+{
+	// this function will be used to update world positions and do state stuuf
+		//SetHeight(y+25);
+	//NPCSM->update();
+
+
+	//Move(deltaTime, t);
+
+}
+
+void Object::Draw(float time)
+{
+
+	//glPushMatrix();
+	//glTranslatef(position.x, position.y, position.z);
+	//glRotatef(rotationAngle, rotation.x, rotation.y, rotation.z);
+	//npcmodel.DrawModel(time);
+	//glPopMatrix();
+}
+
 
 //void Object::AddTexutre(GLuint textureId, std::string textureFilePath)
 //{

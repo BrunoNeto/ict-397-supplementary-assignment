@@ -46,6 +46,12 @@ void Structure::ScaleStructure(float scale)
 {
 	structureModel.ScaleModel(scale);
 }
+
+void Structure::SetScale(float scale) 
+{
+	structureModel.ScaleModel(scale);
+}
+
 void Structure::LoadStructureModel(const char* modelFileName, const char* modelSkinFileName)
 {
 	structureModel.LoadModel(modelFileName);
@@ -65,7 +71,8 @@ const void Structure::Destroy()
 	// Todo: destroy all items of Object class
 }
 
-void Structure::LoadFromFilePath(const char *filename)
+void Structure::LoadFromFilePath(const char * modelFileName, const char * modelSkinFileName)
 {
+
 	//m_model->LoadModel(filename);
 }

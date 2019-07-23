@@ -1,9 +1,13 @@
 #pragma once
 
 #include <iostream>
+#include <glm/glm.hpp>
+#include "Terrain.h"
 
 //#include "Camera.h"
 //#include "md2.h"
+
+using namespace glm;
 
 /**
 * @brief Enumerator for asset types
@@ -35,6 +39,7 @@ typedef enum
 * @author Michael Bell
 *
 */
+
 class IGameAsset
 {
 public:
@@ -64,7 +69,7 @@ public:
 	* @param std::string filePath
 	* @return void
 	*/
-	virtual void LoadFromFilePath(const char *filename) = 0;
+	virtual void LoadFromFilePath(const char * modelFileName, const char * modelSkinFileName) = 0;
 
 	/**
 	* @brief Destroys the asset
@@ -132,7 +137,7 @@ public:
 	* @param glm::vec3 position
 	* @return void
 	*/
-	//virtual void SetPosition(glm::vec3 position) = 0;
+	virtual void SetPosition(vec3 position) = 0;
 
 	/**
 	* @brief Sets the asset scale
@@ -142,7 +147,7 @@ public:
 	* @param glm::vec3 scale
 	* @return void
 	*/
-	//virtual void SetScale(glm::vec3 scale) = 0;
+	virtual void SetScale(float scale) = 0;
 
 	/**
 	* @brief Sets the asset rotation
@@ -152,7 +157,7 @@ public:
 	* @param glm::vec3 rotation
 	* @return void
 	*/
-	//virtual void SetRotation(glm::vec3 rotation) = 0;
+	virtual void SetRotation(vec3 rotation) = 0;
 
 	/**
 	* @brief Gets the asset position
@@ -192,6 +197,12 @@ public:
 	* @return void
 	*/
 	//virtual void AddTexutre(GLuint textureId, std::string textureFilePath) = 0;
+
+
+	virtual void Update(float deltaTime, Terrain& t) = 0;
+
+	virtual void Draw(float time) = 0;
+
 
 
 protected:

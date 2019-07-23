@@ -11,7 +11,7 @@ class World;
 //	@author Bruno Neto
 //	@brief an  class for holding our item object holds a model and the structures needed for loading rendering 
 //	version 1.0
-class Structure : public IGameAsset
+class Structure
 {
 private:
 	MD2Model structureModel;
@@ -109,7 +109,7 @@ public:
 	* @param std::string filePath
 	* @return void
 	*/
-	virtual void LoadFromFilePath(const char *filename);
+	virtual void LoadFromFilePath(const char * modelFileName, const char * modelSkinFileName);
 
 	virtual const void Destroy();
 
@@ -133,6 +133,7 @@ public:
 	virtual void SetFilePath(const std::string& filePath) { m_filePath = filePath; }
 
 	void ScaleStructure(float scale);
+	virtual void SetScale(float scale);
 	void LoadStructureModel(const char* modelFilename, const char* modelSkinFilename);
 	void Draw(float deltatime);
 
