@@ -11,12 +11,17 @@ npc::npc()
 	acceleration = vec3(0.0, 0.0, 0.0);
 	currentAnimation = 0;
 	interactionMsg = "Hey there stranger";
+
+	//Sets up the NPC stateMachine
+	NPCSM = new stateMachine<npc>(this);
+	NPCSM->setCurrentState(&wander_state::Instance());
+	NPCSM->setGlobalState(&wander_state::Instance());
 }
 
 
 npc::~npc()
 {
-	
+	delete NPCSM; //removes the state machine completely
 }
 
 MD2Model npc::GetModel() 
@@ -183,8 +188,9 @@ void npc::Update(float deltaTime, Terrain& t)
 {
 	// this function will be used to update world positions and do state stuuf
 		//SetHeight(y+25);
+	NPCSM->update();
 	
-	
+
 	Move(deltaTime, t);
 	
 }

@@ -139,7 +139,11 @@
     <ClCompile Include="md2.cpp" />
     <ClCompile Include="music.cpp" />
     <ClCompile Include="npc.cpp" />
+    <ClCompile Include="NPCStates.cpp" />
+    <ClCompile Include="singleton.cpp" />
     <ClCompile Include="SoundEffect.cpp" />
+    <ClCompile Include="state.cpp" />
+    <ClCompile Include="stateMachine.cpp" />
     <ClCompile Include="Structure.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="World.cpp" />
@@ -153,7 +157,11 @@
     <ClInclude Include="md2.h" />
     <ClInclude Include="music.h" />
     <ClInclude Include="npc.h" />
+    <ClInclude Include="NPCStates.h" />
+    <ClInclude Include="singleton.h" />
     <ClInclude Include="SoundEffect.h" />
+    <ClInclude Include="state.h" />
+    <ClInclude Include="stateMachine.h" />
     <ClInclude Include="Structure.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="World.h" />
