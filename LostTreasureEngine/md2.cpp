@@ -315,8 +315,8 @@ bool MD2Model::LoadModel(const char *filename)
 	//set up texture parameters
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);//only the mag is visible for texture so using the faster option here
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);//using properly mipmaped linear algorithm for the mag
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 	// Build the texture and generate mipmaps
 	gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB, b.iwidth, b.iheight, GL_RGB, GL_UNSIGNED_BYTE, b.textureData);
@@ -458,8 +458,11 @@ void MD2Model::RenderFrame(void)
 			float s, t;
 			s = ((float *)ptricmds)[0];
 			t = 1.0f - ((float *)ptricmds)[1];//t of texture coords needs to be inverted here because of the way open gl handles textures
+			
 			//parse texture coordinates
 			glTexCoord2f(s,t);
+			
+			
 			//parse triangle's normal (for the lighting)
 			//>>> only needed if using OpenGL lighting
 			glNormal3fv(anorms[m_lightnormals[ptricmds[2]]]);

@@ -134,11 +134,13 @@
     <ClCompile Include="BMPLoader.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ImageLoader.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="md2.cpp" />
     <ClCompile Include="music.cpp" />
     <ClCompile Include="npc.cpp" />
     <ClCompile Include="SoundEffect.cpp" />
+    <ClCompile Include="Structure.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
@@ -147,10 +149,12 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Ctime.h" />
     <ClInclude Include="ImageLoader.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="md2.h" />
     <ClInclude Include="music.h" />
     <ClInclude Include="npc.h" />
     <ClInclude Include="SoundEffect.h" />
+    <ClInclude Include="Structure.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
