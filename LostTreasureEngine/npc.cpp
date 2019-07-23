@@ -86,6 +86,12 @@ void npc::SetPosition(vec3 pos)
 {
 	position = pos;
 }
+
+void npc::SetPosition(float x, float z, Terrain& t)
+{
+	// Do nothing for NPC
+}
+
 void npc::SetFacing(vec3 faci) 
 {
 	lookAt = faci;

@@ -11,13 +11,14 @@ class World;
 //	@author Bruno Neto
 //	@brief an  class for holding our item object holds a model and the structures needed for loading rendering 
 //	version 1.0
-class Structure
+class Structure : public IGameAsset
 {
 private:
 	MD2Model structureModel;
 	vec3 position;
 	vec3 rotation;
 	float angle;
+	MD2Model* m_model;
 public:
 	/**
 	*	@brief Structure default constructor
@@ -72,6 +73,8 @@ public:
 	*	@pre
 	*	@post
 	*/
+	void SetPosition(vec3 pos);
+
 	void SetPosition(float x, float z, Terrain& t);
 	/**
 	*	@brief sets the rotation vector for Structure
@@ -132,6 +135,8 @@ public:
 	*/
 	virtual void SetFilePath(const std::string& filePath) { m_filePath = filePath; }
 
+	void Update(float deltaTime, Terrain& t);
+
 	void ScaleStructure(float scale);
 	virtual void SetScale(float scale);
 	void LoadStructureModel(const char* modelFilename, const char* modelSkinFilename);
@@ -141,5 +146,6 @@ public:
 	protected:
 		/// Stores the file path containing the data
 		std::string m_filePath;
+
 };
 

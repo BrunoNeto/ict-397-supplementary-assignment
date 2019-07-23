@@ -139,6 +139,8 @@ public:
 	*/
 	virtual void SetPosition(vec3 position) = 0;
 
+	virtual void SetPosition(float x, float z, Terrain& t) = 0;
+
 	/**
 	* @brief Sets the asset scale
 	*

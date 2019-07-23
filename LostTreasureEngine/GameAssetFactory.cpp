@@ -15,7 +15,7 @@ IGameAsset* GameAssetFactory::CreateAsset(ASS_TYPE type, std::string assetName)
 		return new npc();
 		break;
 	case ASS_STRUCTURE:
-		//return new Structure();
+		return new Structure();
 		break;
 	default:
 		return nullptr;

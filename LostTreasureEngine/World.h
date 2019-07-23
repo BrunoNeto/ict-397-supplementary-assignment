@@ -156,9 +156,6 @@ public:
 	void Init();
 	CCamera cam;
 	Terrain t;
-	//npc mynpc;
-	Item treasure;
-	Structure building;
 	float start = 0.0;
 	float curt;
 	float last;
@@ -166,7 +163,9 @@ public:
 	//CTimer timer;
 	
 	GameAssetFactory* m_assetFactory;
-	IGameAsset* modelAsset;
+	IGameAsset* npc;
+	IGameAsset* object;
+	IGameAsset* structure;
 
 	float time;
 	bool bAnimated = true;

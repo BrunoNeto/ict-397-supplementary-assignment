@@ -6,6 +6,9 @@ Object::Object(std::string assetName)
 	m_assetName = assetName;
 	m_model = new MD2Model();
 	position = vec3(0, 0, 0);
+	rotation = vec3(1, 0, 0);
+	angle = 0;
+	itemType = 0;//set to default
 }
 
 void Object::LoadFromFilePath(const char * modelFileName, const char * modelSkinFileName)
@@ -30,6 +33,13 @@ void Object::SetPosition(vec3 pos)
 	position = pos;
 }
 
+void Object::SetPosition(float x, float z, Terrain& t)
+{
+	position.x = x;
+	position.z = z;
+	position.y = t.getHeight(x, z);
+}
+
 void Object::SetRotation(vec3 rot)
 {
 	rotation = rot;
@@ -48,13 +58,14 @@ void Object::Update(float deltaTime, Terrain& t)
 
 void Object::Draw(float time)
 {
-
-	//glPushMatrix();
-	//glTranslatef(position.x, position.y, position.z);
-	//glRotatef(rotationAngle, rotation.x, rotation.y, rotation.z);
-	//npcmodel.DrawModel(time);
-	//glPopMatrix();
+	glPushMatrix();
+	glTranslatef(position.x, position.y, position.z);
+	glRotatef(angle, rotation.x, rotation.y, rotation.z);
+	m_model->DrawModel(time);
+	glPopMatrix();
 }
+
+
 
 
 //void Object::AddTexutre(GLuint textureId, std::string textureFilePath)

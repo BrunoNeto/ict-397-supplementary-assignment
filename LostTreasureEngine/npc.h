@@ -243,6 +243,9 @@ public:
 	*	@pre
 	*	@post
 	*/
+
+	void SetPosition(float x, float z, Terrain& t);
+
 	void SetFacing(vec3 facing);
 	/**
 	*	@brief sets npc acceleration vector
