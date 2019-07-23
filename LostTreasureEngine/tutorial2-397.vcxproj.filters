@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="ImageLoader.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="music.cpp" />
+    <ClCompile Include="SoundEffect.cpp" />
+    <ClCompile Include="Terrain.cpp" />
+    <ClCompile Include="World.cpp" />
+    <ClCompile Include="BMPLoader.cpp" />
+    <ClCompile Include="md2.cpp" />
+    <ClCompile Include="npc.cpp" />
+    <ClCompile Include="Structure.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="OcTree.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="ImageLoader.h" />
+    <ClInclude Include="music.h" />
+    <ClInclude Include="SoundEffect.h" />
+    <ClInclude Include="Terrain.h" />
+    <ClInclude Include="World.h" />
+    <ClInclude Include="Ctime.h" />
+    <ClInclude Include="BMPLoader.h" />
+    <ClInclude Include="md2.h" />
+    <ClInclude Include="npc.h" />
+    <ClInclude Include="Structure.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="OcTree.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+</Project>
