@@ -15,13 +15,14 @@ void World::Init()
 	// Create asset factory
 	m_assetFactory = new GameAssetFactory();
 
-	// Create NPC
+	// Create NPC with factory
 	npc1 = m_assetFactory->CreateAsset(ASS_NPC, "NPC");
 	npc1->LoadFromFilePath("models/hueteotl/tris.md2", "models/hueteotl/hueteotl.bmp");
 	npc1->SetPosition({ (t.getWorldSizeX()/2),80,(t.getWorldSizeZ() - 100)});
 	npc1->SetRotation({ 0,1,0 });
 	npc1->SetAnimation(RUN);
 	m_assetFactory->AddAsset(npc1);
+
 	npc* n1 = new npc();
 	n1->LoadFromFilePath("models/hueteotl/tris.md2", "models/hueteotl/hueteotl.bmp");
 	n1->SetPosition({ (t.getWorldSizeX() ),80,(t.getWorldSizeZ() - 80) });
@@ -82,7 +83,7 @@ void World::cleanup()
 }
 bool World::loadWorld()
 {
-	t.setScalingFactor(5.0, 0.3, 5.0);
+	t.setScalingFactor(10.0, 0.3, 10.0);
 	string filename = "height128.raw";
 	int filesize = 128;
 	
@@ -154,6 +155,12 @@ void World::Update()
 {
 	CTimer::GetInstance()->Update();
 	time = CTimer::GetInstance()->GetTimeMSec() / 1000.0;
+	std::multimap<std::string, IGameAsset*> s = m_assetFactory->GetAssets();
+	for (std::multimap<std::string, IGameAsset*>::iterator it = s.begin(); it != s.end(); it++)
+	{
+		
+		it->second->Update(bAnimated ? time : 0.0,t);//this line draws the factory npc
+	}
 	//npc1->Update(bAnimated ? time : 0.0, t);
 	for (unsigned int i = 0; i < _npcs.size(); i++)
 	{
@@ -169,15 +176,20 @@ void World::Update()
 	last = curt;
 	
 }
-void World::Draw() 
+void World::Draw()
 {
 	time = CTimer::GetInstance()->GetTimeMSec() / 1000.0;
 	cam.Animate(bAnimated ? elapsed : 0.0, t);
 	t.bruteForceRender();
 	structure->Draw(time);
 	object->Draw(time);
-	//npc1->Draw(bAnimated ? time : 0.0);
-	//Draw the balls
+	std::multimap<std::string, IGameAsset*> s = m_assetFactory->GetAssets();
+	for (std::multimap<std::string, IGameAsset*>::iterator it = s.begin(); it != s.end(); it++)
+	{
+		
+		it->second->Draw(time); //this line draws the factory npc 
+	}
+	//Draw the 
 	for (unsigned int i = 0; i < _npcs.size(); i++) 
 	{
 		 _npcs[i]->Draw(bAnimated ? time : 0.0);
