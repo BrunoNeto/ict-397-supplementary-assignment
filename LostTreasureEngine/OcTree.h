@@ -92,6 +92,7 @@ private:
 		}
 	}
 
+
 	//Creates children of this, and moves the npc in this to the children
 	void haveChildren() {
 		for (int x = 0; x < 2; x++) {

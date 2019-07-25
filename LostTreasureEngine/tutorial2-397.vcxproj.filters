@@ -41,6 +41,7 @@
     <ClInclude Include="NPCStates.h" />
     <ClInclude Include="singleton.h" />
     <ClInclude Include="OcTree.h" />
+    <ClInclude Include="Octree2.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

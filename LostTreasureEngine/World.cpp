@@ -152,21 +152,17 @@ float World::getWorldXZHeight(float xpos, float zpos)
 }
 void World::Update() 
 {
-	//CTimer::GetInstance()->Update();
+	CTimer::GetInstance()->Update();
 	time = CTimer::GetInstance()->GetTimeMSec() / 1000.0;
 	//npc1->Update(bAnimated ? time : 0.0, t);
-	//std::multimap<std::string, IGameAsset*> _assets = m_assetFactory->GetAssets();
-	//for (unsigned int i = 0; i < _assets.size(); i++)
-	//{
-		//_assets[i]->Update(bAnimated ? time : 0.0, t);
-		//m_assetFactory->GetAssets()[i]
-		//npc1->Update(bAnimated ? time : 0.0, t);
-	//}
 	for (unsigned int i = 0; i < _npcs.size(); i++)
 	{
 		_npcs[i]->Update(bAnimated ? time : 0.0, t);
-		//npc3->Update(bAnimated ? elapsed : 0.0, t);
+		
 	}
+	
+	
+	_octree->handleNpcNpcCollisions(_npcs,_octree);
 	curt = time;
 	elapsed = curt - last;
 
@@ -180,10 +176,6 @@ void World::Draw()
 	t.bruteForceRender();
 	structure->Draw(time);
 	object->Draw(time);
-	//for (unsigned int i = 0; i < m_assetFactory->GetAssets().size(); i++)
-	//{
-	//	npc1->Update(bAnimated ? time : 0.0, t);
-	//}
 	//npc1->Draw(bAnimated ? time : 0.0);
 	//Draw the balls
 	for (unsigned int i = 0; i < _npcs.size(); i++) 

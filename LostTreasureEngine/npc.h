@@ -35,7 +35,7 @@ private:
 	
 public:
 	bool directionGiven;
-	float r =10;
+	//float r =10;
 	bool Inbounds( Terrain&t);
 	bool onborder(Terrain&t);
 	vec3 velocity;

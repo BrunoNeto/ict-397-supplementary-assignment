@@ -234,7 +234,7 @@ public:
 	* @return void
 	*/
 	virtual void Draw(float time) = 0;
-
+	float r = 40;
 
 
 protected:
