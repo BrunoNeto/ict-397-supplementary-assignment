@@ -252,29 +252,29 @@ float Terrain::getWorldSizeZ()
 {
 	return float(size*scaleZ);
 }
-float Terrain::inWorld(float& x, float& z)
+void Terrain::inWorld(float& x, float& z)
 {
 	if (x < 0)
 	{
 		x = 0;
-		return false;
+		//return false;
 	}
 	else if (x > getWorldSizeX())
 	{
 		x = getWorldSizeX();
-		return false;
+		//return false;
 	}
 	if (z < 0)
 	{
 		z = 0;
-		return false;
+		//return false;
 	}
 	else if (z > getWorldSizeZ())
 	{
 		z = getWorldSizeZ();
-		return false;
+		//return false;
 	}
-	return true;
+	//return true;
 }
 
 void Terrain::bruteForceRender() {
