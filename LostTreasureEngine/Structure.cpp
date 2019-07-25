@@ -2,6 +2,7 @@
 
 Structure::Structure()
 {
+	m_model = new MD2Model();
 	position = vec3(0, 0, 0);
 	rotation = vec3(1, 0, 0);
 	angle = 0;	
@@ -26,6 +27,16 @@ float Structure::GetAngle()
 	return angle;
 }
 
+void Structure::SetPosition(vec3 pos)
+{
+	// Do nothing in structure
+}
+
+void Structure::Update(float deltaTime, Terrain& t)
+{
+	// Do nothing in structure
+}
+
 void Structure::SetPosition(float x, float z, Terrain& t)
 {
 	position.x = x;
@@ -44,8 +55,14 @@ void Structure::SetAngle(float a)
 }
 void Structure::ScaleStructure(float scale)
 {
-	structureModel.ScaleModel(scale);
+	m_model->ScaleModel(scale);
 }
+
+void Structure::SetScale(float scale) 
+{
+	m_model->ScaleModel(scale);
+}
+
 void Structure::LoadStructureModel(const char* modelFileName, const char* modelSkinFileName)
 {
 	structureModel.LoadModel(modelFileName);
@@ -56,6 +73,17 @@ void Structure::Draw(float time)
 	glPushMatrix();
 	glTranslatef(position.x, position.y, position.z);
 	glRotatef(angle, rotation.x, rotation.y, rotation.z);
-	structureModel.DrawModel(time);
+	m_model->DrawModel(time);
 	glPopMatrix();
+}
+
+const void Structure::Destroy()
+{
+	// Todo: destroy all items of Object class
+}
+
+void Structure::LoadFromFilePath(const char * modelFileName, const char * modelSkinFileName)
+{
+	m_model->LoadModel(modelFileName);
+	m_model->LoadSkin(modelSkinFileName);
 }

@@ -183,6 +183,7 @@ float degToRad(float value)
 	float rad = value * 0.0175;
 	return rad;
 }
+
 void CCamera::Animate(float deltaTime,Terrain& t)
 {
 	if ((yaw >= 360.0f) || (yaw <= -360.0f))
@@ -227,7 +228,7 @@ void CCamera::Animate(float deltaTime,Terrain& t)
 	t.inWorld(position.x, position.z);//keeps camera within the border of terrain
 	
 	position.y = float(t.getHeight(position.x, position.z)) +60.0f;//this set y relative to the scaled height of terrain 
-	
+
 	// calculate lookAt based on new position
 	lookAt.x = float(position.x + cosYaw);
 	lookAt.y = float(position.y + sinPitch);

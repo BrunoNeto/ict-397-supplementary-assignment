@@ -3,8 +3,8 @@
 #include "md2.h"
 #include <glm/glm.hpp>
 #include <string>
+#include "IGameAsset.h"
 #include "Terrain.h"
-
 #include "state.h"
 #include "stateMachine.h"
 #include "NPCStates.h"
@@ -16,10 +16,11 @@ using namespace glm;
 //	@author Bruno Neto
 //	@brief an  class for holding our npc object holds a model and the structures needed for loading rendering and animating
 //	version 1.0
-class npc
+class npc : public IGameAsset
 {
 private:
 	MD2Model npcmodel;//the actual model data of the npc
+	MD2Model* m_npcmodel;
 	vec3 position;//position of the npc in the world
 	vec3 rotation;//vector for storing which axis to rotate in
 	float rotationAngle;// the angle to rotate by
@@ -31,6 +32,9 @@ private:
 	//state will be a variable
 
 	stateMachine<npc>* NPCSM; //ADDED FOR STATE
+
+	/// Stores the file path containing the data
+	std::string m_filePath;
 	
 	
 public:
@@ -108,14 +112,7 @@ public:
 	*/
 	void Move(float deltaTime, Terrain& gameworld);
 	vec3 velocity;
-	/**
-	*	@brief gets the npc model
-	*   @see
-	*	@param
-	*	@return the npc model
-	*	@pre
-	*	@post
-	*/
+
 	MD2Model GetModel();
 	/**
 	*	@brief gets the npc position vector
@@ -246,6 +243,9 @@ public:
 	*	@pre
 	*	@post
 	*/
+
+	void SetPosition(float x, float z, Terrain& t);
+
 	void SetFacing(vec3 facing);
 	/**
 	*	@brief sets npc acceleration vector
@@ -304,5 +304,47 @@ public:
 	*	@post
 	*/
 	void Draw(float time);
+
+	/**
+		* @brief Loads an NPC from file
+		*
+		* Takes the parameter string file path and loads the NPC data into the
+		* corresponding model member variable.
+		*
+		* @param std::string filePath
+		* @return void
+		*/
+	virtual void LoadFromFilePath(const char * modelFileName, const char * modelSkinFileName);
+
+	virtual const void Destroy();
+
+	/**
+	* @brief Gets the file path
+	*
+	* Returns the file path containing the NPC information.
+	*
+	* @return std::string
+	*/
+	virtual const std::string & GetFilePath() const;
+
+	/**
+	* @brief Sets the file path
+	*
+	* Sets the file path containing the NPC information.
+	*
+	* @param std::string& filePath
+	* @return void
+	*/
+	virtual void SetFilePath(const std::string& filePath);
+
+	//virtual void SetCamera(CCamera camera) { npcmodel.SetCamera(camera); }
+
+	//virtual void SetScale(glm::vec3 scale) { npcmodel.SetScale(scale); }
+
+	void SetScale(float scale);
+
+	//virtual void AddTexutre(GLuint textureId, std::string textureFilePath) { }
+
+
 };
 

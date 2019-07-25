@@ -1,10 +1,8 @@
 #include "npc.h"
 
-
-
 npc::npc()
 {
-	
+	m_npcmodel = new MD2Model();
 	lookAt = vec3(0.0, 0.0, -1.0);
 	position = vec3(0,0,0);
 	velocity = vec3(0.0, 0.0, 0.0);
@@ -22,6 +20,12 @@ npc::npc()
 npc::~npc()
 {
 	delete NPCSM; //removes the state machine completely
+}
+
+const void npc::Destroy()
+{
+	// Needs to be implemented
+	return void();
 }
 
 MD2Model npc::GetModel() 
@@ -82,6 +86,12 @@ void npc::SetPosition(vec3 pos)
 {
 	position = pos;
 }
+
+void npc::SetPosition(float x, float z, Terrain& t)
+{
+	// Do nothing for NPC
+}
+
 void npc::SetFacing(vec3 faci) 
 {
 	lookAt = faci;
@@ -194,14 +204,36 @@ void npc::Update(float deltaTime, Terrain& t)
 	Move(deltaTime, t);
 	
 }
+
 void npc::Draw(float time)
 {
-	
 	glPushMatrix();
 	glTranslatef(position.x, position.y, position.z);
 	glRotatef(rotationAngle, rotation.x, rotation.y, rotation.z);
-	npcmodel.DrawModel(time);
+	//npcmodel.DrawModel(time);
+	m_npcmodel->DrawModel(time);
 	glPopMatrix();
-	
-	
 }
+
+
+void npc::LoadFromFilePath(const char * modelFileName, const char * modelSkinFileName)
+{
+	m_npcmodel->LoadModel(modelFileName);
+	m_npcmodel->LoadSkin(modelSkinFileName);
+}
+
+const std::string& npc::GetFilePath() const
+{
+	return m_filePath;
+}
+
+void npc::SetFilePath(const std::string & filePath)
+{
+	m_filePath = filePath;
+}
+
+void npc::SetScale(float scale)
+{
+	m_npcmodel->ScaleModel(scale);
+}
+
