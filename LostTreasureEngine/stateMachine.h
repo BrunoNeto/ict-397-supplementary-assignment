@@ -31,9 +31,7 @@ public:
 	void setPreviousState(state<entity_type>* st) { previousState = st; }
 	void setCurrentState(state<entity_type>* st) { currentState = st; }
 	void setGlobalState(state<entity_type>* st) { globalState = st; }
-	void exitState(npc* owner) {currentState->Exit(owner); }
-	void enterState(npc* owner) { currentState->Enter(owner); }
-	void executeState(npc* owner) { currentState->Execute(owner); }
+
 	//Called whenever the stateMachine is updated
 	void update()const
 	{

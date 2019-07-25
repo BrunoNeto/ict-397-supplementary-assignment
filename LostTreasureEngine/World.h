@@ -5,7 +5,6 @@
 #include "npc.h"
 #include "Camera.h"
 #include "Ctime.h"
-#include "OcTree.h"
 //	@brief World class for our world object
 //	@todo once i have figured out everything world need it must be seperated int 2 classes one with data and the other as a controller
 //	@author Bruno Neto
@@ -149,11 +148,9 @@ public:
 	*	@pre
 	*	@post
 	*/
-	//Deletes everything.  This should be called when exiting the program.
-	void CleanUp(); 
 	void Update();
 	void PauseWorld();
-	Terrain GetTerrain();
+	
 	CCamera* GetCam();
 	void Init();
 	CCamera cam;
@@ -166,9 +163,7 @@ public:
 	float last;
 	float elapsed;
 	//CTimer timer;
-	vector<npc*> _npcs; //All of the balls in play
-
-	Octree _octree = Octree(vec3(0, 0, 0), vec3(t.getWorldSizeX(), t.getWorldSizeX(), t.getWorldSizeZ()), 1, t.getWorldSizeX());; //An octree with all af the balls
+	
 	float time;
 	bool bAnimated = true;
 	

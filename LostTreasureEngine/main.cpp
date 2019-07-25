@@ -2,26 +2,32 @@
 //then key press of r will make the terrain switch to data loaded from raw file and apply texture 
 //or t will switch to a newly generated terrain that is textured
 //w will activate wireframe mode and s will activate standard view
-
+//#include "Terrain.h"
+//#include "camera.h"
 #include "World.h"
 #include <iostream>
 #include<string>
+//#include <lua.hpp>
 #include "music.h"
 #include "SoundEffect.h"
-
-
-
+//#include "Ctime.h"
+//#include "npc.h"
+//#include "md2.h"
+//#include "Item.h"
+//#include "Structure.h"
 using namespace std;
+
 
 int w = 800;
 int h = 600;
 int oldx = w / 2;
 int oldy = h / 2;
-
+//CCamera cam;
 World gameWorld;
 //float MovementSpeed = 2.0f;
 float playerHeight = 5;
 const float piover180 = 0.0174532925f;
+//float heading;
 int xpos = gameWorld.getWorldSize() / 2;
 int zpos = gameWorld.getWorldSize();
 float ypos = (float)gameWorld.getWorldXZHeight(xpos, zpos) + playerHeight;
@@ -31,14 +37,20 @@ float ypos = (float)gameWorld.getWorldXZHeight(xpos, zpos) + playerHeight;
 float mouseSensitivity = 1.0f;
 GLfloat	yrot;				// Y Rotation
 GLfloat walkbias = 0;
-CTimer *CTimer::m_singleton = 0;
+//GLfloat walkbiasangle = 0;
+//GLfloat lookupdown = 0.0f;
+//GLfloat	z = 0.0f;
+//double delta = 0;
+//float current;
+//double old=0;
 
 SoundEffect soundEffectTest;
-//variables for the octree
+// initialize timer singleton
+CTimer *CTimer::m_singleton = 0;
 
-
-
-//float time;
+//npc	mynpc;
+//Item treasure;
+//Structure building;
 
 #define MAX_TEXTURES 100								// The maximum amount of textures to load
 // This holds the texture info by an ID
@@ -54,10 +66,8 @@ UINT g_Texture[MAX_TEXTURES] = { 0 };
 void Idle() 
 {
 	//CTimer::GetInstance()->Update();
-	//float time = CTimer::GetInstance()->GetTimeMSec() / 1000.0;
+	//float timesec = CTimer::GetInstance()->GetTimeMSec() / 1000.0;	
 	gameWorld.Update();
-	
-
 	glutPostRedisplay();
 	
 }
@@ -214,7 +224,8 @@ bool CreateTexture(GLuint &textureID, const char * szFileName)                  
 void render()
 {
 	
-	float timesec = CTimer::GetInstance()->GetTimeMSec() / 1000.0;
+	
+	//float timesec = CTimer::GetInstance()->GetTimeMSec() / 1000.0;
 	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();									// Reset The View
@@ -223,7 +234,7 @@ void render()
 	glLoadIdentity();
 	
 	
-	DrawSkyBox(0, 0, 0, 3000, 3000, 3000);
+	DrawSkyBox(gameWorld.getWorldSize()/2, gameWorld.getWorldSize()/2, gameWorld.getWorldSize()/2, 3000, 3000, 3000);
 	
 	gameWorld.Draw();
 	
@@ -305,7 +316,6 @@ void kb(unsigned char kbq, int x, int y)
 		gameWorld.PauseWorld();
 		break;
 	case 27:
-		
 		exit(0);
 		break;
 	}
@@ -314,7 +324,6 @@ void kb(unsigned char kbq, int x, int y)
 
 void  myinit(void)
 {
-	//glutFullScreen();
 	gameWorld.loadWorldTexture();
 	gameWorld.Init();
 	soundEffectTest.load("sample.wav");//load in a random sound effect for testing
@@ -389,7 +398,7 @@ int main(int argc, char** argv) {
 	glutMainLoop();
 
 
-	//cleanup();
+
 	return 0;
 }
 

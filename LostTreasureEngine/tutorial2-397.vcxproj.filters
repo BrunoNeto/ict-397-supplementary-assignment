@@ -35,7 +35,6 @@
     <ClInclude Include="stateMachine.h" />
     <ClInclude Include="NPCStates.h" />
     <ClInclude Include="singleton.h" />
-    <ClInclude Include="OcTree.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

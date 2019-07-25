@@ -24,7 +24,7 @@ private:
 	vec3 rotation;//vector for storing which axis to rotate in
 	float rotationAngle;// the angle to rotate by
 	vec3 lookAt;//the vecor for direction the npc is facing
-	vec3 initLookAt;
+	
 	vec3 acceleration;		// acceleration of npc
 	int currentAnimation;//the animation currently set on the md2 model
 	string interactionMsg;//the current set interaction message of the npc
@@ -34,10 +34,6 @@ private:
 	
 	
 public:
-	bool directionGiven;
-	float r =10;
-	bool Inbounds( Terrain&t);
-	bool onborder(Terrain&t);
 	/**
 	*	@brief npc default constructor
 	*   @see
@@ -309,5 +305,4 @@ public:
 	*/
 	void Draw(float time);
 };
-
 
