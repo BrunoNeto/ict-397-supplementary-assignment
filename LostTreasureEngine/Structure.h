@@ -65,6 +65,14 @@ public:
 	*	@post
 	*/
 	float GetAngle();
+	/**
+	*	@brief deletes the Structure
+	*   @see
+	*	@param
+	*	@return void
+	*	@pre
+	*	@post
+	*/
 	virtual const void Destroy();
 	/**
 	*	@brief sets the animation of the model stored within npc
@@ -94,7 +102,7 @@ public:
 	*/
 	virtual void SetFilePath(const std::string& filePath) { m_filePath = filePath; }
 	/**
-	*	@brief sets the position of the npc
+	*	@brief sets the position of the Structure
 	*   @see
 	*	@param position the position vector of the model
 	*	@return void
@@ -110,7 +118,6 @@ public:
 	*	@pre
 	*	@post
 	*/
-
 	void SetPosition(float x, float z, Terrain& t);
 	/**
 	*	@brief sets the rotation vector for Structure
@@ -139,8 +146,34 @@ public:
 	*	@post
 	*/
 	void SetScale(float scale);
+	/**
+	*	@brief loads the modelfile and texture file to be used for structure's model, note that we will be using an md2 model with only 1 part
+	*   @see
+	*	@param modelFileName the name/address of the model file
+	*	@param modelSkinFileName the name/address of the texture file
+	*	@return void
+	*	@pre modelFileName must point to a valid md2 model, modelSkinFilename must point to a valid 24bit bitmap file
+	*	@post
+	*/
 	void LoadFromFilePath(const char* modelFilename, const char* modelSkinFilename);
+	/**
+	*	@brief draws the structure
+	*   @see
+	*	@param time variable used to determine frame to draw
+	*	@return void
+	*	@pre
+	*	@post
+	*/
 	void Draw(float deltatime);
+	/**
+	*	@brief structure update , doesn't do anything at all included for inheritance prposes
+	*   @see
+	*	@param detlaTime the elapsed time since last update
+	*	@param t the gameworld terrain being referenced for movement (used to getheight)
+	*	@return void
+	*	@pre
+	*	@post
+	*/
 	void Update(float deltaTime, Terrain& t);
 };
 

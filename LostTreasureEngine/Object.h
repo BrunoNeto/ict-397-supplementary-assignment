@@ -58,7 +58,11 @@ public:
 	* @return void
 	*/
 	virtual void LoadFromFilePath(const char * modelFileName, const char * modelSkinFileName);
-
+	/**
+	* @brief the destructor for object/item class
+	* @param 
+	* @return void
+	*/
 	virtual const void Destroy();
 
 	/**
@@ -79,33 +83,63 @@ public:
 	* @return void
 	*/
 	virtual void SetFilePath(const std::string& filePath) { m_filePath = filePath; }
-
-	void SetPosition(vec3 position);
 	/**
-	*	@brief sets the facing of the npc
+	*	@brief sets the position of the object
 	*   @see
-	*	@param facing the front facing vector of the model
+	*	@param position the position vector of the model
 	*	@return void
 	*	@pre
 	*	@post
 	*/
-
+	void SetPosition(vec3 position);
+	
+	/**
+	*	@brief sets the position of the object
+	*   @see
+	*	@param float x the x position
+	*	@param float z the z position
+	*	@param Terrain t the terrain used for getting height
+	*	@return void
+	*	@pre
+	*	@post
+	*/
 	void SetPosition(float x, float z, Terrain& t);
-
+	/**
+	*	@brief sets the rotaion of the npc to the value given
+	*   @see
+	*	@param glm::vec3 rot the value to set rotation to
+	*	@return void
+	*	@pre
+	*	@post
+	*/
 	void SetRotation(vec3 rot);
 	/**
-	*	@brief sets the height of the npc to the value given
+	*	@brief sets the scale of the npc to the value given
 	*   @see
-	*	@param y the value to set the height to
+	*	@param float scale the value to set scale to
 	*	@return void
 	*	@pre
 	*	@post
 	*/
-
 	void SetScale(float scale);
-
+	/**
+	*	@brief structure update , doesn't do anything at all included for inheritance prposes
+	*   @see
+	*	@param detlaTime the elapsed time since last update
+	*	@param t the gameworld terrain being referenced for movement (used to getheight)
+	*	@return void
+	*	@pre
+	*	@post
+	*/
 	void Update(float deltaTime, Terrain& t);
-
+	/**
+	*	@brief draws the npc
+	*   @see
+	*	@param time the value to use for time
+	*	@return void
+	*	@pre
+	*	@post
+	*/
 	void Draw(float time);
 	/**
 	*	@brief sets the animation of the model stored within npc

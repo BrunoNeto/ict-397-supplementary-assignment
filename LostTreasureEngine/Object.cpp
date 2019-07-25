@@ -20,6 +20,7 @@ void Object::LoadFromFilePath(const char * modelFileName, const char * modelSkin
 void Object::SetAnimation(int animEnumeration) { m_model->SetAnim(animEnumeration); }
 const void Object::Destroy()
 {
+	delete m_model;
 	// Todo: destroy all items of Object class
 }
 
