@@ -10,6 +10,7 @@
 #include	<GL/freeglut.h>
 #include	<fstream>
 #include	<iostream>
+#include <glm/glm.hpp>
 #include "BMPLoader.h"
 
 
@@ -240,6 +241,92 @@ public:
 	void	ScaleModel(float s) { m_scale = s; }
 
 
+
+	/**
+	* @brief Gets the models position
+	*
+	* Returns the position of the model as a glm::vec3.
+	*
+	* @return glm::vec3&
+	*/
+	glm::vec3& GetPosition() { return m_position; }
+
+	/**
+	* @brief Sets the models position
+	*
+	* Sets the position of the model using the parameter given.
+	*
+	* @param glm::vec3 position
+	* @return void
+	*/
+	void SetPosition(glm::vec3 position);
+
+	/**
+	* @brief Gets the models rotation
+	*
+	* Returns the rotation of the model as a glm::vec3.
+	*
+	* @return glm::vec3&
+	*/
+	glm::vec3& GetRotation() { return m_rotation; }
+
+	/**
+	* @brief Sets the models rotation
+	*
+	* Sets the rotation of the model using the parameter given.
+	*
+	* @param glm::vec3 rotation
+	* @return void
+	*/
+	void SetRotation(glm::vec3 rotation);
+
+	/**
+	* @brief Gets the models scale
+	*
+	* Returns the scale of the model as a glm::vec3.
+	*
+	* @return glm::vec3&
+	*/
+	glm::vec3& GetScale() { return m_scaleVector; }
+
+	/**
+	* @brief Sets the models scale
+	*
+	* Sets the rotation of the model using the parameter given.
+	*
+	* @param glm::vec3 scale
+	* @return void
+	*/
+	void SetScale(glm::vec3 scale);
+
+	/**
+	* @brief Gets the camera object
+	*
+	* Returns a pointer to the camera object to access the view and projection matrices.
+	*
+	* @return Camera*
+	*/
+	//CCamera GetCamera() { return m_camera; }
+
+	/**
+	* @brief Sets the camera object
+	*
+	* Sets the camera object to the world camera object to retrieve the view and projection
+	* matrices.
+	*
+	* @return const void
+	*/
+	//const void SetCamera(CCamera camera) { m_camera = camera; }
+
+	/**
+	* @brief Gets the mesh batch
+	*
+	* Returns the vector of meshes of the model by reference.
+	*
+	* @return std::vector<Mesh>&
+	*/
+
+
 private:
 	/**
 	*	@brief calculate the current frame, next frame and interpolation percent.
@@ -278,7 +365,6 @@ private:
 	*/
 	void	RenderFrame(void);
 
-
 public:
 	// member variables
 	static vec3_t	anorms[NUMVERTEXNORMALS];
@@ -286,6 +372,12 @@ public:
 	unsigned int gl_texture_object;
 	static anim_t	animlist[21];		// animation list
 
+protected:
+		glm::vec3 m_position;
+		glm::vec3 m_rotation;
+		glm::vec3 m_scaleVector;
+
+		//CCamera m_camera;
 
 private:
 	int				num_frames;			// number of frames

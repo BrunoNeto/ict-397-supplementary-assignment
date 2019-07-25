@@ -17,7 +17,7 @@ void Object::LoadFromFilePath(const char * modelFileName, const char * modelSkin
 	m_model->LoadSkin(modelSkinFileName);
 }
 
-void Object::SetAnimation(int animEnumeration) { m_model->SetAnim(animEnumeration); }
+
 const void Object::Destroy()
 {
 	// Todo: destroy all items of Object class

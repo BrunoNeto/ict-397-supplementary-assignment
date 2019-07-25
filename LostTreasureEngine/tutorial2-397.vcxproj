@@ -163,7 +163,6 @@
     <ClInclude Include="npc.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="NPCStates.h" />
-    <ClInclude Include="OcTree.h" />
     <ClInclude Include="singleton.h" />
     <ClInclude Include="SoundEffect.h" />
     <ClInclude Include="state.h" />

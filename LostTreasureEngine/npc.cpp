@@ -1,13 +1,11 @@
 #include "npc.h"
 
-
-
 npc::npc()
 {
-	
-	initLookAt = vec3(0.0, 0.0, 1.0);
+	m_npcmodel = new MD2Model();
+	lookAt = vec3(0.0, 0.0, -1.0);
 	position = vec3(0,0,0);
-	velocity = vec3(0.0, 0.0, 0.01);
+	velocity = vec3(0.0, 0.0, 0.0);
 	acceleration = vec3(0.0, 0.0, 0.0);
 	currentAnimation = 0;
 	interactionMsg = "Hey there stranger";
@@ -18,39 +16,16 @@ npc::npc()
 	NPCSM->setGlobalState(&wander_state::Instance());
 }
 
-const void npc::Destroy()
-{
-	
-	delete NPCSM;
-}
+
 npc::~npc()
 {
-	Destroy(); //removes the state machine completely
+	delete NPCSM; //removes the state machine completely
 }
-bool npc::Inbounds(Terrain&t) 
+
+const void npc::Destroy()
 {
-	if (position.x < 0 || position.x > t.getWorldSizeX())
-	{
-			return false;
-	}
-	else if (position.z < 0 && position.z > t.getWorldSizeZ())
-	{
-		return false;
-	}
-	else return true;
-}
-bool npc::onborder(Terrain&t)
-{
-	if (position.x <= 0 || position.z <=0)
-	{
-		return true;
-	}
-	else if (position.x >= t.getWorldSizeX() || position.z >= t.getWorldSizeZ())
-	{
-		return true;
-	}
-	else { return false; }
-	
+	// Needs to be implemented
+	return void();
 }
 
 MD2Model npc::GetModel() 
@@ -64,7 +39,7 @@ vec3 npc::GetPosition()
 }
 vec3 npc::GetFacing() 
 {
-	return initLookAt;
+	return lookAt;
 }
 vec3 npc::GetVelocity()
 {
@@ -101,13 +76,8 @@ void npc::SetRotationAngle(float rot)
 {
 	rotationAngle = rot;
 }
-void npc::SetPosition(float x, float z, Terrain& t) 
-{
-	position.x = x;
-	position.z = z;
-	position.y = t.getHeight(x, z);
-}
-void npc::LoadFromFilePath(const char * modelFileName, const char * modelSkinFileName)
+
+void npc::SetModel(const char * modelFileName, const char * modelSkinFileName)
 {
 	npcmodel.LoadModel(modelFileName);
 	npcmodel.LoadSkin(modelSkinFileName);
@@ -116,9 +86,15 @@ void npc::SetPosition(vec3 pos)
 {
 	position = pos;
 }
+
+void npc::SetPosition(float x, float z, Terrain& t)
+{
+	// Do nothing for NPC
+}
+
 void npc::SetFacing(vec3 faci) 
 {
-	initLookAt = faci;
+	lookAt = faci;
 }
 void npc::SetVelocity(vec3 v) 
 {
@@ -136,7 +112,7 @@ void npc::SetHeight(float y)
 {
 	position.y = y;
 }
-void npc::SetScale(float scale) 
+void npc::ScaleNPC(float scale) 
 {
 	npcmodel.ScaleModel(scale);
 }
@@ -171,6 +147,7 @@ float degToRad2(float value)
 }
 void npc::Move(float deltaTime, Terrain& t)
 {
+<<<<<<< HEAD
 	if (rotationAngle > 0 || rotationAngle < 0)//if rotation is at an amount higher or less than 0 calculate new velocity
 	{//update velocity vector with new heading
 		velocity.x = (initLookAt.z*sin(degToRad2(rotationAngle)) + initLookAt.x*cos(degToRad2(rotationAngle)));
@@ -179,12 +156,14 @@ void npc::Move(float deltaTime, Terrain& t)
 	}
 	
 	
+=======
+	velocity.z = -0.01;
+>>>>>>> parent of 4c8f2b9... merged factory into world fixed some wander bug
 	//velocity z-component
+	float speed = velocity.z * deltaTime;
+
 	// strafe speed is velocity x-component
 	float strafeSpeed = velocity.x * deltaTime;
-	float speed = velocity.z * deltaTime;
-	
-	
 
 	// speed limit
 	if (speed > 0.5)
@@ -224,48 +203,60 @@ void npc::Move(float deltaTime, Terrain& t)
 		acceleration = -velocity * 1.0f;
 
 	velocity += acceleration * deltaTime;
-	// calculate new position of npc this part is working though in world coordinates not character may need to build rotation matrix and mvp for these calcs
+	// calculate new position of npc
 	position.x += strafeSpeed;
 	position.z += speed;
-	NPCSM->executeState(this);
-	if(!Inbounds(t)) 
-	{
-		NPCSM->exitState(this);
-		NPCSM->enterState(this);
-		NPCSM->executeState(this);
-		
-	}
-	if (onborder(t))
-	{
-		NPCSM->exitState(this);
-		NPCSM->enterState(this);
-		NPCSM->executeState(this);
-	}
-	t.inWorld(position.x, position.z);//keeps npc within the border of terrain also working
+	t.inWorld(position.x, position.z);//keeps npc within the border of terrain
 
-	position.y = float(t.getHeight(position.x, position.z)) + 25;//to set y relative to the scaled height of terrain 	
+	position.y = float(t.getHeight(position.x, position.z)) + 25;//to set y relative to the scaled height of terrain 
+
+	// calculate lookAt based on new position
+	lookAt.x = float(position.x);
+	lookAt.y = float(position.y);
+	lookAt.z = float(position.z);
+
 	
 }
-
 void npc::Update(float deltaTime, Terrain& t)
 {
 	// this function will be used to update world positions and do state stuuf
-	//NPCSM->update();
+		//SetHeight(y+25);
+	NPCSM->update();
+	
+
 	Move(deltaTime, t);
 	
-	
-	
 }
+
 void npc::Draw(float time)
 {
-	
 	glPushMatrix();
 	glTranslatef(position.x, position.y, position.z);
 	glRotatef(rotationAngle, rotation.x, rotation.y, rotation.z);
-	npcmodel.DrawModel(time);
+	//npcmodel.DrawModel(time);
+	m_npcmodel->DrawModel(time);
 	glPopMatrix();
-	
-	
-	
-	
 }
+
+
+void npc::LoadFromFilePath(const char * modelFileName, const char * modelSkinFileName)
+{
+	m_npcmodel->LoadModel(modelFileName);
+	m_npcmodel->LoadSkin(modelSkinFileName);
+}
+
+const std::string& npc::GetFilePath() const
+{
+	return m_filePath;
+}
+
+void npc::SetFilePath(const std::string & filePath)
+{
+	m_filePath = filePath;
+}
+
+void npc::SetScale(float scale)
+{
+	m_npcmodel->ScaleModel(scale);
+}
+

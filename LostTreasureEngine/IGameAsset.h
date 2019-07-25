@@ -88,15 +88,7 @@ public:
 	* @return const std::string
 	*/
 	virtual const std::string& GetFilePath() const = 0;
-	/**
-	* @brief Sets the asset file path
-	*
-	* Virtual function to set a file path.
-	*
-	* @param const std::string& filePath
-	* @return void
-	*/
-	virtual void SetAnimation(int animId) = 0;
+
 	/**
 	* @brief Sets the asset file path
 	*

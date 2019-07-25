@@ -172,6 +172,4 @@ public:
 	*	@post
 	*/
 	void Animate(float deltaTime,Terrain& t);//should prob pass this in by reference or work directly with heightmap
-	
-	
 };

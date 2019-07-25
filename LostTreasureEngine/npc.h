@@ -3,8 +3,8 @@
 #include "md2.h"
 #include <glm/glm.hpp>
 #include <string>
-#include "Terrain.h"
 #include "IGameAsset.h"
+#include "Terrain.h"
 #include "state.h"
 #include "stateMachine.h"
 #include "NPCStates.h"
@@ -20,24 +20,24 @@ class npc : public IGameAsset
 {
 private:
 	MD2Model npcmodel;//the actual model data of the npc
+	MD2Model* m_npcmodel;
 	vec3 position;//position of the npc in the world
 	vec3 rotation;//vector for storing which axis to rotate in
 	float rotationAngle;// the angle to rotate by
 	vec3 lookAt;//the vecor for direction the npc is facing
-	vec3 initLookAt;
+	
 	vec3 acceleration;		// acceleration of npc
 	int currentAnimation;//the animation currently set on the md2 model
 	string interactionMsg;//the current set interaction message of the npc
 	//state will be a variable
-	string m_filePath;
+
 	stateMachine<npc>* NPCSM; //ADDED FOR STATE
+
+	/// Stores the file path containing the data
+	std::string m_filePath;
 	
 	
 public:
-	bool directionGiven;
-	float r =10;
-	bool Inbounds( Terrain&t);
-	bool onborder(Terrain&t);
 	/**
 	*	@brief npc default constructor
 	*   @see
@@ -112,14 +112,7 @@ public:
 	*/
 	void Move(float deltaTime, Terrain& gameworld);
 	vec3 velocity;
-	/**
-	*	@brief gets the npc model
-	*   @see
-	*	@param
-	*	@return the npc model
-	*	@pre
-	*	@post
-	*/
+
 	MD2Model GetModel();
 	/**
 	*	@brief gets the npc position vector
@@ -232,38 +225,7 @@ public:
 	*	@pre modelFileName must point to a valid md2 model, modelSkinFilename must point to a valid 24bit bitmap file 
 	*	@post
 	*/
-	
-	void LoadFromFilePath(const char* modelFileName, const char* modelSkinFilename);
-	
-	virtual const void Destroy();
-
-	/**
-	* @brief Gets the file path
-	*
-	* Returns the file path containing the object information.
-	*
-	* @return std::string
-	*/
-	virtual const std::string& GetFilePath() const { return m_filePath; }
-
-	/**
-	* @brief Sets the file path
-	*
-	* Sets the file path containing the object information.
-	*
-	* @param std::string& filePath
-	* @return void
-	*/
-	virtual void SetFilePath(const std::string& filePath) { m_filePath = filePath; }
-	/**
-	*	@brief sets the position of the npc
-	*   @see
-	*	@param position the position vector of the model
-	*	@return void
-	*	@pre
-	*	@post
-	*/
-	void SetPosition(float x, float z, Terrain& t);
+	void SetModel(const char* modelFileName, const char* modelSkinFilename);
 	/**
 	*	@brief sets the position of the npc
 	*   @see
@@ -281,6 +243,9 @@ public:
 	*	@pre
 	*	@post
 	*/
+
+	void SetPosition(float x, float z, Terrain& t);
+
 	void SetFacing(vec3 facing);
 	/**
 	*	@brief sets npc acceleration vector
@@ -317,7 +282,7 @@ public:
 	*	@pre
 	*	@post
 	*/
-	void SetScale(float scale);
+	void ScaleNPC(float scale);
 	//void SetState();
 	/**
 	*	@brief npc update , processes movement using time and gameworld reference, 
@@ -339,6 +304,47 @@ public:
 	*	@post
 	*/
 	void Draw(float time);
-};
 
+	/**
+		* @brief Loads an NPC from file
+		*
+		* Takes the parameter string file path and loads the NPC data into the
+		* corresponding model member variable.
+		*
+		* @param std::string filePath
+		* @return void
+		*/
+	virtual void LoadFromFilePath(const char * modelFileName, const char * modelSkinFileName);
+
+	virtual const void Destroy();
+
+	/**
+	* @brief Gets the file path
+	*
+	* Returns the file path containing the NPC information.
+	*
+	* @return std::string
+	*/
+	virtual const std::string & GetFilePath() const;
+
+	/**
+	* @brief Sets the file path
+	*
+	* Sets the file path containing the NPC information.
+	*
+	* @param std::string& filePath
+	* @return void
+	*/
+	virtual void SetFilePath(const std::string& filePath);
+
+	//virtual void SetCamera(CCamera camera) { npcmodel.SetCamera(camera); }
+
+	//virtual void SetScale(glm::vec3 scale) { npcmodel.SetScale(scale); }
+
+	void SetScale(float scale);
+
+	//virtual void AddTexutre(GLuint textureId, std::string textureFilePath) { }
+
+
+};
 

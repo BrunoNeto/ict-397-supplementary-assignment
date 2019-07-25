@@ -107,15 +107,7 @@ public:
 	void Update(float deltaTime, Terrain& t);
 
 	void Draw(float time);
-	/**
-	*	@brief sets the animation of the model stored within npc
-	*   @see
-	*	@param animEnumeration an int corresponding to one of the stored animations in the model
-	*	@return void
-	*	@pre
-	*	@post
-	*/
-	void SetAnimation(int animEnumeration); 
+
 protected:
 	/// Stores the file path containing the data
 	std::string m_filePath;
