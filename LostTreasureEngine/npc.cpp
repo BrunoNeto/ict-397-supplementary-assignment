@@ -171,13 +171,13 @@ float degToRad2(float value)
 }
 void npc::Move(float deltaTime, Terrain& t)
 {
-	if (rotationAngle > 0)//if rotation is at an amount higher than 0 calculate new velocity
+	if (rotationAngle > 0 || rotationAngle < 0)//if rotation is at an amount higher or less than 0 calculate new velocity
 	{//update velocity vector with new heading
-		velocity.x = (initLookAt.z*sin(degToRad2(rotationAngle)) + initLookAt.x*cos(degToRad2(rotationAngle)))/10;
-		velocity.z = (initLookAt.z*cos(degToRad2(rotationAngle)) - initLookAt.x*sin(degToRad2(rotationAngle)))/10;
+		velocity.x = (initLookAt.z*sin(degToRad2(rotationAngle)) + initLookAt.x*cos(degToRad2(rotationAngle)));
+		velocity.z = (initLookAt.z*cos(degToRad2(rotationAngle)) - initLookAt.x*sin(degToRad2(rotationAngle)));
 		
 	}
-
+	
 	
 	//velocity z-component
 	// strafe speed is velocity x-component
@@ -187,14 +187,26 @@ void npc::Move(float deltaTime, Terrain& t)
 	
 
 	// speed limit
-	if (speed > 15.0)
-		speed = 15.0;
-	if (strafeSpeed > 15.0)
-		strafeSpeed = 15.0;
-	if (speed < -15.0)
-		speed = -15.0;
-	if (strafeSpeed < -15.0)
-		strafeSpeed = -15.0;
+	if (speed > 0.5)
+	{
+		speed = 0.5;
+	}
+		
+	if (strafeSpeed > 0.5)
+	{
+		strafeSpeed = 0.5;
+	}
+		
+	if (speed < -0.5)
+	{
+		speed = -0.5;
+	}
+		
+	if (strafeSpeed < -0.5)
+	{
+		strafeSpeed = -0.5;
+	}
+		
 	//if (speed > 0 || strafeSpeed > 0)
 	//{
 		//if (this->GetCurrentAnimation() != RUN)

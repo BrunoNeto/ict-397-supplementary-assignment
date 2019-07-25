@@ -15,7 +15,7 @@ void Wander::Execute(npc* dude)
 	{
 		/*Having the line below results in an strange glitch, that could prove to be useful.*/
 		srand(static_cast<unsigned>(time(0))); //randomizes the seed
-		val = (rand() % 359)*10;
+		val = (rand() % 360)*10;
 		
 		dude->SetRotationAngle(val);
 		
