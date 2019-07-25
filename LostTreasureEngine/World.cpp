@@ -6,11 +6,23 @@ World::World()
 {
 	loadWorld();
 	
-	
+	t.getWorldSizeX();
 }
 void World::Init() 
 {
 	CTimer::GetInstance()->Initialize();
+
+		npc* npc1 = new npc();
+		npc1->SetModel("models/hueteotl/tris.md2", "models/hueteotl/hueteotl.bmp");
+		npc1->SetAnimation(RUN);
+		npc1->SetPosition({ (t.getWorldSizeX() / 2),300,(t.getWorldSizeZ() - 200) });
+		npc1->SetRotation({ 0,1,0 });
+		
+		_npcs.push_back(npc1);
+		_octree.add(npc1);
+
+	
+	
 	mynpc.SetModel("models/hueteotl/tris.md2", "models/hueteotl/hueteotl.bmp");
 	mynpc.SetAnimation(RUN);
 	mynpc.SetPosition({ (t.getWorldSizeX() / 2),300,(t.getWorldSizeZ() - 100) });
@@ -22,20 +34,26 @@ void World::Init()
 	building.SetPosition((t.getWorldSizeX() - 150), (t.getWorldSizeZ() - 80), t);
 	building.ScaleStructure(4);
 }
-
+Terrain World::GetTerrain() { return t; }
 World::~World()
 {
 	
 	unLoadWorld();
 }
+void World::CleanUp() {
+	for (unsigned int i = 0; i < _npcs.size(); i++) {
+		delete _npcs[i];
+	}
+	
+}
 void World::unLoadWorld() 
 {
 	t.unLoadHeightField();
-	
+	CleanUp();
 }
 bool World::loadWorld()
 {
-	t.setScalingFactor(5.0, 0.3, 5.0);
+	t.setScalingFactor(10.0, 0.4, 10.0);
 	string filename = "height128.raw";
 	int filesize = 128;
 	
@@ -108,10 +126,23 @@ void World::Update()
 {
 	CTimer::GetInstance()->Update();
 	time = CTimer::GetInstance()->GetTimeMSec() / 1000.0;
-	mynpc.Update(bAnimated ? time:0.0, t);
 	curt = time;
 	elapsed = curt - last;
+	mynpc.Update(bAnimated ? time:0.0, t);// updates a skele out of tree
+	
+		for (unsigned int i = 0; i < _npcs.size(); i++) 
+		{//updates all the skeles in tree
+			npc* Npc = _npcs[i];
+			Npc->Update(bAnimated ? time : 0.0, t);
+		}
+		
+		for (unsigned int i = 0; i < _npcs.size(); i++)
+		{//updates all the skeles in tree
+			_octree.handleNpcNpcCollisions(_npcs, &_octree);
+			//_octree.handleNpcWallCollisions(_npcs, &_octree);
+		}
 
+	
 	last = curt;
 	
 }
@@ -123,6 +154,13 @@ void World::Draw()
 	building.Draw(time);
 	treasure.Draw(time);
 	mynpc.Draw(bAnimated ? time:0.0);
+	//if (_npcs.size() > 0) {
+		for (unsigned int i = 0; i < _npcs.size(); i++) {
+			
+			npc* Npc = _npcs[i];
+			Npc->Draw(bAnimated ? time:0.0);
+		}
+	//}
 	glutSwapBuffers();
 }
 void World::PauseWorld()
@@ -141,3 +179,17 @@ CCamera* World::GetCam()
 {
 	return &cam;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
