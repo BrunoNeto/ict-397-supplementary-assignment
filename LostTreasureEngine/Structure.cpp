@@ -7,7 +7,15 @@ Structure::Structure()
 	angle = 0;	
 }
 
-
+const void Structure::Destroy()
+{
+	
+	
+}
+void Structure::SetAnimation(int animEnumeration) 
+{ 
+	structureModel.SetAnim(animEnumeration); 
+}
 Structure::~Structure()
 {
 }
@@ -33,6 +41,11 @@ void Structure::SetPosition(float x, float z, Terrain& t)
 	position.y = t.getHeight(x, z);
 }
 
+void Structure::SetPosition(vec3 pos)
+{
+	position = pos;
+}
+
 void Structure::SetRotation(vec3 rot)
 {
 	rotation = rot;
@@ -42,11 +55,13 @@ void Structure::SetAngle(float a)
 {
 	angle = a;
 }
-void Structure::ScaleStructure(float scale)
+void Structure::SetScale(float scale)
 {
 	structureModel.ScaleModel(scale);
 }
-void Structure::LoadStructureModel(const char* modelFileName, const char* modelSkinFileName)
+
+void Structure::Update(float deltaTime, Terrain& t) {}
+void Structure::LoadFromFilePath(const char* modelFileName, const char* modelSkinFileName)
 {
 	structureModel.LoadModel(modelFileName);
 	structureModel.LoadSkin(modelSkinFileName);

@@ -91,6 +91,7 @@ public:
 	*	@pre
 	*	@post
 	*/
+
 	void SetRotation(vec3 rot);
 	/**
 	*	@brief sets the rotation angle for item

@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 #include <string>
 #include "Terrain.h"
-
+#include "IGameAsset.h"
 #include "state.h"
 #include "stateMachine.h"
 #include "NPCStates.h"
@@ -16,7 +16,7 @@ using namespace glm;
 //	@author Bruno Neto
 //	@brief an  class for holding our npc object holds a model and the structures needed for loading rendering and animating
 //	version 1.0
-class npc
+class npc : public IGameAsset
 {
 private:
 	MD2Model npcmodel;//the actual model data of the npc
@@ -24,16 +24,20 @@ private:
 	vec3 rotation;//vector for storing which axis to rotate in
 	float rotationAngle;// the angle to rotate by
 	vec3 lookAt;//the vecor for direction the npc is facing
-	
+	vec3 initLookAt;
 	vec3 acceleration;		// acceleration of npc
 	int currentAnimation;//the animation currently set on the md2 model
 	string interactionMsg;//the current set interaction message of the npc
 	//state will be a variable
-
+	string m_filePath;
 	stateMachine<npc>* NPCSM; //ADDED FOR STATE
 	
 	
 public:
+	bool directionGiven;
+	float r =10;
+	bool Inbounds( Terrain&t);
+	bool onborder(Terrain&t);
 	/**
 	*	@brief npc default constructor
 	*   @see
@@ -228,7 +232,38 @@ public:
 	*	@pre modelFileName must point to a valid md2 model, modelSkinFilename must point to a valid 24bit bitmap file 
 	*	@post
 	*/
-	void SetModel(const char* modelFileName, const char* modelSkinFilename);
+	
+	void LoadFromFilePath(const char* modelFileName, const char* modelSkinFilename);
+	
+	virtual const void Destroy();
+
+	/**
+	* @brief Gets the file path
+	*
+	* Returns the file path containing the object information.
+	*
+	* @return std::string
+	*/
+	virtual const std::string& GetFilePath() const { return m_filePath; }
+
+	/**
+	* @brief Sets the file path
+	*
+	* Sets the file path containing the object information.
+	*
+	* @param std::string& filePath
+	* @return void
+	*/
+	virtual void SetFilePath(const std::string& filePath) { m_filePath = filePath; }
+	/**
+	*	@brief sets the position of the npc
+	*   @see
+	*	@param position the position vector of the model
+	*	@return void
+	*	@pre
+	*	@post
+	*/
+	void SetPosition(float x, float z, Terrain& t);
 	/**
 	*	@brief sets the position of the npc
 	*   @see
@@ -282,7 +317,7 @@ public:
 	*	@pre
 	*	@post
 	*/
-	void ScaleNPC(float scale);
+	void SetScale(float scale);
 	//void SetState();
 	/**
 	*	@brief npc update , processes movement using time and gameworld reference, 
@@ -305,4 +340,5 @@ public:
 	*/
 	void Draw(float time);
 };
+
 
