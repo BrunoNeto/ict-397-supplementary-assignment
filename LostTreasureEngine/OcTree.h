@@ -9,7 +9,7 @@ using namespace glm;
 
 const int MAX_OCTREE_DEPTH = 6;
 const int MIN_NPCS_PER_OCTREE = 3;
-const int MAX_NPCS_PER_OCTREE = 5;
+const int MAX_NPCS_PER_OCTREE = 6;
 
 struct NpcPair {
 	npc* npc1;

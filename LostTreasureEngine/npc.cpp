@@ -7,7 +7,7 @@ npc::npc()
 	
 	initLookAt = vec3(0.0, 0.0, 1.0);
 	position = vec3(0,0,0);
-	velocity = vec3(0.0, 0.0, 0.01);
+	velocity = vec3(0.0, 0.0, 0.02);
 	acceleration = vec3(0.0, 0.0, 0.0);
 	currentAnimation = 0;
 	interactionMsg = "Hey there stranger";
@@ -171,12 +171,11 @@ float degToRad2(float value)
 }
 void npc::Move(float deltaTime, Terrain& t)
 {
-	if (rotationAngle > 0 || rotationAngle < 0)//if rotation is at an amount higher or less than 0 calculate new velocity
-	{//update velocity vector with new heading
-		velocity.x = (initLookAt.z*sin(degToRad2(rotationAngle)) + initLookAt.x*cos(degToRad2(rotationAngle)));
-		velocity.z = (initLookAt.z*cos(degToRad2(rotationAngle)) - initLookAt.x*sin(degToRad2(rotationAngle)));
+	//update velocity vector with new heading
+	velocity.x = (initLookAt.z*sin(degToRad2(rotationAngle)) + initLookAt.x*cos(degToRad2(rotationAngle)));
+	velocity.z = (initLookAt.z*cos(degToRad2(rotationAngle)) - initLookAt.x*sin(degToRad2(rotationAngle)));
 		
-	}
+	
 	
 	
 	//velocity z-component
@@ -224,26 +223,26 @@ void npc::Move(float deltaTime, Terrain& t)
 		acceleration = -velocity * 1.0f;
 
 	velocity += acceleration * deltaTime;
-	// calculate new position of npc this part is working though in world coordinates not character may need to build rotation matrix and mvp for these calcs
+	// calculate new position of npc this part is working 
 	position.x += strafeSpeed;
 	position.z += speed;
 	NPCSM->executeState(this);
 	if(!Inbounds(t)) 
 	{
 		NPCSM->exitState(this);
-		NPCSM->enterState(this);
+		
 		NPCSM->executeState(this);
 		
 	}
 	if (onborder(t))
 	{
 		NPCSM->exitState(this);
-		NPCSM->enterState(this);
+		
 		NPCSM->executeState(this);
 	}
 	t.inWorld(position.x, position.z);//keeps npc within the border of terrain also working
 
-	position.y = float(t.getHeight(position.x, position.z)) + 25;//to set y relative to the scaled height of terrain 	
+	position.y = float(t.getHeight(position.x, position.z)) + 25;//to set y relative to the scaled height of terrain vould do gravity calcs here but npcs dont jump 	
 	
 }
 

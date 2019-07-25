@@ -5,8 +5,9 @@
 World::World()
 {
 	loadWorld();
-	
-	
+	BOX_SIZE = t.getWorldSizeX();
+	_octree = new Octree(vec3({ 0, 0, 0 }), vec3({ BOX_SIZE, BOX_SIZE, BOX_SIZE}), 1, BOX_SIZE);
+
 }
 void World::Init() 
 {
@@ -15,12 +16,36 @@ void World::Init()
 	m_assetFactory = new GameAssetFactory();
 
 	// Create NPC
-	npc = m_assetFactory->CreateAsset(ASS_NPC, "NPC");
-	npc->LoadFromFilePath("models/hueteotl/tris.md2", "models/hueteotl/hueteotl.bmp");
-	npc->SetPosition({ (t.getWorldSizeX()/2),80,(t.getWorldSizeZ() - 100)});
-	npc->SetRotation({ 0,1,0 });
-	npc->SetAnimation(RUN);
-	m_assetFactory->AddAsset(npc);
+	npc1 = m_assetFactory->CreateAsset(ASS_NPC, "NPC");
+	npc1->LoadFromFilePath("models/hueteotl/tris.md2", "models/hueteotl/hueteotl.bmp");
+	npc1->SetPosition({ (t.getWorldSizeX()/2),80,(t.getWorldSizeZ() - 100)});
+	npc1->SetRotation({ 0,1,0 });
+	npc1->SetAnimation(RUN);
+	m_assetFactory->AddAsset(npc1);
+	npc* n1 = new npc();
+	n1->LoadFromFilePath("models/hueteotl/tris.md2", "models/hueteotl/hueteotl.bmp");
+	n1->SetPosition({ (t.getWorldSizeX() ),80,(t.getWorldSizeZ() - 80) });
+	n1->SetRotation({ 0,1,0 });
+	n1->SetAnimation(RUN);
+	npc* n2 = new npc();
+	n2->LoadFromFilePath("models/hueteotl/tris.md2", "models/hueteotl/hueteotl.bmp");
+	n2->SetPosition({ (t.getWorldSizeX() / 2),80,(t.getWorldSizeZ() - 100) });
+	n2->SetRotation({ 0,1,0 });
+	n2->SetAnimation(RUN);
+	npc* n3 = new npc();
+	n3->LoadFromFilePath("models/hueteotl/tris.md2", "models/hueteotl/hueteotl.bmp");
+	n3->SetPosition({ (t.getWorldSizeX()/3 ),80,(t.getWorldSizeZ() - 50) });
+	n3->SetRotation({ 0,1,0 });
+	n3->SetAnimation(RUN);
+
+
+	_npcs.push_back(n1);
+	_npcs.push_back(n2);
+	_npcs.push_back(n3);
+	_octree->add(n1);
+	_octree->add(n2);
+	_octree->add(n3);
+
 
 	// Create Object
 	object = m_assetFactory->CreateAsset(ASS_OBJECT, "Treasure");
@@ -41,11 +66,19 @@ World::~World()
 {
 	
 	unLoadWorld();
+	cleanup();
 }
 void World::unLoadWorld() 
 {
 	t.unLoadHeightField();
 	
+}
+void World::cleanup()
+{
+	for (unsigned int i = 0; i < _npcs.size(); i++) {
+		delete _npcs[i];
+	}
+	delete _octree;
 }
 bool World::loadWorld()
 {
@@ -119,9 +152,21 @@ float World::getWorldXZHeight(float xpos, float zpos)
 }
 void World::Update() 
 {
-	CTimer::GetInstance()->Update();
+	//CTimer::GetInstance()->Update();
 	time = CTimer::GetInstance()->GetTimeMSec() / 1000.0;
-	npc->Update(bAnimated ? time : 0.0, t);
+	//npc1->Update(bAnimated ? time : 0.0, t);
+	//std::multimap<std::string, IGameAsset*> _assets = m_assetFactory->GetAssets();
+	//for (unsigned int i = 0; i < _assets.size(); i++)
+	//{
+		//_assets[i]->Update(bAnimated ? time : 0.0, t);
+		//m_assetFactory->GetAssets()[i]
+		//npc1->Update(bAnimated ? time : 0.0, t);
+	//}
+	for (unsigned int i = 0; i < _npcs.size(); i++)
+	{
+		_npcs[i]->Update(bAnimated ? time : 0.0, t);
+		//npc3->Update(bAnimated ? elapsed : 0.0, t);
+	}
 	curt = time;
 	elapsed = curt - last;
 
@@ -135,7 +180,16 @@ void World::Draw()
 	t.bruteForceRender();
 	structure->Draw(time);
 	object->Draw(time);
-	npc->Draw(bAnimated ? time : 0.0);
+	//for (unsigned int i = 0; i < m_assetFactory->GetAssets().size(); i++)
+	//{
+	//	npc1->Update(bAnimated ? time : 0.0, t);
+	//}
+	//npc1->Draw(bAnimated ? time : 0.0);
+	//Draw the balls
+	for (unsigned int i = 0; i < _npcs.size(); i++) 
+	{
+		 _npcs[i]->Draw(bAnimated ? time : 0.0);
+	}
 	glutSwapBuffers();
 }
 

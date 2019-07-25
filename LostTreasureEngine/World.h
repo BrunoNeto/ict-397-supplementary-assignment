@@ -6,6 +6,7 @@
 #include "Camera.h"
 #include "Ctime.h"
 #include "GameAssetFactory.h"
+#include "OcTree.h"
 //	@brief World class for our world object
 //	@todo once i have figured out everything world need it must be seperated int 2 classes one with data and the other as a controller
 //	@author Bruno Neto
@@ -151,7 +152,7 @@ public:
 	*/
 	void Update();
 	void PauseWorld();
-	
+	void cleanup();
 	CCamera* GetCam();
 	void Init();
 	CCamera cam;
@@ -161,11 +162,15 @@ public:
 	float last;
 	float elapsed;
 	//CTimer timer;
-	
+	float BOX_SIZE;
 	GameAssetFactory* m_assetFactory;
-	IGameAsset* npc;
+	IGameAsset* npc1;
 	IGameAsset* object;
 	IGameAsset* structure;
+
+	vector<npc*> _npcs; //All of the balls in play
+	
+	Octree* _octree;
 
 	float time;
 	bool bAnimated = true;
