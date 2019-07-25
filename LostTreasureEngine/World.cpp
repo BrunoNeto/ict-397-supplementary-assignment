@@ -17,8 +17,9 @@ void World::Init()
 	// Create NPC
 	npc = m_assetFactory->CreateAsset(ASS_NPC, "NPC");
 	npc->LoadFromFilePath("models/hueteotl/tris.md2", "models/hueteotl/hueteotl.bmp");
-	npc->SetPosition({ (t.getWorldSizeX() / 2),300,(t.getWorldSizeZ() - 100) });
+	npc->SetPosition({ (t.getWorldSizeX()/2),80,(t.getWorldSizeZ() - 100)});
 	npc->SetRotation({ 0,1,0 });
+	npc->SetAnimation(RUN);
 	m_assetFactory->AddAsset(npc);
 
 	// Create Object
@@ -52,7 +53,6 @@ bool World::loadWorld()
 	string filename = "height128.raw";
 	int filesize = 128;
 	
-	//t.genFaultFormation(64, 128, 0, 255, 0.2f, false);
 	t.LoadHeightField(filename, filesize);
 	//load all players and objects
 	

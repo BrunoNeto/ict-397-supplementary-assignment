@@ -242,7 +242,7 @@ class Terrain
 	*	@pre
 	*	@post
 	*/
-		float inWorld(float& x, float& z);
+		void inWorld(float& x, float& z);
 		float getWorldSizeX();
 		float getWorldSizeZ();
 	protected:
