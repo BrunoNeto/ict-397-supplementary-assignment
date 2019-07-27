@@ -146,6 +146,16 @@ public:
 	* @return void
 	*/
 	virtual void SetPosition(vec3 position) = 0;
+
+	/**
+	* @brief Gets the asset position
+	*
+	* Virtual function to get the position of the asset.
+	*
+	* @param glm::vec3 position
+	* @return vec3
+	*/
+	virtual vec3 GetPosition() = 0;
 	/**
 	* @brief Sets the asset position
 	*
@@ -216,7 +226,14 @@ public:
 	* @return void
 	*/
 	//virtual void AddTexutre(GLuint textureId, std::string textureFilePath) = 0;
-
+	/**
+	* @brief Gets the assets velocity vector
+	*
+	* Virtual function to get the assets model.
+	*
+	* @return Model*
+	*/
+	virtual vec3 GetVelocity() = 0;
 	/**
 	* @brief updates the asset using its update function
 	*
@@ -234,8 +251,8 @@ public:
 	* @return void
 	*/
 	virtual void Draw(float time) = 0;
-	float r = 40;
-
+	float r = 20;
+	vec3 velocity;
 
 protected:
 	/// Defines the nature of the asset

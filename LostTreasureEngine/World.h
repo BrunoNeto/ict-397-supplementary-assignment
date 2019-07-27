@@ -6,7 +6,7 @@
 #include "Camera.h"
 #include "Ctime.h"
 #include "GameAssetFactory.h"
-#include "OcTree.h"
+#include "Octree.h"
 //	@brief World class for our world object
 //	@todo once i have figured out everything world need it must be seperated int 2 classes one with data and the other as a controller
 //	@author Bruno Neto
@@ -200,7 +200,7 @@ public:
 	IGameAsset* object;
 	IGameAsset* structure;
 
-	vector<npc*> _npcs; //All of the balls in play
+	vector<IGameAsset*> _igameassets; //All of the assets in play
 	
 	Octree* _octree;
 

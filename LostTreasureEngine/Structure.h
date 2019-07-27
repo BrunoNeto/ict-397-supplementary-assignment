@@ -57,6 +57,16 @@ public:
 	*/
 	vec3 GetRotation();
 	/**
+	*	@brief  function for inheritance purposes
+	*   @see
+	*	@param
+	*	@return glm vec 3
+	*	@pre
+	*	@post
+	*/
+	vec3 GetVelocity() { return velocity; }
+	
+	/**
 	*	@brief gets the rotation angle of Structure
 	*   @see
 	*	@param

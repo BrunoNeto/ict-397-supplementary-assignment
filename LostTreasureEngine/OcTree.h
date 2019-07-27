@@ -1,5 +1,7 @@
 #pragma once
+#pragma once
 #include "npc.h"
+#include "IGameAsset.h"
 #include <set>
 #include <vector>
 #include <glm/gtx/norm.hpp>
@@ -8,17 +10,17 @@ using namespace glm;
 //Our data structure for making collision detection faster
 
 const int MAX_OCTREE_DEPTH = 6;
-const int MIN_NPCS_PER_OCTREE = 3;
-const int MAX_NPCS_PER_OCTREE = 6;
+const int MIN_ASSET_PER_OCTREE = 3;
+const int MAX_ASSET_PER_OCTREE = 6;
 
-struct NpcPair {
-	npc* npc1;
-	npc* npc2;
+struct AssetPair {
+	IGameAsset* iGameAsset1;
+	IGameAsset* iGameAsset2;
 };
 enum Wall { WALL_LEFT, WALL_RIGHT, WALL_FAR, WALL_NEAR, WALL_TOP, WALL_BOTTOM };
-//Stores a npc and a wall
-struct NpcWallPair {
-	npc* Npc;
+//Stores a IGameAsset and a wall
+struct AssetWallPair {
+	IGameAsset* asset;
 	Wall wall;
 };
 
@@ -41,51 +43,51 @@ private:
 	Octree *children[2][2][2];
 	//Whether this has children
 	bool hasChildren;
-	//The npcs in this, if this doesn't have any children
-	set<npc*> npcs;
+	//The assets in this, if this doesn't have any children
+	set<IGameAsset*> assets;
 	//The depth of this in the tree
 	int depth;
-	//The number of npcs in this, including those stored in its children
-	int numNpcs;
-	//Adds a npc to or removes a from one to the children of this
-	void fileNpc(npc* npc, vec3 pos, bool addNpc) {
-		//Figure out in which child(ren) the npc belongs
+	//The number of assets in this, including those stored in its children
+	int numAssets;
+	//Adds a IGameAsset to or removes a from one to the children of this
+	void fileAsset(IGameAsset* IGameAsset, vec3 pos, bool addAsset) {
+		//Figure out in which child(ren) the IGameAsset belongs
 		for (int x = 0; x < 2; x++) {
 			if (x == 0) {
-				if (pos[0] - npc->r > center[0]) {
+				if (pos[0] - IGameAsset->r > center[0]) {
 					continue;
 				}
 			}
-			else if (pos[0] + npc->r < center[0]) {
+			else if (pos[0] + IGameAsset->r < center[0]) {
 				continue;
 			}
 
 			for (int y = 0; y < 2; y++) {
 				if (y == 0) {
-					if (pos[1] - npc->r > center[1]) {
+					if (pos[1] - IGameAsset->r > center[1]) {
 						continue;
 					}
 				}
-				else if (pos[1] + npc->r < center[1]) {
+				else if (pos[1] + IGameAsset->r < center[1]) {
 					continue;
 				}
 
 				for (int z = 0; z < 2; z++) {
 					if (z == 0) {
-						if (pos[2] - npc->r > center[2]) {
+						if (pos[2] - IGameAsset->r > center[2]) {
 							continue;
 						}
 					}
-					else if (pos[2] + npc->r < center[2]) {
+					else if (pos[2] + IGameAsset->r < center[2]) {
 						continue;
 					}
 
-					//Add or remove the npc
-					if (addNpc) {
-						children[x][y][z]->add(npc);
+					//Add or remove the IGameAsset
+					if (addAsset) {
+						children[x][y][z]->add(IGameAsset);
 					}
 					else {
-						children[x][y][z]->remove(npc, pos);
+						children[x][y][z]->remove(IGameAsset, pos);
 					}
 				}
 			}
@@ -93,7 +95,7 @@ private:
 	}
 
 
-	//Creates children of this, and moves the npc in this to the children
+	//Creates children of this, and moves the IGameAsset in this to the children
 	void haveChildren() {
 		for (int x = 0; x < 2; x++) {
 			float minX;
@@ -131,27 +133,27 @@ private:
 						maxZ = corner2[2];
 					}
 
-					children[x][y][z] = new Octree(vec3(minX, minY, minZ),vec3(maxX, maxY, maxZ),depth + 1,BOX_SIZE);
+					children[x][y][z] = new Octree(vec3(minX, minY, minZ), vec3(maxX, maxY, maxZ), depth + 1, BOX_SIZE);
 				}
 			}
 		}
 
-		//Remove all npcs from "npcs" and add them to the new children
-		for (set<npc*>::iterator it = npcs.begin(); it != npcs.end();it++) 
+		//Remove all assets from "assets" and add them to the new children
+		for (set<IGameAsset*>::iterator it = assets.begin(); it != assets.end(); it++)
 		{
-			npc* npc = *it;
-			fileNpc(npc, npc->GetPosition(), true);
+			IGameAsset* IGameAsset = *it;
+			fileAsset(IGameAsset, IGameAsset->GetPosition(), true);
 		}
-		npcs.clear();
+		assets.clear();
 
 		hasChildren = true;
 	}
 
-	//Destroys the children of this, and moves all npcs in its descendants
-		//to the "npcs" set
+	//Destroys the children of this, and moves all assets in its descendants
+		//to the "assets" set
 	void destroyChildren() {
-		//Move all npcs in descendants of this to the "npcs" set
-		collectNpcs(npcs);
+		//Move all assets in descendants of this to the "assets" set
+		collectAssets(assets);
 
 		for (int x = 0; x < 2; x++) {
 			for (int y = 0; y < 2; y++) {
@@ -164,69 +166,69 @@ private:
 		hasChildren = false;
 	}
 
-	//Removes the specified npc at the indicated position
-	void remove(npc* npc, vec3 pos) {
-		numNpcs--;
+	//Removes the specified IGameAsset at the indicated position
+	void remove(IGameAsset* IGameAsset, vec3 pos) {
+		numAssets--;
 
-		if (hasChildren && numNpcs < MIN_NPCS_PER_OCTREE) {
+		if (hasChildren && numAssets < MIN_ASSET_PER_OCTREE) {
 			destroyChildren();
 		}
 
 		if (hasChildren) {
-			fileNpc(npc, pos, false);
+			fileAsset(IGameAsset, pos, false);
 		}
 		else {
-			npcs.erase(npc);
+			assets.erase(IGameAsset);
 		}
 	}
-	/* Helper fuction for potentialNpcWallCollisions(vector).  Adds
-		 * potential npc-wall collisions to cs, where w is the type of wall,
+	/* Helper fuction for potentialIGameAssetWallCollisions(vector).  Adds
+		 * potential IGameAsset-wall collisions to cs, where w is the type of wall,
 		 * coord is the relevant coordinate of the wall ('x', 'y', or 'z'), and
 		 * dir is 0 if the wall is in the negative direction and 1 if it is in
 		 * the positive direction.  Assumes that this is in the extreme
 		 * direction of the coordinate, e.g. if w is WALL_TOP, the function
 		 * assumes that this is in the far upward direction.
 		 */
-	/*void potentialNpcWallCollisions(vector<NpcWallPair> &cs,Wall w, char coord, int dir) {
-		if (hasChildren) {
-			//Recursively call potentialBallWallCollisions on the correct
-			//half of the children (e.g. if w is WALL_TOP, call it on
-			//children above centerY)
-			for (int dir2 = 0; dir2 < 2; dir2++) {
-				for (int dir3 = 0; dir3 < 2; dir3++) {
-					Octree *child;
-					switch (coord) {
-					case 'x':
-						child = children[dir][dir2][dir3];
-						break;
-					case 'y':
-						child = children[dir2][dir][dir3];
-						break;
-					case 'z':
-						child = children[dir2][dir3][dir];
-						break;
-					}
+		 /*void potentialIGameAssetWallCollisions(vector<AssetWallPair> &cs,Wall w, char coord, int dir) {
+			 if (hasChildren) {
+				 //Recursively call potentialBallWallCollisions on the correct
+				 //half of the children (e.g. if w is WALL_TOP, call it on
+				 //children above centerY)
+				 for (int dir2 = 0; dir2 < 2; dir2++) {
+					 for (int dir3 = 0; dir3 < 2; dir3++) {
+						 Octree *child;
+						 switch (coord) {
+						 case 'x':
+							 child = children[dir][dir2][dir3];
+							 break;
+						 case 'y':
+							 child = children[dir2][dir][dir3];
+							 break;
+						 case 'z':
+							 child = children[dir2][dir3][dir];
+							 break;
+						 }
 
-					child->potentialNpcWallCollisions(cs, w, coord, dir);
-				}
-			}
-		}
-		else {
-			//Add (npc, w) for all balls in this
-			for (set<npc*>::iterator it = npcs.begin(); it != npcs.end();it++) 
-			{
-				npc* npc  = *it;
-				NpcWallPair nwp;
-				nwp.Npc = npc;
-				nwp.wall = w;
-				cs.push_back(nwp);
-			}
-		}
-	}*/
+						 child->potentialIGameAssetWallCollisions(cs, w, coord, dir);
+					 }
+				 }
+			 }
+			 else {
+				 //Add (IGameAsset, w) for all assets in this
+				 for (set<IGameAsset*>::iterator it = assets.begin(); it != assets.end();it++)
+				 {
+					 IGameAsset* IGameAsset  = *it;
+					 AssetWallPair nwp;
+					 nwp.asset = IGameAsset;
+					 nwp.wall = w;
+					 cs.push_back(nwp);
+				 }
+			 }
+		 }*/
 public:
 	//Constructs a new Octree.  c1 is (minX, minY, minZ), c2 is (maxX, maxY,
-		//maxZ), and d is the depth, which starts at 1.
-	Octree(vec3 c1, vec3 c2, int d, float size) 
+		//maxZ), and d is the depth, which starts at 1., size is the size in x or z in world (assumes cube shape) 
+	Octree(vec3 c1, vec3 c2, int d, float size)
 	{
 		BOX_SIZE = size;
 		corner1 = c1;
@@ -235,149 +237,150 @@ public:
 		center.y = (c1.y + c2.y) / 2;
 		center.z = (c1.z + c2.z) / 2;
 		depth = d;
-		numNpcs = 0;
+		numAssets = 0;
 		hasChildren = false;
 	}
 
 	//Destructor
-	~Octree() 
+	~Octree()
 	{
 		if (hasChildren) {
 			destroyChildren();
 		}
 	}
-	//Adds a npc to this
-	void add(npc* Npc) 
+	//Adds a IGameAsset to this
+	void add(IGameAsset* asset)
 	{
-		numNpcs++;
-		if (!hasChildren && depth < MAX_OCTREE_DEPTH && numNpcs > MAX_NPCS_PER_OCTREE) 
+		numAssets++;
+		if (!hasChildren && depth < MAX_OCTREE_DEPTH && numAssets > MAX_ASSET_PER_OCTREE)
 		{
 			haveChildren();
 		}
 		if (hasChildren) {
-			fileNpc(Npc, Npc->GetPosition(), true);
+			fileAsset(asset, asset->GetPosition(), true);
 		}
 		else {
-			npcs.insert(Npc);
+			assets.insert(asset);
 		}
 	}
 
-	//Removes a npc from this
-	void remove(npc* Npc) {
-		remove(Npc, Npc->GetPosition());
+	//Removes a IGameAsset  from this
+	void remove(IGameAsset* asset) {
+		remove(asset, asset->GetPosition());
 	}
 
-	//Changes the position of a npc in this from oldPos to npc->position
-	void NpcMoved(npc* Npc, vec3 oldPos) {
-		remove(Npc, oldPos);
-		add(Npc);
+	//Changes the position of a IGameAsset in this from oldPos to IGameAsset->position
+	void AssetMoved(IGameAsset* asset, vec3 oldPos) {
+		remove(asset, oldPos);
+		add(asset);
 	}
 
 
-	//Adds potential npc-npc collisions to the specified set
-	void potentialNpcNpcCollisions(vector<NpcPair> &collisions) {
+	//Adds potential IGameAsset-IGameAsset collisions to the specified set
+	void PotentialIGameAssetIGameAssetCollisions(vector<AssetPair> &collisions) {
 		if (hasChildren) {
 			for (int x = 0; x < 2; x++) {
 				for (int y = 0; y < 2; y++) {
 					for (int z = 0; z < 2; z++) {
 						children[x][y][z]->
-							potentialNpcNpcCollisions(collisions);
+							PotentialIGameAssetIGameAssetCollisions(collisions);
 					}
 				}
 			}
 		}
 		else {
-			//Add all pairs (ball1, ball2) from balls
-			for (set<npc*>::iterator it = npcs.begin(); it != npcs.end();
-				it++) {
-				npc* npc1 = *it;
-				for (set<npc*>::iterator it2 = npcs.begin();it2 != npcs.end(); it2++) 
+			//Add all pairs (asset1, asset2) from assets
+			for (set<IGameAsset*>::iterator it = assets.begin(); it != assets.end();it++) 
+			{
+				IGameAsset* iGameAsset1 = *it;
+				for (set<IGameAsset*>::iterator it2 = assets.begin(); it2 != assets.end(); it2++)
 				{
-					npc *npc2 = *it2;
+					IGameAsset *iGameAsset2 = *it2;
 					//This test makes sure that we only add each pair once
-					if (npc1 < npc2) {
-						NpcPair np;
-						np.npc1 = npc1;
-						np.npc2 = npc2;
-						collisions.push_back(np);
+					if (iGameAsset1 < iGameAsset2) {
+						AssetPair ap;
+						ap.iGameAsset1 = iGameAsset1;
+						ap.iGameAsset2 = iGameAsset2;
+						collisions.push_back(ap);
 					}
 				}
 			}
 		}
 	}
-	//Adds all balls in this or one of its descendants to the specified set
-	void collectNpcs(set<npc*> &ns) {
+	//Adds all assets in this or one of its descendants to the specified set
+	void collectAssets(set<IGameAsset*> &as) {
 		if (hasChildren) {
 			for (int x = 0; x < 2; x++) {
 				for (int y = 0; y < 2; y++) {
 					for (int z = 0; z < 2; z++) {
-						children[x][y][z]->collectNpcs(ns);
+						children[x][y][z]->collectAssets(as);
 					}
 				}
 			}
 		}
 		else {
-			for (set<npc*>::iterator it = npcs.begin(); it != npcs.end();
+			for (set<IGameAsset*>::iterator it = assets.begin(); it != assets.end();
 				it++) {
-				npc* Npc = *it;
-				ns.insert(Npc);
+				IGameAsset* asset = *it;
+				as.insert(asset);
 			}
 		}
 	}
-	//Returns whether two npcs are colliding
-	bool testNpcNpcCollision(npc* n1, npc* n2) {
-		//Check whether the npcs are close enough
+	//Returns whether two assets are colliding
+	bool testNpcNpcCollision(IGameAsset* n1, IGameAsset* n2) {
+		//Check whether the assets are close enough
 		float r = n1->r + n2->r;
 		if (length2(n1->GetPosition() - n2->GetPosition()) < r * r) {
-			//Check whether the npcs are moving toward each other
+			//Check whether the assets are moving toward each other
 			vec3 netVelocity = n1->GetVelocity() - n2->GetVelocity();
 			vec3 displacement = n1->GetPosition() - n2->GetPosition();
-			return dot(netVelocity,displacement) < 0;
+			return dot(netVelocity, displacement) < 0;
 		}
 		else
 			return false;
 	}
 
-	//Handles all Npc-Npc collisions
-	void handleNpcNpcCollisions(vector<npc*> &npcs, Octree* octree) {
-		vector<NpcPair> nps;
-		potentialNpcNpcCollisions(nps, npcs, octree);
-		for (unsigned int i = 0; i < nps.size(); i++) {
-			NpcPair np = nps[i];
+	//Handles all asset-asset collisions
+	void handleNpcNpcCollisions(vector<IGameAsset*> &assets, Octree* octree) {
+		vector<AssetPair> aps;
+		PotentialIGameAssetIGameAssetCollisions(aps, assets, octree);
+		for (unsigned int i = 0; i < aps.size(); i++) {
+			AssetPair ap = aps[i];
 
-			npc* n1 = np.npc1;
-			npc* n2 = np.npc2;
+			IGameAsset* n1 = ap.iGameAsset1;
+			IGameAsset* n2 = ap.iGameAsset2;
 			if (testNpcNpcCollision(n1, n2)) {
-				//Make the npcs reflect off of each other
+				//Make the assets reflect off of each other
 				vec3 displacement = normalize((n1->GetPosition() - n2->GetPosition()));
-				displacement.x = displacement.x *2;
+				displacement.x = displacement.x * 2;
 				displacement.y = displacement.y * 2;
 				displacement.z = displacement.z * 2;
-				n1->velocity -=  displacement * dot(n1->velocity,displacement);
-				n2->velocity -=  displacement * dot(n2->velocity,displacement);
+				n1->velocity -= displacement * dot(n1->velocity, displacement);
+				n2->velocity -= displacement * dot(n2->velocity, displacement);
 			}
 		}
 	}
-	//Returns whether a npc and a wall are colliding
-	bool testBallWallCollision(npc* npc1, Wall wall) {
+	//Returns whether a IGameAsset and a wall are colliding
+	bool testIGameAssetWallCollision(IGameAsset* iGameAsset1, Wall wall) 
+	{
 		vec3 dir = wallDirection(wall);
-		//Check whether the npc is far enough in the "dir" direction, and whether
+		//Check whether the IGameAsset is far enough in the "dir" direction, and whether
 		//it is moving toward the wall 
-		return dot(npc1->GetPosition(),dir) + npc1->r > BOX_SIZE / 2 &&
-			dot(npc1->GetVelocity(),dir) > 0;
+		return dot(iGameAsset1->GetPosition(), dir) + iGameAsset1->r > BOX_SIZE / 2 &&
+			dot(iGameAsset1->GetVelocity(), dir) > 0;
 	}
 
-	//Handles all Npc-wall collisions
-	//void handleNpcWallCollisions(vector<npc*> &npcs, Octree* octree) {
-	//	vector<NpcWallPair> nwps;
-	//	potentialNpcWallCollisions(nwps, npcs, octree);
+	//Handles all asset-wall collisions
+	//void handleNpcWallCollisions(vector<IGameAsset*> &assets, Octree* octree) {
+	//	vector<AssetWallPair> nwps;
+	//	potentialIGameAssetWallCollisions(nwps, assets, octree);
 	//	for (unsigned int i = 0; i < nwps.size(); i++) {
-	//		NpcWallPair nwp = nwps[i];
+	//		AssetWallPair nwp = nwps[i];
 	//
-	//		npc* n = nwp.Npc;
+	//		IGameAsset* n = nwp.asset;
 	//		Wall w = nwp.wall;
-	//		if (testBallWallCollision(n, w)) {
-	//			//Make the npc reflect off of the wall
+	//		if (testIGameAssetWallCollision(n, w)) {
+	//			//Make the IGameAsset reflect off of the wall
 	//			vec3 dir = normalize((wallDirection(w)));
 	//			dir.x = dir.x * 2;
 	//			dir.y = dir.y * 2;
@@ -387,63 +390,63 @@ public:
 	//	}
 	//}
 	
-
-	//Adds potential ball-wall collisions to the specified set
-	//void potentialNpcWallCollisions(vector<NpcWallPair> &collisions) {
-	//	potentialNpcWallCollisions(collisions, WALL_LEFT, 'x', 0);
-	//	potentialNpcWallCollisions(collisions, WALL_RIGHT, 'x', 1);
-	//	potentialNpcWallCollisions(collisions, WALL_BOTTOM, 'y', 0);
-	//	potentialNpcWallCollisions(collisions, WALL_TOP, 'y', 1);
-	//	potentialNpcWallCollisions(collisions, WALL_FAR, 'z', 0);
-	//	potentialNpcWallCollisions(collisions, WALL_NEAR, 'z', 1);
+	
+	//Adds potential IGameAsset-wall collisions to the specified set
+	//void potentialIGameAssetWallCollisions(vector<AssetWallPair> &collisions) {
+	//	potentialIGameAssetWallCollisions(collisions, WALL_LEFT, 'x', 0);
+	//	potentialIGameAssetWallCollisions(collisions, WALL_RIGHT, 'x', 1);
+	//	potentialIGameAssetWallCollisions(collisions, WALL_BOTTOM, 'y', 0);
+	//	potentialIGameAssetWallCollisions(collisions, WALL_TOP, 'y', 1);
+	//	potentialIGameAssetWallCollisions(collisions, WALL_FAR, 'z', 0);
+	//	potentialIGameAssetWallCollisions(collisions, WALL_NEAR, 'z', 1);
 	//}
 
 
-//Puts potential ball-ball collisions in potentialCollisions.  It must return
+//Puts potential IGameAsset-IGameAsset collisions in potentialCollisions.  It must return
 //all actual collisions, but it need not return only actual collisions.
-void potentialNpcNpcCollisions(vector<NpcPair> &potentialCollisions,
-	vector<npc*> &balls, Octree* octree) 
-{
-	//Fast method
-	octree->potentialNpcNpcCollisions(potentialCollisions);
+	void PotentialIGameAssetIGameAssetCollisions(vector<AssetPair> &potentialCollisions,vector<IGameAsset*> &assets, Octree* octree)
+	{
+		//Fast method
+		octree->PotentialIGameAssetIGameAssetCollisions(potentialCollisions);
 
-	/*
-	//Slow method
-	for(unsigned int i = 0; i < balls.size(); i++) {
-		for(unsigned int j = i + 1; j < balls.size(); j++) {
-			BallPair bp;
-			bp.ball1 = balls[i];
-			bp.ball2 = balls[j];
-			potentialCollisions.push_back(bp);
+		/*
+		//Slow method
+		for(unsigned int i = 0; i < assets.size(); i++) {
+			for(unsigned int j = i + 1; j < assets.size(); j++) {
+				BallPair bp;
+				bp.ball1 = assets[i];
+				bp.ball2 = assets[j];
+				potentialCollisions.push_back(bp);
+			}
 		}
+		*/
 	}
-	*/
-}
+	
+	
+	//Puts potential IGameAsset-wall collisions in potentialCollisions.  It must return
+	//all actual collisions, but it need not return only actual collisions.
+	//void potentialIGameAssetWallCollisions(vector<AssetWallPair> &potentialCollisions,
+		//vector<IGameAsset*> &assets, Octree* octree) 
+	//{
+		//Fast method
+		//octree->potentialIGameAssetWallCollisions(potentialCollisions);
 
-//Puts potential ball-wall collisions in potentialCollisions.  It must return
-//all actual collisions, but it need not return only actual collisions.
-//void potentialNpcWallCollisions(vector<NpcWallPair> &potentialCollisions,
-	//vector<npc*> &npcs, Octree* octree) 
-//{
-	//Fast method
-	//octree->potentialNpcWallCollisions(potentialCollisions);
-
-	/*
-	//Slow method
-	Wall walls[] =
-		{WALL_LEFT, WALL_RIGHT, WALL_FAR, WALL_NEAR, WALL_TOP, WALL_BOTTOM};
-	for(unsigned int i = 0; i < balls.size(); i++) {
-		for(int j = 0; j < 6; j++) {
-			BallWallPair bwp;
-			bwp.ball = balls[i];
-			bwp.wall = walls[j];
-			potentialCollisions.push_back(bwp);
+		/*
+		//Slow method
+		Wall walls[] =
+			{WALL_LEFT, WALL_RIGHT, WALL_FAR, WALL_NEAR, WALL_TOP, WALL_BOTTOM};
+		for(unsigned int i = 0; i < assets.size(); i++) {
+			for(int j = 0; j < 6; j++) {
+				BallWallPair bwp;
+				bwp.IGameAsset = assets[i];
+				bwp.wall = walls[j];
+				potentialCollisions.push_back(bwp);
+			}
 		}
-	}
-	*/
-//}
+		*/
+		//}
 
-	//Returns the direction from the origin to the wall
+			//Returns the direction from the origin to the wall
 	vec3 wallDirection(Wall wall) {
 		switch (wall) {
 		case WALL_LEFT:
@@ -462,25 +465,25 @@ void potentialNpcNpcCollisions(vector<NpcPair> &potentialCollisions,
 			return vec3(0, 0, 0);
 		}
 	}
-	
+
 };
 
-	
 
-	
-	
 
-	
 
-	
 
-	
 
-	
 
-	
 
-	
+
+
+
+
+
+
+
+
+
 
 
 

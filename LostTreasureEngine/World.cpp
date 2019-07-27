@@ -6,61 +6,65 @@ World::World()
 {
 	loadWorld();
 	BOX_SIZE = t.getWorldSizeX();
-	_octree = new Octree(vec3({ 0, 0, 0 }), vec3({ BOX_SIZE, BOX_SIZE, BOX_SIZE}), 1, BOX_SIZE);
+	_octree = new Octree(vec3({ 0, 0, 0 }), vec3({ BOX_SIZE, BOX_SIZE, BOX_SIZE}), 3, BOX_SIZE);
 
 }
 void World::Init() 
 {
+	//load all players and objects
 	CTimer::GetInstance()->Initialize();
 	// Create asset factory
 	m_assetFactory = new GameAssetFactory();
+	int numofnpcs = 50;//number of npcs to be set from script
+	CTimer::GetInstance()->Update();
+	time = CTimer::GetInstance()->GetTimeMSec() / 1000.0;
 
-	// Create NPC with factory
-	npc1 = m_assetFactory->CreateAsset(ASS_NPC, "NPC");
-	npc1->LoadFromFilePath("models/hueteotl/tris.md2", "models/hueteotl/hueteotl.bmp");
-	npc1->SetPosition({ (t.getWorldSizeX()/2),80,(t.getWorldSizeZ() - 100)});
-	npc1->SetRotation({ 0,1,0 });
-	npc1->SetAnimation(RUN);
-	m_assetFactory->AddAsset(npc1);
+	srand(static_cast<unsigned>(time));
+	for (int i = 0; i < numofnpcs; i++)
+	{
+		
+		float x = rand();
+		float y;
+		float z = rand();
+		if (x < 0)
+		{
+			x = 0;
+		}
+		if (x > BOX_SIZE)
+		{
+			x = BOX_SIZE;
+		}
+		if (z < 0) { z = 0; }
+		if (z > BOX_SIZE) { z = BOX_SIZE; }
+		y = t.getHeight(x, z);
 
-	npc* n1 = new npc();
-	n1->LoadFromFilePath("models/hueteotl/tris.md2", "models/hueteotl/hueteotl.bmp");
-	n1->SetPosition({ (t.getWorldSizeX() ),80,(t.getWorldSizeZ() - 80) });
-	n1->SetRotation({ 0,1,0 });
-	n1->SetAnimation(RUN);
-	npc* n2 = new npc();
-	n2->LoadFromFilePath("models/hueteotl/tris.md2", "models/hueteotl/hueteotl.bmp");
-	n2->SetPosition({ (t.getWorldSizeX() / 2),80,(t.getWorldSizeZ() - 100) });
-	n2->SetRotation({ 0,1,0 });
-	n2->SetAnimation(RUN);
-	npc* n3 = new npc();
-	n3->LoadFromFilePath("models/hueteotl/tris.md2", "models/hueteotl/hueteotl.bmp");
-	n3->SetPosition({ (t.getWorldSizeX()/3 ),80,(t.getWorldSizeZ() - 50) });
-	n3->SetRotation({ 0,1,0 });
-	n3->SetAnimation(RUN);
-
-
-	_npcs.push_back(n1);
-	_npcs.push_back(n2);
-	_npcs.push_back(n3);
-	_octree->add(n1);
-	_octree->add(n2);
-	_octree->add(n3);
-
-
+		// Create NPC with factory
+		npc1 = m_assetFactory->CreateAsset(ASS_NPC, "NPC");
+		npc1->LoadFromFilePath("models/hueteotl/tris.md2", "models/hueteotl/hueteotl.bmp");
+		npc1->SetPosition({ x,y,z });
+		npc1->SetRotation({ 0,1,0 });
+		npc1->SetAnimation(RUN);
+		m_assetFactory->AddAsset(npc1);
+		_igameassets.push_back(npc1);
+		_octree->add(npc1);
+		
+	}
 	// Create Object
 	object = m_assetFactory->CreateAsset(ASS_OBJECT, "Treasure");
 	object->LoadFromFilePath("models/treasure_chest.md2", "models/treasure_chest.bmp");
 	object->SetPosition(100, (t.getWorldSizeZ() - 80), t);
 	object->SetScale(1.5);
 	m_assetFactory->AddAsset(object);
-
+	_igameassets.push_back(object);
+	_octree->add(object);
 	// Create Structure
 	structure = m_assetFactory->CreateAsset(ASS_STRUCTURE, "House");
 	structure->LoadFromFilePath("models/farmhouse.md2", "models/farmhouse.bmp");
 	structure->SetPosition((t.getWorldSizeX() - 150), (t.getWorldSizeZ() - 80), t);
 	structure->SetScale(4);
 	m_assetFactory->AddAsset(structure);
+	_igameassets.push_back(structure);
+	_octree->add(structure);
 }
 
 World::~World()
@@ -76,8 +80,8 @@ void World::unLoadWorld()
 }
 void World::cleanup()
 {
-	for (unsigned int i = 0; i < _npcs.size(); i++) {
-		delete _npcs[i];
+	for (unsigned int i = 0; i < _igameassets.size(); i++) {
+		delete _igameassets[i];
 	}
 	delete _octree;
 }
@@ -88,7 +92,7 @@ bool World::loadWorld()
 	int filesize = 128;
 	
 	t.LoadHeightField(filename, filesize);
-	//load all players and objects
+	
 	
 	
 	return true;
@@ -153,23 +157,19 @@ float World::getWorldXZHeight(float xpos, float zpos)
 }
 void World::Update() 
 {
+	//get time
 	CTimer::GetInstance()->Update();
 	time = CTimer::GetInstance()->GetTimeMSec() / 1000.0;
-	std::multimap<std::string, IGameAsset*> s = m_assetFactory->GetAssets();
-	for (std::multimap<std::string, IGameAsset*>::iterator it = s.begin(); it != s.end(); it++)
+	// cycle through octree updating all assets that need updating
+	for (unsigned int i = 0; i < _igameassets.size(); i++)
 	{
-		
-		it->second->Update(bAnimated ? time : 0.0,t);//this line draws the factory npc
-	}
-	//npc1->Update(bAnimated ? time : 0.0, t);
-	for (unsigned int i = 0; i < _npcs.size(); i++)
-	{
-		_npcs[i]->Update(bAnimated ? time : 0.0, t);
+		_igameassets[i]->Update(bAnimated ? time : 0.0, t);
 		
 	}
 	
-	
-	_octree->handleNpcNpcCollisions(_npcs,_octree);
+	// cycle through octree handling collisions
+	_octree->handleNpcNpcCollisions(_igameassets,_octree);
+	// get elapsed time needed for the camera which runs of since last update rather than runtime
 	curt = time;
 	elapsed = curt - last;
 
@@ -181,18 +181,13 @@ void World::Draw()
 	time = CTimer::GetInstance()->GetTimeMSec() / 1000.0;
 	cam.Animate(bAnimated ? elapsed : 0.0, t);
 	t.bruteForceRender();
-	structure->Draw(time);
-	object->Draw(time);
-	std::multimap<std::string, IGameAsset*> s = m_assetFactory->GetAssets();
-	for (std::multimap<std::string, IGameAsset*>::iterator it = s.begin(); it != s.end(); it++)
-	{
-		
-		it->second->Draw(time); //this line draws the factory npc 
-	}
+	//structure->Draw(time);
+	//object->Draw(time);
+	
 	//Draw the 
-	for (unsigned int i = 0; i < _npcs.size(); i++) 
+	for (unsigned int i = 0; i < _igameassets.size(); i++) 
 	{
-		 _npcs[i]->Draw(bAnimated ? time : 0.0);
+		 _igameassets[i]->Draw(bAnimated ? time : 0.0);
 	}
 	glutSwapBuffers();
 }

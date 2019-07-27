@@ -114,6 +114,25 @@ public:
 	*/
 	void SetRotation(vec3 rot);
 	/**
+	*	@brief  function for inheritance purposes
+	*   @see
+	*	@param 
+	*	@return glm vec 3
+	*	@pre
+	*	@post
+	*/
+	vec3 GetVelocity() { return velocity; }
+	/**
+	*	@brief  function for inheritance purposes
+	*   @see
+	*	@param
+	*	@return glm vec 3
+	*	@pre
+	*	@post
+	*/
+	vec3 GetPosition() { return position; }
+
+	/**
 	*	@brief sets the scale of the npc to the value given
 	*   @see
 	*	@param float scale the value to set scale to
