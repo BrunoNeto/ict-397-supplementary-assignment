@@ -20,18 +20,18 @@ void World::Init()
 	for (int i = 0; i < numofnpcs; i++)
 	{
 		
-		CTimer::GetInstance()->Update();
-		time = CTimer::GetInstance()->GetTimeMSec();
+		//CTimer::GetInstance()->Update();
+		time = CTimer::GetInstance()->GetTime()-i;
 		srand(time);
 		float x = rand();
 		float y;
 		CTimer::GetInstance()->Update();
-		time = CTimer::GetInstance()->GetTimeMSec()+i ;
+		time = CTimer::GetInstance()->GetTime()+i ;
 		srand(time);
 		float z = rand();
 		if (x < 0)
 		{
-			x = 0+i;
+			x = 0+(i);
 		}
 		if (x > BOX_SIZE)
 		{

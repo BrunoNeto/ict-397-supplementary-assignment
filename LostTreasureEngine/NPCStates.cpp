@@ -1,6 +1,6 @@
 #include "NPCStates.h"
 #include "npc.h"
-#include"Ctime.h"
+#include "Ctime.h"
 const float PI = 3.1415926535f;
 void Wander::Enter(npc* dude)
 {
@@ -10,14 +10,14 @@ void Wander::Enter(npc* dude)
 void Wander::Execute(npc* dude)
 {	
 	CTimer::GetInstance()->Initialize();
-	float time = CTimer::GetInstance()->GetTime() ;
+	float time = CTimer::GetInstance()->GetTimeMSec() ;
 	
 	if (!directionGiven) 
 	{
 		
 		/*Having the line below results in an strange glitch, that could prove to be useful.*/
 		srand(time); //randomizes the seed
-		val = (rand() % 360);
+		val = (rand() %360);
 		
 		dude->SetRotationAngle(val);
 		
