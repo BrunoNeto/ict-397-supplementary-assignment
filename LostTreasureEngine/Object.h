@@ -18,6 +18,7 @@
 class Object : public IGameAsset
 {
 public:
+	float r = 1;
 	/**
 	* @brief Default constructor
 	*
@@ -122,6 +123,15 @@ public:
 	*	@post
 	*/
 	vec3 GetVelocity() { return velocity; }
+	/**
+	*	@brief  function for inheritance purposes does nothing for object
+	*   @see
+	*	@param
+	*	@return 
+	*	@pre
+	*	@post
+	*/
+	void TriggerWander() {}
 	/**
 	*	@brief  function for inheritance purposes
 	*   @see

@@ -19,6 +19,7 @@ private:
 	vec3 rotation;
 	float angle;
 	string m_filePath;
+	//float r = 1;
 public:
 	/**
 	*	@brief Structure default constructor
@@ -56,6 +57,16 @@ public:
 	*	@post
 	*/
 	vec3 GetRotation();
+	/**
+	*	@brief  function for inheritance purposes does nothing for object
+	*   @see
+	*	@param
+	*	@return
+	*	@pre
+	*	@post
+	*/
+	void TriggerWander() {}
+	
 	/**
 	*	@brief  function for inheritance purposes
 	*   @see

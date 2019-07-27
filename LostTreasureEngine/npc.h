@@ -35,7 +35,7 @@ private:
 	
 public:
 	bool directionGiven;
-	//float r =10;
+	float r =1;
 	bool Inbounds( Terrain&t);
 	bool onborder(Terrain&t);
 	vec3 velocity;
@@ -158,6 +158,20 @@ public:
 	*	@post
 	*/
 	vec3 GetVelocity();
+	/**
+	*	@brief  function for function for triggering new wander easily
+	*   @see
+	*	@param
+	*	@return
+	*	@pre
+	*	@post
+	*/
+	void TriggerWander() 
+	{
+		NPCSM->exitState(this);
+
+		NPCSM->executeState(this);
+	}
 	/**
 	*	@brief gets the npc current animation 
 	*   @see

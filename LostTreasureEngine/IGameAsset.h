@@ -235,6 +235,14 @@ public:
 	*/
 	virtual vec3 GetVelocity() = 0;
 	/**
+	* @brief triggers wander
+	*
+	* Virtual function to get the trigger wander
+	*
+	* @return void
+	*/
+	virtual void TriggerWander() = 0;
+	/**
 	* @brief updates the asset using its update function
 	*
 	* Virtual function to updates the asset.
@@ -251,7 +259,7 @@ public:
 	* @return void
 	*/
 	virtual void Draw(float time) = 0;
-	float r = 20;
+	float r;
 	vec3 velocity;
 
 protected:
