@@ -200,10 +200,6 @@ public:
 	IGameAsset* object;
 	IGameAsset* structure;
 
-	int numberOfStructures;
-	int numberOfNpcs;
-	int numberOfObjects;
-
 	vector<IGameAsset*> _igameassets; //All of the assets in play
 	
 	Octree* _octree;
