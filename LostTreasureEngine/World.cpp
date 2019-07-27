@@ -16,20 +16,19 @@ void World::Init()
 	// Create asset factory
 	m_assetFactory = new GameAssetFactory();
 	int numofnpcs = 25;//number of npcs to be set from script
-	//CTimer::GetInstance()->Update();
-	//time = CTimer::GetInstance()->GetTimeMSec() ;
-	//srand(static_cast<unsigned>(time));
+	
 
 	
 	for (int i = 0; i < numofnpcs; i++)
 	{
+		
 		CTimer::GetInstance()->Update();
-		time = CTimer::GetInstance()->GetTimeMSec()+i ;
+		time = CTimer::GetInstance()->GetTimeMSec()+i;
 		srand(time);
 		float x = rand();
 		float y;
 		CTimer::GetInstance()->Update();
-		time = CTimer::GetInstance()->GetTimeMSec()+i ;
+		time = CTimer::GetInstance()->GetTimeMSec() ;
 		srand(time);
 		float z = rand();
 		if (x < 0)

@@ -279,7 +279,7 @@ Octree::~Octree()
 	bool Octree::testIGameAssetIGameAssetCollision(IGameAsset* n1, IGameAsset* n2) {
 		//Check whether the assets are close enough
 		float r = n1->r + n2->r;
-		if (length2(n1->GetPosition() - n2->GetPosition()) < r*r ) {
+		if (length2(n1->GetPosition() - n2->GetPosition()) < r ) {
 			//Check whether the assets are moving toward each other not needed causes bad stuff to happen like multiple models inheriting same location
 			//vec3 netVelocity = n1->GetVelocity() - n2->GetVelocity();
 			//vec3 displacement = n1->GetPosition() - n2->GetPosition();
@@ -303,15 +303,15 @@ Octree::~Octree()
 			if (testIGameAssetIGameAssetCollision(n1, n2)) {
 				//Make the assets reflect off of each other
 				
-				vec3 displacement = n1->GetPosition() - n2->GetPosition();
+				vec3 displacement = n2->GetPosition() - n1->GetPosition();
 				displacement.x = displacement.x * n1->r;
 				displacement.y = displacement.y * n1->r;
 				displacement.z = displacement.z * n1->r;
 				
 				
-				n1->velocity -= displacement * dot(n1->velocity, displacement);
+				n1->velocity = displacement * dot(n1->velocity, displacement);
 				n1->TriggerWander();//only affects npcs
-				n2->velocity -= (displacement * dot(n2->velocity, displacement));
+				n2->velocity = (displacement * dot(n2->velocity, displacement));
 				//trigger new wander after reflect
 				n2->TriggerWander();
 				
