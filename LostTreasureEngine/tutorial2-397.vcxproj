@@ -142,6 +142,7 @@
     <ClCompile Include="npc.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="NPCStates.cpp" />
+    <ClCompile Include="Octree.cpp" />
     <ClCompile Include="singleton.cpp" />
     <ClCompile Include="SoundEffect.cpp" />
     <ClCompile Include="state.cpp" />
