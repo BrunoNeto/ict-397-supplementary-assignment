@@ -15,22 +15,16 @@ void World::Init()
 	CTimer::GetInstance()->Initialize();
 	// Create asset factory
 	m_assetFactory = new GameAssetFactory();
-	int numofnpcs = 25;//number of npcs to be set from script
-	//CTimer::GetInstance()->Update();
-	//time = CTimer::GetInstance()->GetTimeMSec() ;
-	//srand(static_cast<unsigned>(time));
+	int numofnpcs = 50;//number of npcs to be set from script
+	CTimer::GetInstance()->Update();
+	time = CTimer::GetInstance()->GetTimeMSec() / 1000.0;
 
-	
+	srand(static_cast<unsigned>(time));
 	for (int i = 0; i < numofnpcs; i++)
 	{
-		CTimer::GetInstance()->Update();
-		time = CTimer::GetInstance()->GetTimeMSec()+i ;
-		srand(time);
+		
 		float x = rand();
 		float y;
-		CTimer::GetInstance()->Update();
-		time = CTimer::GetInstance()->GetTimeMSec()+i ;
-		srand(time);
 		float z = rand();
 		if (x < 0)
 		{
@@ -174,7 +168,7 @@ void World::Update()
 	}
 	
 	// cycle through octree handling collisions
-	_octree->handleIGameAssetIGameAssetCollisions(_igameassets,_octree);
+	_octree->handleNpcNpcCollisions(_igameassets,_octree);
 	// get elapsed time needed for the camera which runs of since last update rather than runtime
 	curt = time;
 	elapsed = curt - last;
@@ -184,12 +178,13 @@ void World::Update()
 }
 void World::Draw()
 {
-	CTimer::GetInstance()->Update();
 	time = CTimer::GetInstance()->GetTimeMSec() / 1000.0;
 	cam.Animate(bAnimated ? elapsed : 0.0, t);
 	t.bruteForceRender();
+	//structure->Draw(time);
+	//object->Draw(time);
 	
-	//Draw the assets
+	//Draw the 
 	for (unsigned int i = 0; i < _igameassets.size(); i++) 
 	{
 		 _igameassets[i]->Draw(bAnimated ? time : 0.0);
