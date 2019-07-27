@@ -311,7 +311,7 @@ Octree::~Octree()
 				
 				n1->velocity = displacement * dot(n1->velocity, displacement);
 				n1->TriggerWander();//only affects npcs
-				n2->velocity = (displacement * dot(n2->velocity, displacement));
+				n2->velocity = -(displacement * dot(n2->velocity, displacement));
 				//trigger new wander after reflect
 				n2->TriggerWander();
 				

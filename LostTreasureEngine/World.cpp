@@ -17,30 +17,28 @@ void World::Init()
 	m_assetFactory = new GameAssetFactory();
 	int numofnpcs = 25;//number of npcs to be set from script
 	
-
-	
 	for (int i = 0; i < numofnpcs; i++)
 	{
 		
 		CTimer::GetInstance()->Update();
-		time = CTimer::GetInstance()->GetTimeMSec()+i;
+		time = CTimer::GetInstance()->GetTimeMSec();
 		srand(time);
 		float x = rand();
 		float y;
 		CTimer::GetInstance()->Update();
-		time = CTimer::GetInstance()->GetTimeMSec() ;
+		time = CTimer::GetInstance()->GetTimeMSec()+i ;
 		srand(time);
 		float z = rand();
 		if (x < 0)
 		{
-			x = 0;
+			x = 0+i;
 		}
 		if (x > BOX_SIZE)
 		{
-			x = BOX_SIZE;
+			x = BOX_SIZE-i;
 		}
-		if (z < 0) { z = 0; }
-		if (z > BOX_SIZE) { z = BOX_SIZE; }
+		if (z < 0) { z = 0+i; }
+		if (z > BOX_SIZE) { z = BOX_SIZE-i; }
 		y = t.getHeight(x, z);
 
 		// Create NPC with factory
