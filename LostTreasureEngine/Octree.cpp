@@ -302,16 +302,18 @@ Octree::~Octree()
 			IGameAsset* n2 = ap.iGameAsset2;
 			if (testIGameAssetIGameAssetCollision(n1, n2)) {
 				//Make the assets reflect off of each other
+			
+				//vec3 displacement = n2->GetPosition() - n1->GetPosition();
+				//displacement.x = displacement.x * n1->r;//* n2->r;
+				//displacement.y = displacement.y * n1->r;//* n2->r;
+				//displacement.z = displacement.z * n1->r; //*n2->r;
 				
-				vec3 displacement = n2->GetPosition() - n1->GetPosition();
-				displacement.x = displacement.x * n1->r;
-				displacement.y = displacement.y * n1->r;
-				displacement.z = displacement.z * n1->r;
 				
-				
-				n1->velocity = displacement * dot(n1->velocity, displacement);
+				n1->velocity = reflect(n1->velocity,n2->GetPosition()); //(displacement * dot(n2->velocity, displacement));
 				n1->TriggerWander();//only affects npcs
-				n2->velocity = (displacement * dot(n2->velocity, displacement));
+				
+				
+				n2->velocity = reflect(n2->velocity, n1->GetPosition()); //(displacement * dot(n1->velocity, displacement));
 				//trigger new wander after reflect
 				n2->TriggerWander();
 				

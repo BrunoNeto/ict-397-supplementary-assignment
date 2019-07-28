@@ -19,7 +19,7 @@ private:
 	vec3 rotation;
 	float angle;
 	string m_filePath;
-	float r = 0;
+	float r = 5;
 public:
 	/**
 	*	@brief Structure default constructor

@@ -18,25 +18,30 @@ void World::Init()
 	m_assetFactory = new GameAssetFactory();
 
 	ScriptManager::Instance().LoadNumberOfAssets(numberOfStructures, numberOfNpcs, numberOfObjects);
-	CTimer::GetInstance()->Update();
-	time = CTimer::GetInstance()->GetTimeMSec() / 1000.0;
+	
 
-	srand(static_cast<unsigned>(time));
+	//srand(time);
 	for (int i = 0; i <= numberOfNpcs; i++)
 	{
-		float x = rand();
+		CTimer::GetInstance()->Update();
+		time = CTimer::GetInstance()->GetTime()*i; // 1000.0;
+		srand(time);
+		float x = rand()%(int)BOX_SIZE;
 		float y;
-		float z = rand();
+		CTimer::GetInstance()->Update();
+		time = CTimer::GetInstance()->GetTimeMSec()-i; // 1000.0;
+		srand(time);
+		float z = rand() % (int)BOX_SIZE;
 		if (x < 0)
 		{
-			x = 0;
+			x += BOX_SIZE / 2;
 		}
 		if (x > BOX_SIZE)
 		{
-			x = BOX_SIZE;
+			x -= BOX_SIZE/2;
 		}
-		if (z < 0) { z = 0; }
-		if (z > BOX_SIZE) { z = BOX_SIZE; }
+		if (z < 0) { z += BOX_SIZE / 2; }
+		if (z > BOX_SIZE) { z -= BOX_SIZE/2; }
 		y = t.getHeight(x, z);
 
 		// Create NPC with factory
