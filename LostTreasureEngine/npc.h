@@ -35,9 +35,10 @@ private:
 	
 public:
 	bool directionGiven;
-	float r =10;
+	float r =2;
 	bool Inbounds( Terrain&t);
 	bool onborder(Terrain&t);
+	vec3 velocity;
 	/**
 	*	@brief npc default constructor
 	*   @see
@@ -111,7 +112,7 @@ public:
 	*	@post
 	*/
 	void Move(float deltaTime, Terrain& gameworld);
-	vec3 velocity;
+	
 	/**
 	*	@brief gets the npc model
 	*   @see
@@ -157,6 +158,20 @@ public:
 	*	@post
 	*/
 	vec3 GetVelocity();
+	/**
+	*	@brief  function for function for triggering new wander easily
+	*   @see
+	*	@param
+	*	@return
+	*	@pre
+	*	@post
+	*/
+	void TriggerWander() 
+	{
+		NPCSM->exitState(this);
+
+		NPCSM->executeState(this);
+	}
 	/**
 	*	@brief gets the npc current animation 
 	*   @see
@@ -204,7 +219,7 @@ public:
 	*	@post
 	*/
 	void SetRotationAngle(float rot);
-	//State GetState();
+	
 	/**
 	*	@brief sets the rotation vector for the npc
 	*   @see
@@ -232,9 +247,15 @@ public:
 	*	@pre modelFileName must point to a valid md2 model, modelSkinFilename must point to a valid 24bit bitmap file 
 	*	@post
 	*/
-	
 	void LoadFromFilePath(const char* modelFileName, const char* modelSkinFilename);
-	
+	/**
+	*	@brief deletes the npc
+	*   @see
+	*	@param 
+	*	@return void
+	*	@pre 
+	*	@post
+	*/
 	virtual const void Destroy();
 
 	/**
@@ -318,7 +339,7 @@ public:
 	*	@post
 	*/
 	void SetScale(float scale);
-	//void SetState();
+	
 	/**
 	*	@brief npc update , processes movement using time and gameworld reference, 
 	*	this will likely change when i move npc into world as it will not need world variable to be passed in

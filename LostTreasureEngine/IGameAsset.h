@@ -89,11 +89,11 @@ public:
 	*/
 	virtual const std::string& GetFilePath() const = 0;
 	/**
-	* @brief Sets the asset file path
+	* @brief Sets the asset animation
 	*
-	* Virtual function to set a file path.
+	* Virtual function to set the animation
 	*
-	* @param const std::string& filePath
+	* @param std::int  animId the id of the animation
 	* @return void
 	*/
 	virtual void SetAnimation(int animId) = 0;
@@ -147,6 +147,25 @@ public:
 	*/
 	virtual void SetPosition(vec3 position) = 0;
 
+	/**
+	* @brief Gets the asset position
+	*
+	* Virtual function to get the position of the asset.
+	*
+	* @param glm::vec3 position
+	* @return vec3
+	*/
+	virtual vec3 GetPosition() = 0;
+	/**
+	* @brief Sets the asset position
+	*
+	* Virtual function to set the position of the asset.
+	*
+	* @param float x the x value
+	* @param float z the z value
+	* @param Terrain t , the terrain to get the new height from
+	* @return void
+	*/
 	virtual void SetPosition(float x, float z, Terrain& t) = 0;
 
 	/**
@@ -207,13 +226,41 @@ public:
 	* @return void
 	*/
 	//virtual void AddTexutre(GLuint textureId, std::string textureFilePath) = 0;
-
-
+	/**
+	* @brief Gets the assets velocity vector
+	*
+	* Virtual function to get the assets model.
+	*
+	* @return Model*
+	*/
+	virtual vec3 GetVelocity() = 0;
+	/**
+	* @brief triggers wander
+	*
+	* Virtual function to get the trigger wander
+	*
+	* @return void
+	*/
+	virtual void TriggerWander() = 0;
+	/**
+	* @brief updates the asset using its update function
+	*
+	* Virtual function to updates the asset.
+	* @param float deltaTime the elapsed time
+	* @param Terrain t the terrain to be used for the update
+	* @return const void
+	*/
 	virtual void Update(float deltaTime, Terrain& t) = 0;
-
+	/**
+	* @brief draws the asset 
+	*
+	* Virtual function to draw the asset.
+	* @param float time the time to use for draw 
+	* @return void
+	*/
 	virtual void Draw(float time) = 0;
-
-
+	float r;
+	vec3 velocity;
 
 protected:
 	/// Defines the nature of the asset

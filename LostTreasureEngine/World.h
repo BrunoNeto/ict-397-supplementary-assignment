@@ -6,6 +6,7 @@
 #include "Camera.h"
 #include "Ctime.h"
 #include "GameAssetFactory.h"
+#include "Octree.h"
 //	@brief World class for our world object
 //	@todo once i have figured out everything world need it must be seperated int 2 classes one with data and the other as a controller
 //	@author Bruno Neto
@@ -150,9 +151,41 @@ public:
 	*	@post
 	*/
 	void Update();
+	/**
+	*	@brief method for pausing worlds components that need real time calcs
+	*   @see
+	*	@param 
+	*	@return void
+	*	@pre
+	*	@post
+	*/
 	void PauseWorld();
-	
+	/**
+	*	@brief method for cleaning up worlds pointer components
+	*   @see
+	*	@param
+	*	@return void
+	*	@pre
+	*	@post
+	*/
+	void cleanup();
+	/**
+	*	@brief method for getting a refferenc to worlds camera
+	*   @see
+	*	@param
+	*	@return CCamera a pointer to our camera class
+	*	@pre
+	*	@post
+	*/
 	CCamera* GetCam();
+	/**
+	*	@brief method for initialising components that must be initialised after world has been initialized
+	*   @see
+	*	@param
+	*	@return void
+	*	@pre
+	*	@post
+	*/
 	void Init();
 	CCamera cam;
 	Terrain t;
@@ -161,11 +194,15 @@ public:
 	float last;
 	float elapsed;
 	//CTimer timer;
-	
+	float BOX_SIZE;
 	GameAssetFactory* m_assetFactory;
-	IGameAsset* npc;
+	IGameAsset* npc1;
 	IGameAsset* object;
 	IGameAsset* structure;
+
+	vector<IGameAsset*> _igameassets; //All of the assets in play
+	
+	Octree* _octree;
 
 	float time;
 	bool bAnimated = true;

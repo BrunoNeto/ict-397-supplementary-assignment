@@ -19,6 +19,8 @@
     <ClCompile Include="stateMachine.cpp" />
     <ClCompile Include="NPCStates.cpp" />
     <ClCompile Include="singleton.cpp" />
+    <ClCompile Include="Octree.cpp" />
+    <ClCompile Include="ScriptManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
@@ -40,7 +42,8 @@
     <ClInclude Include="stateMachine.h" />
     <ClInclude Include="NPCStates.h" />
     <ClInclude Include="singleton.h" />
-    <ClInclude Include="OcTree.h" />
+    <ClInclude Include="Octree.h" />
+    <ClInclude Include="ScriptManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
