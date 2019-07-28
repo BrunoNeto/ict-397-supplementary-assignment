@@ -1,4 +1,5 @@
 #include "World.h"
+#include "ScriptManager.h"
 
 
 
@@ -9,36 +10,33 @@ World::World()
 	_octree = new Octree(vec3({ 0, 0, 0 }), vec3({ BOX_SIZE, BOX_SIZE, BOX_SIZE}), 3, BOX_SIZE);
 
 }
-void World::Init() 
+void World::Init()
 {
 	//load all players and objects
 	CTimer::GetInstance()->Initialize();
 	// Create asset factory
 	m_assetFactory = new GameAssetFactory();
-	int numofnpcs = 25;//number of npcs to be set from script
-	
-	for (int i = 0; i < numofnpcs; i++)
+
+	ScriptManager::Instance().LoadNumberOfAssets(numberOfStructures, numberOfNpcs, numberOfObjects);
+	CTimer::GetInstance()->Update();
+	time = CTimer::GetInstance()->GetTimeMSec() / 1000.0;
+
+	srand(static_cast<unsigned>(time));
+	for (int i = 0; i <= numberOfNpcs; i++)
 	{
-		
-		//CTimer::GetInstance()->Update();
-		time = CTimer::GetInstance()->GetTime()-i;
-		srand(time);
 		float x = rand();
 		float y;
-		CTimer::GetInstance()->Update();
-		time = CTimer::GetInstance()->GetTime()+i ;
-		srand(time);
 		float z = rand();
 		if (x < 0)
 		{
-			x = 0+(i);
+			x = 0;
 		}
 		if (x > BOX_SIZE)
 		{
-			x = BOX_SIZE-i;
+			x = BOX_SIZE;
 		}
-		if (z < 0) { z = 0+i; }
-		if (z > BOX_SIZE) { z = BOX_SIZE-i; }
+		if (z < 0) { z = 0; }
+		if (z > BOX_SIZE) { z = BOX_SIZE; }
 		y = t.getHeight(x, z);
 
 		// Create NPC with factory
@@ -50,24 +48,63 @@ void World::Init()
 		m_assetFactory->AddAsset(npc1);
 		_igameassets.push_back(npc1);
 		_octree->add(npc1);
-		
+
 	}
-	// Create Object
-	object = m_assetFactory->CreateAsset(ASS_OBJECT, "Treasure");
-	object->LoadFromFilePath("models/treasure_chest.md2", "models/treasure_chest.bmp");
-	object->SetPosition(100, (t.getWorldSizeZ() - 80), t);
-	object->SetScale(1.5);
-	m_assetFactory->AddAsset(object);
-	_igameassets.push_back(object);
-	_octree->add(object);
-	// Create Structure
-	structure = m_assetFactory->CreateAsset(ASS_STRUCTURE, "House");
-	structure->LoadFromFilePath("models/farmhouse.md2", "models/farmhouse.bmp");
-	structure->SetPosition((t.getWorldSizeX() - 150), (t.getWorldSizeZ() - 80), t);
-	structure->SetScale(4);
-	m_assetFactory->AddAsset(structure);
-	_igameassets.push_back(structure);
-	_octree->add(structure);
+	srand(static_cast<unsigned>(time));
+	for (int i = 0; i <= numberOfObjects; i++)
+	{
+		float x = (rand() % static_cast<int>(BOX_SIZE)) + 1;
+		float y;
+		float z = (rand() % static_cast<int>(BOX_SIZE)) + 1;
+		if (x < 0)
+		{
+			x = 0;
+		}
+		if (x > BOX_SIZE)
+		{
+			x = BOX_SIZE;
+		}
+		if (z < 0) { z = 0; }
+		if (z > BOX_SIZE) { z = BOX_SIZE; }
+		y = t.getHeight(x, z);
+
+		// Create NPC with factory
+		object = m_assetFactory->CreateAsset(ASS_OBJECT, "Treasure");
+		object->LoadFromFilePath("models/treasure_chest.md2", "models/treasure_chest.bmp");
+		object->SetPosition({ x,y,z });
+		object->SetScale(1.5);
+		m_assetFactory->AddAsset(object);
+		_igameassets.push_back(object);
+		_octree->add(object);
+
+	}
+	srand(static_cast<unsigned>(time));
+	for (int i = 0; i <= numberOfStructures; i++)
+	{
+		float x = (rand() % static_cast<int>(BOX_SIZE)) + 1;
+		float y;
+		float z = (rand() % static_cast<int>(BOX_SIZE)) + 1;
+		if (x < 0)
+		{
+			x = 0;
+		}
+		if (x > BOX_SIZE)
+		{
+			x = BOX_SIZE;
+		}
+		if (z < 0) { z = 0; }
+		if (z > BOX_SIZE) { z = BOX_SIZE; }
+		y = t.getHeight(x, z);
+
+		// Create Structure
+		structure = m_assetFactory->CreateAsset(ASS_STRUCTURE, "House");
+		structure->LoadFromFilePath("models/farmhouse.md2", "models/farmhouse.bmp");
+		structure->SetPosition({ x,y,z });
+		structure->SetScale(4);
+		m_assetFactory->AddAsset(structure);
+		_igameassets.push_back(structure);
+		_octree->add(structure);
+	}
 }
 
 World::~World()
